@@ -8,9 +8,13 @@ public interface UserService {
 
     UserModel save(UserModel user);
 
-    Optional<UserModel> update(UserModel user);
+    UserModel update(UserModel user);
 
     boolean delete(String id);
+
+    boolean isEmailValid(String email);
+
+    boolean isUsernameValid(String username);
 
     Optional<UserModel> findByUsername(String username);
 

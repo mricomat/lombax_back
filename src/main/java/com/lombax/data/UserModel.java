@@ -13,7 +13,7 @@ public class UserModel {
 
     @Id
     @NotNull
-    private UUID id;
+    private String id;
 
     @NotBlank
     private String name;
@@ -50,11 +50,11 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
