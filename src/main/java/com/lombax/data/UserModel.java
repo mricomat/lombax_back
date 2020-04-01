@@ -193,4 +193,8 @@ public class UserModel {
     public void setDiary(int diary) {
         this.diary = diary;
     }
+
+    public boolean isValid() {
+        return id != null && userName != null && name != null;
+    }
 }
