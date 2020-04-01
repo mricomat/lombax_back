@@ -3,8 +3,6 @@ package com.lombax.service;
 import com.lombax.data.UserModel;
 import com.lombax.exception.EntityAlreadyExistsException;
 import com.lombax.exception.EntityNotFoundException;
-import com.lombax.repository.UserRepository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +12,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,9 +30,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserModel save(UserModel user) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(user.getUserName()));
+        query.addCriteria(Criteria.where("username").is(user.getUsername()));
         if (mongoTemplate.exists(query, UserModel.class)) {
-            throw new EntityAlreadyExistsException(UserModel.class, "username", user.getUserName());
+            throw new EntityAlreadyExistsException(UserModel.class, "username", user.getUsername());
         }
 
         query = new Query();
@@ -50,45 +42,42 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setId(UUID.randomUUID().toString());
-        logger.info("User REGISTERED: " + user.getUserName());
+        logger.info("User REGISTERED: " + user.getUsername());
         return mongoTemplate.save(user);
     }
 
     // The returned user object has the same values as the initial state in the database.
     @Override
-    public UserModel update(UserModel user) {
+    public UserModel update(String userId, String key, Object value) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(user.getId()));
+        query.addCriteria(Criteria.where("id").is(userId));
+        Update update = new Update();
+        update.set(key, value);
 
-        UserModel result = null;
-        try {
-            result = mongoTemplate.findAndModify(query, generateUpdate(user), UserModel.class);
-        } catch (InvocationTargetException | IllegalAccessException | IntrospectionException e) {
-            e.printStackTrace();
-        }
+        UserModel result = mongoTemplate.findAndModify(query, update, UserModel.class);
 
         if (result == null) {
-            throw new EntityNotFoundException(UserModel.class, "id", user.getId());
+            throw new EntityNotFoundException(UserModel.class, "id", userId);
         }
 
-        logger.info("User UPDATE: " + result.getUserName());
+        logger.info("User UPDATE: " + result.getUsername());
 
         return result;
     }
 
-    Update generateUpdate(UserModel user) throws InvocationTargetException, IllegalAccessException, IntrospectionException {
-        Update update = new Update();
-
-        BeanInfo beanInfo = Introspector.getBeanInfo(UserModel.class);
-        for (PropertyDescriptor propertyDesc : beanInfo.getPropertyDescriptors()) {
-            String propertyName = propertyDesc.getName();
-            Object value = propertyDesc.getReadMethod().invoke(user);
-            if (!propertyName.equals("class")) {
-                update.set(propertyName, value);
-            }
-        }
-        return update;
-    }
+//    Update generateUpdate(UserModel user) throws InvocationTargetException, IllegalAccessException, IntrospectionException {
+//        Update update = new Update();
+//
+//        BeanInfo beanInfo = Introspector.getBeanInfo(UserModel.class);
+//        for (PropertyDescriptor propertyDesc : beanInfo.getPropertyDescriptors()) {
+//            String propertyName = propertyDesc.getName();
+//            Object value = propertyDesc.getReadMethod().invoke(user);
+//            if (!propertyName.equals("class")) {
+//                update.set(propertyName, value);
+//            }
+//        }
+//        return update;
+//    }
 
     @Override
     public boolean delete(String id) {

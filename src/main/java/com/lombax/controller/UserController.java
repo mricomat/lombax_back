@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/update", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<?> updateUser(@RequestBody UserModel userModel) {
-        UserModel result = userService.update(userModel);
+    ResponseEntity<?> updateUser(@RequestParam String id, @RequestParam String key, @RequestParam Object value) {
+        UserModel result = userService.update(id, key, value);
         return ResponseEntity.ok(result);
     }
 

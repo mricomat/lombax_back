@@ -8,7 +8,7 @@ public interface UserService {
 
     UserModel save(UserModel user);
 
-    UserModel update(UserModel user);
+    UserModel update(String userId, String key, Object value);
 
     boolean delete(String id);
 
