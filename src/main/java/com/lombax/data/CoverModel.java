@@ -1,5 +1,8 @@
 package com.lombax.data;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "covers")
 public class CoverModel {
 
     private String id;

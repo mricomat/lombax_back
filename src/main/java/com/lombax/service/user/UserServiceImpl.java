@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
 //        return update;
 //    }
 
+    // TODO Check if user exists first?
     @Override
     public boolean delete(String id) {
         Query query = new Query();

@@ -1,8 +1,6 @@
 package com.lombax.service.cover;
 
 import com.lombax.data.CoverModel;
-import com.lombax.data.UserModel;
-import com.lombax.exception.EntityAlreadyExistsException;
 import com.lombax.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +9,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class CoverServiceImpl implements CoverService {
 
     private static final Logger logger = LoggerFactory.getLogger(CoverServiceImpl.class);
