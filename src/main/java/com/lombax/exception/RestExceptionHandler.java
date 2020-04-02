@@ -1,6 +1,6 @@
 package com.lombax.exception;
 
-import com.lombax.data.ApiError;
+import com.lombax.data.error.ApiError;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

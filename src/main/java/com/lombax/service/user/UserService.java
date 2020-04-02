@@ -1,4 +1,4 @@
-package com.lombax.service;
+package com.lombax.service.user;
 
 import com.lombax.data.UserModel;
 

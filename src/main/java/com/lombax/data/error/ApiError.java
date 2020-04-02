@@ -1,4 +1,4 @@
-package com.lombax.data;
+package com.lombax.data.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

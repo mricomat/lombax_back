@@ -34,10 +34,10 @@ public class UserModel {
 
     @NotBlank
     private ArrayList interests = new ArrayList();
-    private ArrayList favorites = new ArrayList();;
-    private ArrayList activity = new ArrayList();;
-    private ArrayList ratings = new ArrayList();;
-    private int games;
+    private ArrayList favorites = new ArrayList();
+    private ArrayList activity = new ArrayList();
+    private ArrayList ratings = new ArrayList();
+    private ArrayList games = new ArrayList();
     private int followers;
     private int following;
     private int likes;
@@ -137,11 +137,11 @@ public class UserModel {
         this.ratings = ratings;
     }
 
-    public int getGames() {
+    public ArrayList getGames() {
         return games;
     }
 
-    public void setGames(int games) {
+    public void setGames(ArrayList games) {
         this.games = games;
     }
 

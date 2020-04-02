@@ -1,9 +1,8 @@
 package com.lombax.controller;
 
 import com.lombax.data.UserModel;
-import com.lombax.repository.UserRepository;
-import com.lombax.service.EmailService;
-import com.lombax.service.UserService;
+import com.lombax.service.email.EmailService;
+import com.lombax.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

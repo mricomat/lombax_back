@@ -1,7 +1,6 @@
-package com.lombax.service;
+package com.lombax.service.email;
 
 import com.lombax.data.UserModel;
-import com.lombax.exception.EntityAlreadyExistsException;
 import com.lombax.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

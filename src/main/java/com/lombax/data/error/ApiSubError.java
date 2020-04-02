@@ -1,4 +1,4 @@
-package com.lombax.data;
+package com.lombax.data.error;
 
 abstract class ApiSubError {
 

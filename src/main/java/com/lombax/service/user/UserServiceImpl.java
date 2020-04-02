@@ -1,4 +1,4 @@
-package com.lombax.service;
+package com.lombax.service.user;
 
 import com.lombax.data.UserModel;
 import com.lombax.exception.EntityAlreadyExistsException;
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // The returned user object has the same values as the initial state in the database.
+    // TODO Check if is updating the password and chang it to md5
     @Override
     public UserModel update(String userId, String key, Object value) {
         Query query = new Query();
@@ -103,8 +104,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserModel> findByUsername(String username) {
-
-
         return null;
     }
 

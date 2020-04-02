@@ -1,4 +1,4 @@
-package com.lombax.data;
+package com.lombax.data.error;
 
 class ApiValidationError extends ApiSubError {
     private String object;
