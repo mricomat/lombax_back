@@ -1,6 +1,6 @@
 package com.lombax.service.cover;
 
-import com.lombax.data.CoverModel;
+import com.lombax.data.game.CoverModel;
 
 public interface CoverService {
     CoverModel save(CoverModel cover);

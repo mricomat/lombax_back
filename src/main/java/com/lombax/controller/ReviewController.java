@@ -1,6 +1,5 @@
 package com.lombax.controller;
 
-import com.lombax.data.CoverModel;
 import com.lombax.data.ReviewModel;
 import com.lombax.service.review.ReviewService;
 import org.slf4j.Logger;
@@ -12,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")

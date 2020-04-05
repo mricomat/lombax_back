@@ -1,6 +1,6 @@
 package com.lombax.service.cover;
 
-import com.lombax.data.CoverModel;
+import com.lombax.data.game.CoverModel;
 import com.lombax.exception.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

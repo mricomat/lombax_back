@@ -33,8 +33,8 @@ public class UserModel {
     private String backgroundId;
 
     @NotBlank
-    private ArrayList interests = new ArrayList();
-    private ArrayList favorites = new ArrayList();
+    private ArrayList<String> interests = new ArrayList<>();
+    private ArrayList<String> favorites = new ArrayList<>();
     private ArrayList activity = new ArrayList();
     private ArrayList ratings = new ArrayList();
     private ArrayList games = new ArrayList();

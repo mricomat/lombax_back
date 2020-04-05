@@ -1,14 +1,13 @@
-package com.lombax.data;
+package com.lombax.data.game;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection = "covers")
 public class CoverModel {
 
+    @Field("id")
     private String id;
-    private String image_id;
-    private String gameId;
-    private boolean alpha_channel;
+    @Field("image_id")
+    private String imageId;
     private boolean animated;
     private int height;
     private int width;
@@ -26,12 +25,12 @@ public class CoverModel {
         this.id = id;
     }
 
-    public boolean isAlpha_channel() {
-        return alpha_channel;
+    public String getImageId() {
+        return imageId;
     }
 
-    public void setAlpha_channel(boolean alpha_channel) {
-        this.alpha_channel = alpha_channel;
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 
     public boolean isAnimated() {
@@ -40,14 +39,6 @@ public class CoverModel {
 
     public void setAnimated(boolean animated) {
         this.animated = animated;
-    }
-
-    public String getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
     }
 
     public int getHeight() {
@@ -64,14 +55,6 @@ public class CoverModel {
 
     public void setWidth(int width) {
         this.width = width;
-    }
-
-    public String getImage_id() {
-        return image_id;
-    }
-
-    public void setImage_id(String image_id) {
-        this.image_id = image_id;
     }
 
     public String getUrl() {

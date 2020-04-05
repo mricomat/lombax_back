@@ -1,6 +1,6 @@
 package com.lombax.controller;
 
-import com.lombax.data.CoverModel;
+import com.lombax.data.game.CoverModel;
 import com.lombax.service.cover.CoverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
