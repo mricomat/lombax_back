@@ -35,15 +35,14 @@ public class UserModel {
     @NotBlank
     private ArrayList<String> interests = new ArrayList<>();
     private ArrayList<String> favorites = new ArrayList<>();
-    private ArrayList activity = new ArrayList();
-    private ArrayList ratings = new ArrayList();
-    private ArrayList games = new ArrayList();
-    private int followers;
-    private int following;
-    private int likes;
-    private int reviews;
-    private int watchList;
-    private int diary;
+    private ArrayList<String> ratings = new ArrayList<>();
+    private ArrayList<String> gamesPlayed = new ArrayList<>();
+    private ArrayList<String> gamesPlaying = new ArrayList<>();
+    private ArrayList<String> followers = new ArrayList<>();
+    private ArrayList<String> following = new ArrayList<>();
+    private ArrayList<String> reviews = new ArrayList<>();
+    private ArrayList<String> watchList = new ArrayList<>();
+    private String diaryId;
 
 
     public UserModel() {
@@ -105,92 +104,84 @@ public class UserModel {
         this.backgroundId = backgroundId;
     }
 
-    public ArrayList getInterests() {
+    public ArrayList<String> getInterests() {
         return interests;
     }
 
-    public void setInterests(ArrayList interests) {
+    public void setInterests(ArrayList<String> interests) {
         this.interests = interests;
     }
 
-    public ArrayList getFavorites() {
+    public ArrayList<String> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(ArrayList favorites) {
+    public void setFavorites(ArrayList<String> favorites) {
         this.favorites = favorites;
     }
 
-    public ArrayList getActivity() {
-        return activity;
-    }
-
-    public void setActivity(ArrayList activity) {
-        this.activity = activity;
-    }
-
-    public ArrayList getRatings() {
+    public ArrayList<String> getRatings() {
         return ratings;
     }
 
-    public void setRatings(ArrayList ratings) {
+    public void setRatings(ArrayList<String> ratings) {
         this.ratings = ratings;
     }
 
-    public ArrayList getGames() {
-        return games;
+    public ArrayList<String> getGamesPlayed() {
+        return gamesPlayed;
     }
 
-    public void setGames(ArrayList games) {
-        this.games = games;
+    public void setGamesPlayed(ArrayList<String> gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 
-    public int getFollowers() {
+    public ArrayList<String> getGamesPlaying() {
+        return gamesPlaying;
+    }
+
+    public void setGamesPlaying(ArrayList<String> gamesPlaying) {
+        this.gamesPlaying = gamesPlaying;
+    }
+
+    public ArrayList<String> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(int followers) {
+    public void setFollowers(ArrayList<String> followers) {
         this.followers = followers;
     }
 
-    public int getFollowing() {
+    public ArrayList<String> getFollowing() {
         return following;
     }
 
-    public void setFollowing(int following) {
+    public void setFollowing(ArrayList<String> following) {
         this.following = following;
     }
 
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public int getReviews() {
+    public ArrayList<String> getReviews() {
         return reviews;
     }
 
-    public void setReviews(int reviews) {
+    public void setReviews(ArrayList<String> reviews) {
         this.reviews = reviews;
     }
 
-    public int getWatchList() {
+    public ArrayList<String> getWatchList() {
         return watchList;
     }
 
-    public void setWatchList(int watchList) {
+    public void setWatchList(ArrayList<String> watchList) {
         this.watchList = watchList;
     }
 
-    public int getDiary() {
-        return diary;
+    public String getDiaryId() {
+        return diaryId;
     }
 
-    public void setDiary(int diary) {
-        this.diary = diary;
+    public void setDiaryId(String diaryId) {
+        this.diaryId = diaryId;
     }
 
     public boolean isValid() {
