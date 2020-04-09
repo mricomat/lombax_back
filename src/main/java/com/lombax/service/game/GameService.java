@@ -5,6 +5,7 @@ import com.lombax.data.game.GameModel;
 import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface GameService {
 
@@ -18,19 +19,19 @@ public interface GameService {
 
     PageImpl<GameModel> findAllById(String id, int page, int size);
 
-    GameModel findMainGame();
+    List<GameModel> findMainGames(int genre);
 
-    PageImpl<GameModel> findPopularGames(int page, int size);
+    PageImpl<GameModel> findPopularGames(int page, int size, int genre);
 
-    PageImpl<GameModel> findTopGames(int page, int size);
+    PageImpl<GameModel> findTopGames(int page, int size, int genre);
 
     PageImpl<DiaryModel> findPopularFriends(int page, int size, String userId);
 
     PageImpl<GameModel> findActivityFriends(int page, int size);
 
-    PageImpl<GameModel> findCollectionGames(int page, int size);
+    PageImpl<GameModel> findCollectionGames(int page, int size, int genre);
 
-    PageImpl<GameModel> findGenreGames(int page, int size, int id);
+    PageImpl<GameModel> findGenreGames(int page, int size, List<Integer> genres);
 
     PageImpl<GameModel> findYourWatchlist(int page, int size, String userId);
 }

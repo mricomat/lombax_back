@@ -77,7 +77,7 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public GameModel findMainGame() {
+    public List<GameModel> findMainGames(int genre) {
         Query query = new Query();
 
         Date date = new Date();
@@ -87,19 +87,24 @@ public class GameServiceImpl implements GameService {
         long unixToday = new Date().getTime() / 1000L;
         long unixTwoWeeksAgo = calendar.getTime().getTime() / 1000L;
 
+        Pageable pageable = PageRequest.of(0, 10);
+        query.with(pageable);
+
+        if(genre != 0) {
+            query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
+        }
+
         query.addCriteria(Criteria.where("first_release_date").gt(unixTwoWeeksAgo).lt(unixToday));
-        query.with(Sort.by(Sort.Direction.DESC, "popularity"));
 
-        // TODO CAMBIAR ESTO DEBERÏA RECOGER UN GRUPO DE JUEGOS Y DEVOLVER UNO ALEATORIO
-        GameModel result = mongoTemplate.findOne(query, GameModel.class);
+        List<GameModel> result = mongoTemplate.find(query, GameModel.class);
 
-        logger.info("Game findMainGame: " + (result != null ? result.getPopularity() : 0));
+        logger.info("Game findMainGames: " );
 
         return result;
     }
 
     @Override
-    public PageImpl<GameModel> findPopularGames(int page, int size) {
+    public PageImpl<GameModel> findPopularGames(int page, int size, int genre) {
         Query query = new Query();
         long count = mongoTemplate.count(query, GameModel.class);
 
@@ -111,6 +116,10 @@ public class GameServiceImpl implements GameService {
         query.addCriteria(Criteria.where("themes.id").ne("42"));
         query.with(Sort.by(Sort.Direction.DESC, "popularity"));
 
+        if(genre != 0) {
+            query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
+        }
+
         List<GameModel> result = mongoTemplate.find(query, GameModel.class);
 
         logger.info("Game findPopularGames: ");
@@ -119,7 +128,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PageImpl<GameModel> findTopGames(int page, int size) {
+    public PageImpl<GameModel> findTopGames(int page, int size, int genre) {
         Query query = new Query();
         long count = mongoTemplate.count(query, GameModel.class);
 
@@ -130,6 +139,10 @@ public class GameServiceImpl implements GameService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, -360);//2 weeks
+
+        if(genre != 0) {
+            query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
+        }
 
         long unixToday = new Date().getTime() / 1000L;
         long unixTwoWeeksAgo = calendar.getTime().getTime() / 1000L;
@@ -180,11 +193,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PageImpl<GameModel> findCollectionGames(int page, int size) {
+    public PageImpl<GameModel> findCollectionGames(int page, int size, int genre) {
         Query query = new Query();
         long count = mongoTemplate.count(query, GameModel.class);
         Pageable pageable = PageRequest.of(page, size);
         query.with(pageable);
+
+        if(genre != 0) {
+            query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
+        }
 
         query.addCriteria(Criteria.where("category").is(3));
         query.addCriteria(Criteria.where("total_rating").gt(83));
@@ -198,18 +215,18 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PageImpl<GameModel> findGenreGames(int page, int size, int id) {
+    public PageImpl<GameModel> findGenreGames(int page, int size, List<Integer> genres) {
         Query query = new Query();
         long count = mongoTemplate.count(query, GameModel.class);
         Pageable pageable = PageRequest.of(page, size);
         query.with(pageable);
 
-        query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(id)));
+        query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").in(genres)));
         query.with(Sort.by(Sort.Direction.DESC, "total_rating"));
 
         List<GameModel> result = mongoTemplate.find(query, GameModel.class);
 
-        logger.info("Game genres: " + id);
+        logger.info("Game genres: " + genres);
 
         return new PageImpl<>(result, pageable, count);
     }
