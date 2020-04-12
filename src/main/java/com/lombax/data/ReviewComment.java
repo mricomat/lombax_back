@@ -9,7 +9,7 @@ public class ReviewComment {
     private String userId;
     private String reviewId;
     private String comment;
-    private long likesCount;
+    private String date;
 
     public ReviewComment() {
 
@@ -47,11 +47,11 @@ public class ReviewComment {
         this.comment = comment;
     }
 
-    public long getLikesCount() {
-        return likesCount;
+    public String getDate() {
+        return date;
     }
 
-    public void setLikesCount(long likesCount) {
-        this.likesCount = likesCount;
+    public void setDate(String date) {
+        this.date = date;
     }
 }

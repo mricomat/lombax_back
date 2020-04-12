@@ -1,7 +1,6 @@
 package com.lombax.controller;
 
 import com.lombax.data.ReviewModel;
-import com.lombax.data.game.GameModel;
 import com.lombax.service.review.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,7 @@ import org.springframework.web.util.UriComponents;
 @RequestMapping("/reviews")
 public class ReviewController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(com.lombax.controller.ReviewController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewController.class);
 
     @Autowired
     private ReviewService reviewService;
