@@ -42,8 +42,7 @@ public class UserModel {
     private ArrayList<String> following = new ArrayList<>();
     private ArrayList<String> reviews = new ArrayList<>();
     private ArrayList<String> watchList = new ArrayList<>();
-    private String diaryId;
-
+    private ArrayList<String> diaryList = new ArrayList<>();
 
     public UserModel() {
     }
@@ -176,12 +175,12 @@ public class UserModel {
         this.watchList = watchList;
     }
 
-    public String getDiaryId() {
-        return diaryId;
+    public ArrayList<String> getDiaryList() {
+        return diaryList;
     }
 
-    public void setDiaryId(String diaryId) {
-        this.diaryId = diaryId;
+    public void setDiaryList(ArrayList<String> diaryList) {
+        this.diaryList = diaryList;
     }
 
     public boolean isValid() {

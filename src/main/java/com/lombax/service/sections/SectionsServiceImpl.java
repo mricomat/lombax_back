@@ -1,11 +1,10 @@
 package com.lombax.service.sections;
 
-import com.lombax.data.DiaryModel;
+import com.lombax.data.ReviewModel;
 import com.lombax.data.SectionModel;
 import com.lombax.data.UserModel;
 import com.lombax.data.game.GameModel;
 import com.lombax.service.game.GameService;
-import com.lombax.service.game.GameServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +54,16 @@ public class SectionsServiceImpl implements SectionsService {
 
         // Popular or Activity from friends
         if (user != null && user.getFollowing().size() > 2) {
-            PageImpl<DiaryModel> friendsPopular = gamesService.findPopularFriends(0, 15, userId);
+            PageImpl<ReviewModel> friendsPopular = gamesService.findPopularFriends(0, 15, userId);
             if (friendsPopular.getContent().size() > 2) {
                 result.add(new SectionModel("Popular from friends", friendsPopular.getContent(), "friends"));
             }
         } else {
-
+        // TODO
         }
+
+        // Videos/Trailers upcoming
+        // TODO
 
         // Collection Games
         PageImpl<GameModel> collections = gamesService.findCollectionGames(0, 10, genre);
@@ -74,7 +76,7 @@ public class SectionsServiceImpl implements SectionsService {
                 result.add(new SectionModel("Your Watchlist", watchList.getContent(), "watchlist"));
             }
         } else {
-
+            // TODO
         }
 
         //  Genre 1

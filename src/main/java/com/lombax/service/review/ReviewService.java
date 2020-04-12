@@ -13,8 +13,20 @@ public interface ReviewService {
 
     boolean delete(String id);
 
-    PageImpl<ReviewModel> findAll(int page, int size);
+    PageImpl<ReviewModel> getDiary(String userId, int page, int size);
 
-    PageImpl<ReviewModel> findAllByGame(String gameId, int page, int size);
+    PageImpl<ReviewModel> getReviews(int page, int size);
+
+    PageImpl<ReviewModel> getReviewByGame(String gameId, int page, int size);
+
+    PageImpl<ReviewModel> getFriendsReviewByGame(String gameId, String userId, int page, int size);
+
+    PageImpl<ReviewModel> getOwnReviewByGame(String gameId, String userId, int page, int size);
+
+    PageImpl<ReviewModel> getLikedReviewsByGame(String gameId, int page, int size);
+
+    boolean addLikeReview(String reviewId, String userId);
+
+    boolean removeLikeReview(String reviewId, String userId);
 
 }

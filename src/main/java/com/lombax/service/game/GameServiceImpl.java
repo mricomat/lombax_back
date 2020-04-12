@@ -1,6 +1,6 @@
 package com.lombax.service.game;
 
-import com.lombax.data.DiaryModel;
+import com.lombax.data.ReviewModel;
 import com.lombax.data.UserModel;
 import com.lombax.data.game.GameModel;
 import com.lombax.exception.EntityAlreadyExistsException;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -160,7 +159,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PageImpl<DiaryModel> findPopularFriends(int page, int size, String userId) {
+    public PageImpl<ReviewModel> findPopularFriends(int page, int size, String userId) {
         Query query = new Query();
         long count = mongoTemplate.count(query, GameModel.class);
 
@@ -182,7 +181,7 @@ public class GameServiceImpl implements GameService {
         query.addCriteria(Criteria.where("rating").gt(4));
         query.with(Sort.by(Sort.Direction.DESC, "date"));
 
-        List<DiaryModel> result = mongoTemplate.find(query, DiaryModel.class);
+        List<ReviewModel> result = mongoTemplate.find(query, ReviewModel.class);
         return new PageImpl<>(result, pageable, count);
     }
 

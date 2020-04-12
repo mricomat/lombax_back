@@ -19,8 +19,8 @@ public class SectionsController {
     @Autowired
     private SectionsService sectionsService;
 
-    @GetMapping(value = "/{userId}")
-    ResponseEntity<?> getSections(@PathVariable String userId, @RequestParam(value = "genre", defaultValue = "0") int genre) {
+    @GetMapping(value = "")
+    ResponseEntity<?> getSections(@RequestParam(value = "userId", defaultValue = "") String userId, @RequestParam(value = "genre", defaultValue = "0") int genre) {
         ArrayList<SectionModel> result = sectionsService.getSections(userId, genre);
         return ResponseEntity.ok(result);
     }

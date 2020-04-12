@@ -11,13 +11,23 @@ public class ReviewModel {
     @Id
     @NotNull
     private String id;
-    private String userId;
     private String gameId;
-    private String coverId;
-    private String date;
+    private String userId;
+
+    private String title;
+    private String dateGame;
+    private String image_id;
+
     private String rating;
-    private String summary;
-    private int likes;
+    private boolean like;
+    private boolean playing;
+    private boolean replayed;
+    private String date;
+    private boolean logged;
+
+    private long likesCount;
+
+    private String createdAt;
 
     public ReviewModel() {
 
@@ -31,10 +41,6 @@ public class ReviewModel {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
     public String getGameId() {
         return gameId;
     }
@@ -43,24 +49,36 @@ public class ReviewModel {
         this.gameId = gameId;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public String getCoverId() {
-        return coverId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCoverId(String coverId) {
-        this.coverId = coverId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateGame() {
+        return dateGame;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateGame(String dateGame) {
+        this.dateGame = dateGame;
+    }
+
+    public String getImage_id() {
+        return image_id;
+    }
+
+    public void setImage_id(String image_id) {
+        this.image_id = image_id;
     }
 
     public String getRating() {
@@ -71,19 +89,59 @@ public class ReviewModel {
         this.rating = rating;
     }
 
-    public String getSummary() {
-        return summary;
+    public boolean isLike() {
+        return like;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setLike(boolean like) {
+        this.like = like;
     }
 
-    public int getLikes() {
-        return likes;
+    public boolean isPlaying() {
+        return playing;
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public boolean isReplayed() {
+        return replayed;
+    }
+
+    public void setReplayed(boolean replayed) {
+        this.replayed = replayed;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public boolean isLogged() {
+        return logged;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createAt) {
+        this.createdAt = createAt;
+    }
+
+    public long getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(long likesCount) {
+        this.likesCount = likesCount;
     }
 }

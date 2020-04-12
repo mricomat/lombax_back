@@ -1,6 +1,6 @@
 package com.lombax.service.game;
 
-import com.lombax.data.DiaryModel;
+import com.lombax.data.ReviewModel;
 import com.lombax.data.game.GameModel;
 import org.springframework.data.domain.PageImpl;
 
@@ -25,7 +25,7 @@ public interface GameService {
 
     PageImpl<GameModel> findTopGames(int page, int size, int genre);
 
-    PageImpl<DiaryModel> findPopularFriends(int page, int size, String userId);
+    PageImpl<ReviewModel> findPopularFriends(int page, int size, String userId);
 
     PageImpl<GameModel> findActivityFriends(int page, int size);
 
