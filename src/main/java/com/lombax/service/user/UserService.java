@@ -16,8 +16,10 @@ public interface UserService {
 
     boolean isUsernameValid(String username);
 
-    Optional<UserModel> findByUsername(String username);
+    UserModel findByUsername(String username);
 
     Optional<UserModel> findByEmail(String email);
+
+    UserModel findById(String userId);
 
 }

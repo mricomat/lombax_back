@@ -1,57 +1,57 @@
 package com.lombax.data;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 
-@Document(collection = "users")
-public class UserModel {
+public class AuthResponse {
 
-    @Id
-    private String id;
-
-    @NotBlank
-    private String name;
-
-    @NotBlank
+    private String accessToken;
+    private String tokenType = "Bearer";
+    private String userId;
     private String username;
-
-    @NotBlank
     private String email;
 
-    @NotBlank
-    private String password;
-
     private String coverId;
-
     private String backgroundId;
 
     private ArrayList<String> interests = new ArrayList<>();
     private ArrayList<String> favorites = new ArrayList<>();
-    private ArrayList<String> ratings = new ArrayList<>();
     private ArrayList<String> followers = new ArrayList<>();
     private ArrayList<String> following = new ArrayList<>();
+    private ArrayList<String> ratings = new ArrayList<>();
     private ArrayList<String> watchList = new ArrayList<>();
 
-    public UserModel() {
+
+    private int gamesPlayed;
+    private int gamesPlaying;
+    private int reviews;
+    private int diary;
+
+    public AuthResponse(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getId() {
-        return id;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getName() {
-        return name;
+    public String getTokenType() {
+        return tokenType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -68,14 +68,6 @@ public class UserModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getCoverId() {
@@ -110,14 +102,6 @@ public class UserModel {
         this.favorites = favorites;
     }
 
-    public ArrayList<String> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(ArrayList<String> ratings) {
-        this.ratings = ratings;
-    }
-
     public ArrayList<String> getFollowers() {
         return followers;
     }
@@ -134,6 +118,37 @@ public class UserModel {
         this.following = following;
     }
 
+    public ArrayList<String> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(ArrayList<String> ratings) {
+        this.ratings = ratings;
+    }
+
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
+    }
+
+    public int getGamesPlaying() {
+        return gamesPlaying;
+    }
+
+    public void setGamesPlaying(int gamesPlaying) {
+        this.gamesPlaying = gamesPlaying;
+    }
+
+    public int getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(int reviews) {
+        this.reviews = reviews;
+    }
 
     public ArrayList<String> getWatchList() {
         return watchList;
@@ -143,7 +158,11 @@ public class UserModel {
         this.watchList = watchList;
     }
 
-    public boolean isValid() {
-        return id != null && username != null && name != null;
+    public int getDiary() {
+        return diary;
+    }
+
+    public void setDiary(int diary) {
+        this.diary = diary;
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/users")
@@ -26,7 +28,7 @@ public class UserController {
     private EmailService emailService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<?> registerUser(@RequestBody UserModel userModel) {
+    ResponseEntity<?> registerUser(@Valid @RequestBody UserModel userModel) {
         UserModel user = userService.save(userModel);
         final UriComponents uriComponents = ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/users/{id}").buildAndExpand(user.getId());

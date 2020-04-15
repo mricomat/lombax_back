@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
         this.mongoTemplate = mongoTemplate;
     }
 
+    @Autowired
+    PasswordEncoder mPasswordEncoder;
+
     @Override
     public UserModel save(UserModel user) {
         Query query = new Query();
@@ -42,6 +46,8 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setId(UUID.randomUUID().toString());
+        user.setPassword(mPasswordEncoder.encode(user.getPassword()));
+
         logger.info("User REGISTERED: " + user.getUsername());
         return mongoTemplate.save(user);
     }
@@ -104,8 +110,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserModel> findByUsername(String username) {
-        return null;
+    public UserModel findByUsername(String username) {
+        UserModel result = mongoTemplate.findOne(new Query(Criteria.where("username").is(username)), UserModel.class);
+        if (result == null) {
+            throw new EntityNotFoundException(UserModel.class, "user", username);
+        }
+        return result;
     }
 
     @Override
@@ -113,5 +123,13 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserModel findById(String userId) {
+        UserModel result = mongoTemplate.findOne(new Query(Criteria.where("id").is(userId)), UserModel.class);
+        if (result == null) {
+            throw new EntityNotFoundException(UserModel.class, "user", userId);
+        }
+        return result;
+    }
 
 }
