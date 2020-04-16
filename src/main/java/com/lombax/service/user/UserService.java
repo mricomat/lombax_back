@@ -1,6 +1,7 @@
 package com.lombax.service.user;
 
 import com.lombax.data.UserModel;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 

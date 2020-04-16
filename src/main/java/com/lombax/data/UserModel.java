@@ -38,6 +38,14 @@ public class UserModel {
     public UserModel() {
     }
 
+    public UserModel(@NotBlank String name, @NotBlank String username, @NotBlank String email, @NotBlank String password, ArrayList<String> interests) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.interests = interests;
+    }
+
     public String getId() {
         return id;
     }

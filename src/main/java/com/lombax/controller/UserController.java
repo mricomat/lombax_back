@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponents;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 
 @RestController
@@ -28,8 +30,10 @@ public class UserController {
     private EmailService emailService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<?> registerUser(@Valid @RequestBody UserModel userModel) {
-        UserModel user = userService.save(userModel);
+    ResponseEntity<?> registerUser(@RequestParam String name, @RequestParam String username, @RequestParam String email, @RequestParam String password,
+                                   @RequestParam ArrayList<String> interests) {
+
+        UserModel user = userService.save(new UserModel(name, username, password, email, interests));
         final UriComponents uriComponents = ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/users/{id}").buildAndExpand(user.getId());
         return ResponseEntity.created(uriComponents.toUri()).body(user);

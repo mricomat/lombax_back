@@ -3,6 +3,7 @@ package com.lombax.service.user;
 import com.lombax.data.UserModel;
 import com.lombax.exception.EntityAlreadyExistsException;
 import com.lombax.exception.EntityNotFoundException;
+import com.lombax.service.avatar.AvatarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder mPasswordEncoder;
+
+    @Autowired
+    AvatarService avatarService;
 
     @Override
     public UserModel save(UserModel user) {
