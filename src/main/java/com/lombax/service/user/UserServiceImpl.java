@@ -104,14 +104,14 @@ public class UserServiceImpl implements UserService {
     public boolean isEmailValid(String email) {
         Query query = new Query();
         query.addCriteria(Criteria.where("email").is(email));
-        return mongoTemplate.exists(query, UserModel.class);
+        return !mongoTemplate.exists(query, UserModel.class);
     }
 
     @Override
     public boolean isUsernameValid(String username) {
         Query query = new Query();
         query.addCriteria(Criteria.where("username").is(username));
-        return mongoTemplate.exists(query, UserModel.class);
+        return !mongoTemplate.exists(query, UserModel.class);
     }
 
     @Override
