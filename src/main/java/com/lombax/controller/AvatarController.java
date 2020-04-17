@@ -1,30 +1,17 @@
 package com.lombax.controller;
 
-import com.lombax.data.game.GameModel;
 import com.lombax.service.avatar.AvatarService;
-import com.lombax.service.game.GameService;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.gridfs.GridFSBucket;
-import com.mongodb.client.gridfs.GridFSBuckets;
-import com.mongodb.client.gridfs.model.GridFSUploadOptions;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
-import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.OutputStream;
 
 @RestController
 @RequestMapping("/avatar")
