@@ -41,14 +41,20 @@ public class AvatarController {
     }
 
     @PostMapping("/save/cover")
-    ResponseEntity<?> saveImage(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId) throws IOException {
+    ResponseEntity<?> saveImage(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId)  {
         ObjectId objectId = avatarService.saveCover(image, userId);
         return ResponseEntity.ok(objectId);
     }
 
     @PostMapping("/save/background")
-    ResponseEntity<?> saveBackground(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId) throws IOException {
+    ResponseEntity<?> saveBackground(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId){
         ObjectId objectId = avatarService.saveBackground(image, userId);
+        return ResponseEntity.ok(objectId);
+    }
+
+    @PostMapping("/save/default")
+    ResponseEntity<?> saveBackground(@RequestParam("image") MultipartFile image){
+        ObjectId objectId = avatarService.save(image);
         return ResponseEntity.ok(objectId);
     }
 }

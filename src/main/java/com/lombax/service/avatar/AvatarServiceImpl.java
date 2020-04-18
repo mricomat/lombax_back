@@ -96,6 +96,31 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
+    public ObjectId save(MultipartFile image) {
+
+        ObjectId fileId = null;
+
+        MongoDatabase avatarDB = mongoTemplate.getMongoDbFactory().getDb("lombax_avatars");
+        GridFSBucket gridBucket = GridFSBuckets.create(avatarDB);
+
+        try {
+            InputStream inStream = image.getInputStream();
+
+            GridFSUploadOptions uploadOptions = new GridFSUploadOptions().metadata(new Document("type", "image").append("content_type", "image/jpg"));
+            fileId = gridBucket.uploadFromStream(image.getName(), inStream, uploadOptions);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (fileId != null) {
+            AvatarModel avatar = new AvatarModel(fileId, "");
+            mongoTemplate.save(avatar, "avatars");
+        }
+
+        return fileId;
+    }
+
+    @Override
     public ObjectId saveBackground(MultipartFile image, String userId) {
         return saveImage(image, userId, "backgroundId");
     }

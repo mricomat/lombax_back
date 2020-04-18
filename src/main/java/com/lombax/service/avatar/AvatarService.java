@@ -13,6 +13,8 @@ public interface AvatarService {
 
     ObjectId saveCover(MultipartFile image, String userId);
 
+    ObjectId save(MultipartFile image);
+
     ObjectId saveBackground(MultipartFile image, String userId);
 
     byte[] retrieveImage(String id);
