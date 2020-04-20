@@ -30,10 +30,8 @@ public class UserController {
     private EmailService emailService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/register", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<?> registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password,
-                                   @RequestParam ArrayList<String> interests) {
-
-        UserModel user = userService.save(new UserModel(username, password, email, interests));
+    ResponseEntity<?> registerUser(@RequestBody UserModel userModel) {
+        UserModel user = userService.save(userModel);
         final UriComponents uriComponents = ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/users/{id}").buildAndExpand(user.getId());
         return ResponseEntity.created(uriComponents.toUri()).body(user);
