@@ -53,7 +53,7 @@ public class AvatarController {
     }
 
     @PostMapping("/save/default")
-    ResponseEntity<?> saveBackground(@RequestParam("image") MultipartFile image){
+    ResponseEntity<?> saveBackground(@RequestBody MultipartFile image){
         ObjectId objectId = avatarService.save(image);
         return ResponseEntity.ok(objectId);
     }
