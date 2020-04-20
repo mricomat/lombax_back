@@ -49,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/isUserValid", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(method = RequestMethod.POST, value = "/isUsernameValid", produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<?> isUsernameValid(@RequestBody String username) {
         boolean result = userService.isUsernameValid(username);
         return ResponseEntity.ok(result);
