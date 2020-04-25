@@ -1,11 +1,15 @@
 package com.lombax.controller;
 
+import com.lombax.data.FavoriteModel;
+import com.lombax.data.ReviewModel;
 import com.lombax.data.game.GameModel;
+import com.lombax.service.favorite.FavoriteService;
 import com.lombax.service.game.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +25,9 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private FavoriteService favoriteService;
 
     @GetMapping(value = "/all")
     ResponseEntity<?> getAllGames(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -77,6 +84,12 @@ public class GameController {
     ResponseEntity<?> getWatchList(@PathVariable String userId, @RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "size", defaultValue = "15") int size) {
         PageImpl<GameModel> result = gameService.findYourWatchlist(page, size, userId);
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/favorite/register", produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<?> saveFavorite(@RequestParam String userId, @RequestParam String gameId) {
+        FavoriteModel result = favoriteService.save(userId, gameId);
         return ResponseEntity.ok(result);
     }
 }

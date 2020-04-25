@@ -18,11 +18,12 @@ public class ReviewModel {
     private String dateGame;
     private String image_id;
 
+    private String summary;
     private String rating;
     private boolean like;
     private boolean playing;
     private boolean replayed;
-    private String date;
+    private long date;
     private boolean logged;
 
     private long likesCount;
@@ -113,11 +114,11 @@ public class ReviewModel {
         this.replayed = replayed;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -143,5 +144,13 @@ public class ReviewModel {
 
     public void setLikesCount(long likesCount) {
         this.likesCount = likesCount;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

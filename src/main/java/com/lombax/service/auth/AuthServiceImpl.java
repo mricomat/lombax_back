@@ -3,12 +3,16 @@ package com.lombax.service.auth;
 import com.lombax.data.AuthModel;
 import com.lombax.data.AuthResponse;
 import com.lombax.data.UserModel;
+import com.lombax.data.game.GameModel;
 import com.lombax.exception.EntityNotFoundException;
 import com.lombax.security.JwtTokenProvider;
+import com.lombax.service.game.GameService;
+import com.lombax.service.review.ReviewService;
 import com.lombax.service.user.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,11 +22,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
     AuthenticationManager mAuthenticationManager;
+
+    @Autowired
+    GameService gameService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @Autowired
     JwtTokenProvider mTokenProvider;
@@ -65,7 +78,10 @@ public class AuthServiceImpl implements AuthService {
         authResponse.setCoverId(user.getUsername());
         authResponse.setBackgroundId(user.getUsername());
         authResponse.setInterests(user.getInterests());
-        authResponse.setFavorites(user.getFavorites());
+
+        authResponse.setFavorites(gameService.findFavoriteGames(0, 15, user.getId()).getContent());
+        authResponse.setReviews(reviewService.getDiaryByUser(user.getId(), 0, 15).getContent());
+
         authResponse.setRatings(user.getRatings());
         authResponse.setFollowers(user.getFollowers());
         authResponse.setFollowing(user.getFollowing());
@@ -74,8 +90,7 @@ public class AuthServiceImpl implements AuthService {
         // TODO queries
         authResponse.setGamesPlayed(0);
         authResponse.setGamesPlaying(0);
-        authResponse.setReviews(0);
-        authResponse.setDiary(0);
+
 
 
         return authResponse;

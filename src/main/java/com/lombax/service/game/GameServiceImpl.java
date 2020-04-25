@@ -1,5 +1,6 @@
 package com.lombax.service.game;
 
+import com.lombax.data.FavoriteModel;
 import com.lombax.data.ReviewModel;
 import com.lombax.data.UserModel;
 import com.lombax.data.game.GameModel;
@@ -18,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -89,7 +91,7 @@ public class GameServiceImpl implements GameService {
         Pageable pageable = PageRequest.of(0, 10);
         query.with(pageable);
 
-        if(genre != 0) {
+        if (genre != 0) {
             query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
         }
 
@@ -97,7 +99,7 @@ public class GameServiceImpl implements GameService {
 
         List<GameModel> result = mongoTemplate.find(query, GameModel.class);
 
-        logger.info("Game findMainGames: " );
+        logger.info("Game findMainGames: ");
 
         return result;
     }
@@ -115,7 +117,7 @@ public class GameServiceImpl implements GameService {
         query.addCriteria(Criteria.where("themes.id").ne("42"));
         query.with(Sort.by(Sort.Direction.DESC, "popularity"));
 
-        if(genre != 0) {
+        if (genre != 0) {
             query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
         }
 
@@ -139,7 +141,7 @@ public class GameServiceImpl implements GameService {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, -360);//2 weeks
 
-        if(genre != 0) {
+        if (genre != 0) {
             query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
         }
 
@@ -198,7 +200,7 @@ public class GameServiceImpl implements GameService {
         Pageable pageable = PageRequest.of(page, size);
         query.with(pageable);
 
-        if(genre != 0) {
+        if (genre != 0) {
             query.addCriteria(Criteria.where("genres").elemMatch(Criteria.where("id").is(genre)));
         }
 
@@ -255,6 +257,34 @@ public class GameServiceImpl implements GameService {
         return new PageImpl<>(result, pageable, count);
     }
 
+    @Override
+    public PageImpl<GameModel> findFavoriteGames(int page, int size, String userId) {
+        Query query = new Query();
+        long count = mongoTemplate.count(query, FavoriteModel.class);
+
+        Pageable pageable = PageRequest.of(page, size);
+        query.with(pageable);
+
+        Query userQuery = new Query();
+        userQuery.addCriteria(Criteria.where("id").is(userId));
+
+        if (!mongoTemplate.exists(query, UserModel.class)) {
+            throw new EntityNotFoundException(UserModel.class, "user", userId);
+        }
+
+        logger.info("Favorites findFavoriteByUser: " + userId);
+
+        query.addCriteria(Criteria.where("userId").is(userId));
+        query.with(Sort.by(Sort.Direction.DESC, "date"));
+
+        List<FavoriteModel> favoriteResult = mongoTemplate.find(query, FavoriteModel.class);
+        if (favoriteResult.size() != 0) {
+            List<GameModel> gamesResult = findByIds(favoriteResult.stream().map(FavoriteModel::getGameId).collect(Collectors.toList()));
+            return new PageImpl<>(gamesResult, pageable, count);
+        } else {
+            return new PageImpl<>(new ArrayList<>(), pageable, count);
+        }
+    }
 
     @Override
     public PageImpl<GameModel> findAllById(String id, int page, int size) {
@@ -262,7 +292,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<GameModel> findByIds(ArrayList<String> games) {
+    public List<GameModel> findByIds(List<String> games) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").in(games));
         query.with(Sort.by(Sort.Direction.DESC, "popularity"));

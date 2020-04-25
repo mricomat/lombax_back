@@ -45,7 +45,7 @@ public class ReviewController {
     @GetMapping(value = "/diary/{id}")
     ResponseEntity<?> getDiary(@PathVariable String id, @RequestParam(value = "page", defaultValue = "0") int page,
                                @RequestParam(value = "size", defaultValue = "15") int size) {
-        PageImpl<ReviewModel> result = reviewService.getDiary(id, page, size);
+        PageImpl<ReviewModel> result = reviewService.getDiaryByUser(id, page, size);
         return ResponseEntity.ok(result);
     }
 

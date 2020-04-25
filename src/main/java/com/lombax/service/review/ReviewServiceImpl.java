@@ -93,9 +93,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public PageImpl<ReviewModel> getDiary(String userId, int page, int size) {
+    public PageImpl<ReviewModel> getDiaryByUser(String userId, int page, int size) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("userId").is(userId).and("logged").is(true));
         long count = mongoTemplate.count(query, ReviewModel.class);
         Pageable pageable = PageRequest.of(page, size);
         query.with(pageable);

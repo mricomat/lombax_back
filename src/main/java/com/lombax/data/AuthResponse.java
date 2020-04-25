@@ -1,6 +1,9 @@
 package com.lombax.data;
 
+import com.lombax.data.game.GameModel;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class AuthResponse {
 
@@ -13,18 +16,19 @@ public class AuthResponse {
     private String coverId;
     private String backgroundId;
 
+
+    private List<GameModel> favorites = new ArrayList<>();
+    private List<ReviewModel> reviews = new ArrayList<>();
+
     private ArrayList<String> interests = new ArrayList<>();
-    private ArrayList<String> favorites = new ArrayList<>();
     private ArrayList<String> followers = new ArrayList<>();
     private ArrayList<String> following = new ArrayList<>();
     private ArrayList<String> ratings = new ArrayList<>();
     private ArrayList<String> watchList = new ArrayList<>();
 
-
     private int gamesPlayed;
     private int gamesPlaying;
-    private int reviews;
-    private int diary;
+
 
     public AuthResponse(String accessToken) {
         this.accessToken = accessToken;
@@ -86,20 +90,28 @@ public class AuthResponse {
         this.backgroundId = backgroundId;
     }
 
+    public List<GameModel> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<GameModel> favorites) {
+        this.favorites = favorites;
+    }
+
+    public List<ReviewModel> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewModel> reviews) {
+        this.reviews = reviews;
+    }
+
     public ArrayList<String> getInterests() {
         return interests;
     }
 
     public void setInterests(ArrayList<String> interests) {
         this.interests = interests;
-    }
-
-    public ArrayList<String> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(ArrayList<String> favorites) {
-        this.favorites = favorites;
     }
 
     public ArrayList<String> getFollowers() {
@@ -126,6 +138,14 @@ public class AuthResponse {
         this.ratings = ratings;
     }
 
+    public ArrayList<String> getWatchList() {
+        return watchList;
+    }
+
+    public void setWatchList(ArrayList<String> watchList) {
+        this.watchList = watchList;
+    }
+
     public int getGamesPlayed() {
         return gamesPlayed;
     }
@@ -140,29 +160,5 @@ public class AuthResponse {
 
     public void setGamesPlaying(int gamesPlaying) {
         this.gamesPlaying = gamesPlaying;
-    }
-
-    public int getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(int reviews) {
-        this.reviews = reviews;
-    }
-
-    public ArrayList<String> getWatchList() {
-        return watchList;
-    }
-
-    public void setWatchList(ArrayList<String> watchList) {
-        this.watchList = watchList;
-    }
-
-    public int getDiary() {
-        return diary;
-    }
-
-    public void setDiary(int diary) {
-        this.diary = diary;
     }
 }

@@ -13,7 +13,7 @@ public interface ReviewService {
 
     boolean delete(String id);
 
-    PageImpl<ReviewModel> getDiary(String userId, int page, int size);
+    PageImpl<ReviewModel> getDiaryByUser(String userId, int page, int size);
 
     PageImpl<ReviewModel> getReviews(int page, int size);
 

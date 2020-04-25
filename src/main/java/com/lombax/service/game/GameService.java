@@ -19,7 +19,7 @@ public interface GameService {
 
     PageImpl<GameModel> findAllById(String id, int page, int size);
 
-    List<GameModel> findByIds(ArrayList<String> games);
+    List<GameModel> findByIds(List<String> games);
 
     List<GameModel> findMainGames(int genre);
 
@@ -36,4 +36,6 @@ public interface GameService {
     PageImpl<GameModel> findGenreGames(int page, int size, List<Integer> genres);
 
     PageImpl<GameModel> findYourWatchlist(int page, int size, String userId);
+
+    PageImpl<GameModel> findFavoriteGames(int page, int size, String userId);
 }
