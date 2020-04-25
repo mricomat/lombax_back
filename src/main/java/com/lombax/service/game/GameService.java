@@ -19,6 +19,8 @@ public interface GameService {
 
     PageImpl<GameModel> findAllById(String id, int page, int size);
 
+    List<GameModel> findByIds(ArrayList<String> games);
+
     List<GameModel> findMainGames(int genre);
 
     PageImpl<GameModel> findPopularGames(int page, int size, int genre);

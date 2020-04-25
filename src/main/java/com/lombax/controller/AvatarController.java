@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -41,20 +44,20 @@ public class AvatarController {
     }
 
     @PostMapping("/save/cover")
-    ResponseEntity<?> saveImage(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId)  {
+    ResponseEntity<?> saveImage(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId) {
         ObjectId objectId = avatarService.saveCover(image, userId);
         return ResponseEntity.ok(objectId);
     }
 
     @PostMapping("/save/background")
-    ResponseEntity<?> saveBackground(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId){
+    ResponseEntity<?> saveBackground(@RequestParam("image") MultipartFile image, @RequestParam("userId") String userId) {
         ObjectId objectId = avatarService.saveBackground(image, userId);
         return ResponseEntity.ok(objectId);
     }
 
-    @PostMapping("/save/default")
-    ResponseEntity<?> saveBackground(@RequestBody MultipartFile image){
-        ObjectId objectId = avatarService.save(image);
+    @PostMapping(value = "/save/default", consumes = {"multipart/form-data"})
+    ResponseEntity<?> saveBackground(@RequestParam(name = "file") @Valid @NotNull @NotBlank MultipartFile file) {
+        ObjectId objectId = avatarService.save(file);
         return ResponseEntity.ok(objectId);
     }
 }

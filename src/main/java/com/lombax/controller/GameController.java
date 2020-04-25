@@ -67,6 +67,12 @@ public class GameController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping(value = "/ids")
+    ResponseEntity<?> getGamesByIds( @RequestParam(value = "games") ArrayList<String> games) {
+        List<GameModel> result = gameService.findByIds(games);
+        return ResponseEntity.ok(result);
+    }
+
     @GetMapping(value = "/watchList/{userId}")
     ResponseEntity<?> getWatchList(@PathVariable String userId, @RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "size", defaultValue = "15") int size) {

@@ -261,6 +261,14 @@ public class GameServiceImpl implements GameService {
         return null;
     }
 
+    @Override
+    public List<GameModel> findByIds(ArrayList<String> games) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").in(games));
+        query.with(Sort.by(Sort.Direction.DESC, "popularity"));
+        return mongoTemplate.find(query, GameModel.class);
+    }
+
     private Query mountQuery(Pageable pageable, ArrayList<String> includes, ArrayList<String> excludes) {
         Query query = new Query();
 
