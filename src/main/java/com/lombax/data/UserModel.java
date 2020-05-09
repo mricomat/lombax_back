@@ -159,6 +159,6 @@ public class UserModel {
     }
 
     public boolean isValid() {
-        return id != null && username != null && name != null;
+        return id != null && username != null;
     }
 }
