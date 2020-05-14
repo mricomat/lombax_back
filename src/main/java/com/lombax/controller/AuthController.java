@@ -33,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/autoLogin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody String userId, HttpServletRequest request) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestParam String userId, HttpServletRequest request) {
         AuthResponse authResponse = authService.authenticateToken(userId, request);
         return authResponse != null ? ResponseEntity.ok(authResponse) : new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
