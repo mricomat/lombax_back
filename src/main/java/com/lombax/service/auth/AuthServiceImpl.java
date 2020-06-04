@@ -95,8 +95,8 @@ public class AuthServiceImpl implements AuthService {
         authResponse.setUserId(user.getId());
         authResponse.setEmail(user.getEmail());
         authResponse.setUsername(user.getUsername());
-        authResponse.setCoverId(user.getUsername());
-        authResponse.setBackgroundId(user.getUsername());
+        authResponse.setCoverId(user.getCoverId());
+        authResponse.setBackgroundId(user.getBackgroundId());
         authResponse.setInterests(user.getInterests());
 
         authResponse.setFavorites(gameService.findFavoriteGames(0, 15, user.getId()).getContent());
