@@ -45,10 +45,10 @@ router.put(
           user.setPassword(req.body.user.password);
         }
         if (typeof req.body.user.image !== "undefined") {
-          user.image = req.body.user.image;
+          user.coverId = req.body.user.coverId;
         }
         if (typeof req.body.user.bio !== "undefined") {
-          user.bio = req.body.user.bio;
+          user.summary = req.body.user.summary;
         }
 
         return user.save().then(() => {
@@ -65,11 +65,14 @@ router.put(
 router.post("/users", (req: Request, res: Response, next: NextFunction) => {
   const user: IUserModel = new User();
 
-  user.username = req.body.user.username;
-  user.email = req.body.user.email;
-  user.setPassword(req.body.user.password);
-  user.bio = "";
-  user.image = "";
+  user.name = req.body.name;
+  user.username = req.body.username;
+  user.email = req.body.email;
+  user.setPassword(req.body.password);
+  user.summary = req.body.summary;
+  user.coverId = req.body.coverId;
+  user.backgroundId = req.body.backgroundId;
+  user.interests = req.body.interests;
 
   return user
     .save()

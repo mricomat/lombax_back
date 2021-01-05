@@ -8,8 +8,8 @@ passport.use(
   new LocalStrategy(
     {
       // Strategy is based on username & password.  Substitute email for username.
-      usernameField: "user[email]",
-      passwordField: "user[password]",
+      usernameField: "email",
+      passwordField: "password",
     },
 
     (email, password, done) => {
