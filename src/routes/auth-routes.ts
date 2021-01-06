@@ -19,8 +19,6 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
 
 
   passport.authenticate("local", { session: false }, (err, user, info) => {
-    console.log(req.body);
-
     if (err) {
       return next(err);
     }
@@ -34,4 +32,4 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
   })(req, res, next);
 });
 
-export const AuthRouter: Router = router;
+export const AuthRoutes: Router = router;
