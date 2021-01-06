@@ -102,6 +102,7 @@ router.post(
         return next(err);
       }
 
+   
       if (user) {
         user.token = user.generateJWT();
         return res.json({ user: user.toAuthJSON() });

@@ -1,4 +1,5 @@
-import { Document, Model, model, Schema } from "mongoose";
+import { Document, Model, model, PaginateModel, Schema } from "mongoose";
+import mongoosePaginate from "mongoose-paginate";
 import { IReview } from "../../interfaces/diary-interface";
 
 export default interface IReviewModel extends IReview, Document {}
@@ -6,8 +7,9 @@ export default interface IReviewModel extends IReview, Document {}
 // ISSUE: Own every parameter and any missing dependencies
 const ReviewSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
+      ref: "User",
       unique: false,
       required: [true, "can't be blank"],
       index: true,
@@ -50,7 +52,9 @@ const ReviewSchema = new Schema(
   { timestamps: true }
 );
 
-export const Review: Model<IReviewModel> = model<IReviewModel>(
+ReviewSchema.plugin(mongoosePaginate);
+
+export const Review: PaginateModel<IReviewModel> = model<IReviewModel>(
   "Review",
   ReviewSchema
 );

@@ -16,7 +16,7 @@ router.post(
   (req: Request, res: Response, next: NextFunction) => {
     const review: IReviewModel = new Review();
 
-    review.userId = req.body.userId;
+    review.user = req.body.userId;
     review.game.id = req.body.game.id;
     review.game.imageId = req.body.game.cover.image_id;
     review.game.releaseDate = req.body.game.first_release_date;
@@ -30,9 +30,12 @@ router.post(
       .save()
       .then(() => {
         const diary: IDiaryModel = new Diary();
-        diary.userId = review.userId;
-        diary.gameId = review.game.id;
-        diary.itemId = review._id;
+        diary.user = review.user;
+        diary.game = {
+          id: review.game.id,
+          imageId: review.game.imageId,
+        };
+        diary.review = review._id;
         diary.type = DiaryType.Review;
         diary.action = DiaryAction.Add;
 

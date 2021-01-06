@@ -9,13 +9,7 @@ export interface IUser {
   backgroundId: string;
   interests: IGenre[];
   following: User[];
-}
-
-export interface IProfile {
-  username: string;
-  bio: string;
-  image: string;
-  following: boolean;
+  followers: User[];
 }
 
 export enum GenreType {

@@ -1,9 +1,16 @@
-import { Document, Model, model, Schema } from "mongoose";
-import { IUser } from "../../interfaces/user-interface";
-import * as jwt from "jsonwebtoken";
 import * as crypto from "crypto";
-import { JWT_SECRET } from "../../utilities/secrets";
+import { NextFunction } from "express";
+import * as jwt from "jsonwebtoken";
+import { Document, Model, model, Schema } from "mongoose";
 import mongooseUniqueValidator = require("mongoose-unique-validator");
+
+import { Review } from "../../database/models/review.model";
+import { Diary } from "../../database/models/diary.model";
+import { GameFeel } from "../../database/models/gameFeel.model";
+import { IUser } from "../../interfaces/user-interface";
+import { JWT_SECRET } from "../../utilities/secrets";
+import { DiaryAction, IReview } from "../../interfaces/diary-interface";
+import { result } from "lodash";
 
 export default interface IUserModel extends IUser, Document {
   token?: string;
@@ -20,6 +27,11 @@ export default interface IUserModel extends IUser, Document {
   favorite(id: string): Promise<IUser>;
   unfavorite(id: string): Promise<IUser>;
   isFavorite(id: string): boolean;
+  getReviewsCount(id: string, next: NextFunction): number;
+  getGamesPlayedCount(id: string, next: NextFunction): number;
+  getReviews(id: string, next: NextFunction): IReview[];
+  getAditionalInfo(id: string, next: NextFunction): any;
+  getRecentActivity(id: string, next: NextFunction): any;
 }
 
 // ISSUE: Own every parameter and any missing dependencies
@@ -77,6 +89,12 @@ const UserSchema = new Schema(
         ref: "User",
       },
     ],
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     hash: {
       type: Schema.Types.String,
     },
@@ -120,11 +138,20 @@ UserSchema.methods.generateJWT = function (): string {
 
 UserSchema.methods.toAuthJSON = function (): any {
   return {
+    id: this._id,
+    name: this.name,
     username: this.username,
     email: this.email,
     token: this.generateJWT(),
-    bio: this.bio,
-    image: this.image,
+    summary: this.summary,
+    coverId: this.coverId,
+    backgroundId: this.backgroundId,
+    interests: this.interests,
+    favorites: this.favorites,
+    following: this.following,
+    reviewsCount: this.reviewsCount,
+    gamesPlayed: this.gamesPlayed,
+    diary: this.diary,
   };
 };
 
@@ -174,6 +201,60 @@ UserSchema.methods.isFollowing = function (id: string) {
   return this.following.some(function (followId: string) {
     return followId.toString() === id.toString();
   });
+};
+
+UserSchema.methods.getReviewsCount = (id: string, next: NextFunction) => {
+  return Review.paginate({ userId: id }, { offset: 0, limit: 0 })
+    .then((result) => {
+      return result.total;
+    })
+    .catch(next);
+};
+
+UserSchema.methods.getReviews = (id: string, next: NextFunction) => {
+  return Review.find({ userId: id })
+    .then((result) => {
+      return result;
+    })
+    .catch(next);
+};
+
+UserSchema.methods.getGamesPlayedCount = (id: string, next: NextFunction) => {
+  return Review.paginate({ userId: id }, { offset: 0, limit: 0 })
+    .then((result) => {
+      return result.total;
+    })
+    .catch(next);
+};
+
+UserSchema.methods.getAditionalInfo = (id: string, next: NextFunction) => {
+  return Review.find({ userId: id })
+    .then((result) => {
+      const gamesIds = result.map((item) => item.game.id);
+      return GameFeel.find({
+        userId: id,
+        played: true,
+        gameId: { $nin: [...gamesIds] },
+      })
+        .then((res) => {
+          return {
+            reviewsCount: result.length,
+            gamesPlayed: res.length + result.length,
+          };
+        })
+        .catch(next);
+    })
+    .catch(next);
+};
+
+UserSchema.methods.getRecentActivity = (id: any, next: NextFunction) => {
+  return Diary.find({ user: id, action: { $ne: DiaryAction.Remove } })
+    .populate("review", { rating: 1, "game.id": 1 })
+    .populate("gameFeel")
+    .then((result) => {
+      return result;
+    })
+    .catch(next);
 };
 
 export const User: Model<IUserModel> = model<IUserModel>("User", UserSchema);

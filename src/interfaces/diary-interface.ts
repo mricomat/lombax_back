@@ -1,9 +1,11 @@
 import { IGame } from "./game-interface";
+import { IUser } from "./user-interface";
 
 export interface IDiary {
-  gameId: number;
-  userId: string;
-  itemId: string;
+  game: IGame;
+  user: IUser;
+  review: IReview;
+  gameFeel: IGameFeel;
   type: DiaryType;
   action: DiaryAction;
 }
@@ -22,7 +24,7 @@ export enum DiaryAction {
 }
 
 export interface IReview {
-  userId: string;
+  user: IUser;
   game: IGame;
   summary?: string;
   rating?: string;
@@ -31,7 +33,7 @@ export interface IReview {
 }
 
 export interface IGameFeel {
-  userId: string;
+  user: IUser;
   game: IGame;
   played?: boolean;
   like?: boolean;
