@@ -62,9 +62,22 @@ const UserSchema = new Schema(
     },
     interests: [
       {
-        typeId: Schema.Types.ObjectId,
-        type: Schema.Types.String,
-        ref: "Genre",
+        _id: false,
+        id: {
+          type: Schema.Types.Number,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
+        type: {
+          type: Schema.Types.String,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
+        name: {
+          type: Schema.Types.String,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
       },
     ],
     favorites: [

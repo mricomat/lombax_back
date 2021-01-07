@@ -24,7 +24,7 @@ export enum GenreType {
 }
 
 export interface IGenre {
-  id: string;
+  id: number;
   type: GenreType;
   name: string;
 }

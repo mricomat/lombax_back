@@ -22,10 +22,10 @@ passport_1.default.use(new LocalStrategy({
     })
         .then((user) => {
         if (!user) {
-            return done(null, false, { message: "Incorrect email." });
+            return done(null, false, { message: "Incorrect credentials" });
         }
         if (!user.validPassword(password)) {
-            return done(null, false, { message: "Incorrect password." });
+            return done(null, false, { message: "Incorrect credentials" });
         }
         return done(null, user);
     })

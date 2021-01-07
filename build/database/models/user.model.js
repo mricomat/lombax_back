@@ -62,9 +62,25 @@ const UserSchema = new mongoose_1.Schema({
     },
     interests: [
         {
-            typeId: mongoose_1.Schema.Types.ObjectId,
-            type: mongoose_1.Schema.Types.String,
-            ref: "Genre",
+            _id: false,
+            id: {
+                type: mongoose_1.Schema.Types.Number,
+                unique: false,
+                _id: false,
+                required: [true, "can't be blank"],
+            },
+            type: {
+                type: mongoose_1.Schema.Types.String,
+                unique: false,
+                _id: false,
+                required: [true, "can't be blank"],
+            },
+            name: {
+                type: mongoose_1.Schema.Types.String,
+                unique: false,
+                _id: false,
+                required: [true, "can't be blank"],
+            },
         },
     ],
     favorites: [
