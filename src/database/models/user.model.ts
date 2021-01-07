@@ -227,14 +227,4 @@ UserSchema.methods.addDiary = function (id: string) {
   return this.save();
 };
 
-// UserSchema.methods.getRecentActivity = (id: any, next: NextFunction) => {
-//   return Diary.find({ user: id, action: { $ne: DiaryAction.Remove } })
-//     .populate("review", { rating: 1, "game.id": 1 })
-//     .populate("gameFeel")
-//     .then((result) => {
-//       return result;
-//     })
-//     .catch(next);
-// };
-
 export const User: Model<IUserModel> = model<IUserModel>("User", UserSchema);

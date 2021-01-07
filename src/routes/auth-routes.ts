@@ -42,13 +42,23 @@ router.post(
     if (!resToken) {
       return res.status(422).json("info");
     }
-    const user: IUserModel = new User();
-    user.username = resToken.username;
-    user._id = resToken.id;
-    user.token = user.generateJWT();
+    User.findById(resToken.id)
+      .populate({
+        path: "diary",
+        populate: {
+          path: "review",
+          select: "game.imageId rating",
+        },
+      })
+      .then((user: IUserModel) => {
+        if (!user) {
+          return res.status(404).json({ errors: "User doesn't found" });
+        }
+        user.token = user.generateJWT();
 
-    console.log(resToken);
-    return res.json({ user: resToken });
+        return res.json({ user: user.toAuthJSON() });
+      })
+      .catch(next);
   }
 );
 
