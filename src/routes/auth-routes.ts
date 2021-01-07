@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import passport from "passport";
+import { authentication, validateToken } from "../utilities/authentication";
+import IUserModel, { User } from "../database/models/user.model";
 
 const router: Router = Router();
 
@@ -18,16 +20,12 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate(
     "local",
     { session: false },
-    async (err, user, info) => {
+    async (err, user: IUserModel, info) => {
       if (err) {
         return next(err);
       }
       if (user) {
         user.token = user.generateJWT();
-        const addInfo = await user.getAditionalInfo(user._id, next);
-        user.reviewsCount = addInfo.reviewsCount;
-        user.gamesPlayed = addInfo.gamesPlayed;
-        user.diary = await user.getRecentActivity(user._id, next);
         return res.json({ user: user.toAuthJSON() });
       } else {
         return res.status(422).json(info);
@@ -35,5 +33,29 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
     }
   )(req, res, next);
 });
+
+router.post(
+  "/refreshToken",
+  authentication.required,
+  (req: Request, res: Response, next: NextFunction) => {
+    const resToken = validateToken(req);
+    if (!resToken) {
+      return res.status(422).json("info");
+    }
+    const user: IUserModel = new User();
+    user.username = resToken.username;
+    user._id = resToken.id;
+    user.token = user.generateJWT();
+
+    console.log(resToken);
+    return res.json({ user: resToken });
+  }
+);
+
+// const buildUser = (user: IUserModel): IUserModel => {
+//   user.token = user.generateJWT();
+//   const addInfo = await user.getAditionalInfo(user._id, next);
+
+// };
 
 export const AuthRoutes: Router = router;

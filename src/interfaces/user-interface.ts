@@ -1,4 +1,7 @@
 import User from "../database/models/user.model";
+import Review from "../database/models/review.model";
+import GameFeel from "../database/models/gameFeel.model";
+import Diary from "../database/models/diary.model";
 
 export interface IUser {
   name: string;
@@ -10,6 +13,9 @@ export interface IUser {
   interests: IGenre[];
   following: User[];
   followers: User[];
+  reviews: Review[];
+  gamesFeels: GameFeel[];
+  diary: Diary[];
 }
 
 export enum GenreType {

@@ -15,10 +15,16 @@ const GameFeelSchema = new Schema(
       index: true,
     },
     game: {
-      type: Schema.Types.Number,
-      unique: false,
-      required: [true, "can't be blank"],
-      index: true,
+      id: {
+        type: Schema.Types.Number,
+        unique: false,
+        required: [true, "can't be blank"],
+      },
+      imageId: {
+        type: Schema.Types.String,
+        unique: false,
+        required: [true, "can't be blank"],
+      },
     },
     played: {
       type: Schema.Types.Boolean,

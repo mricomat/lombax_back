@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
+import IUserModel, { User } from "../database/models/user.model";
 
 import IDiaryModel, { Diary } from "../database/models/diary.model";
 import IReviewModel, { Review } from "../database/models/review.model";
@@ -13,8 +14,14 @@ const router: Router = Router();
 router.post(
   "/review",
   authentication.required,
-  (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const review: IReviewModel = new Review();
+
+    const user: IUserModel = await User.findById(req.body.userId);
+
+    if (!user) {
+      next("Incorrect parameters");
+    }
 
     review.user = req.body.userId;
     review.game.id = req.body.game.id;
@@ -41,7 +48,9 @@ router.post(
 
         return diary
           .save()
-          .then(() => {
+          .then(async () => {
+            await user.addReview(review._id);
+            await user.addDiary(diary._id);
             return res.json({
               review: review.toJSON(),
               diary: diary.toJSON(),

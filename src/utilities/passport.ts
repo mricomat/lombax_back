@@ -1,5 +1,6 @@
 import passport from "passport";
 import IUserModel, { User } from "../database/models/user.model";
+import { Diary } from "../database/models/diary.model";
 import passportLocal from "passport-local";
 
 const LocalStrategy = passportLocal.Strategy;
@@ -14,6 +15,14 @@ passport.use(
 
     (email, password, done) => {
       User.findOne({ email })
+        .populate({
+          path: "diary",
+          populate: {
+            path: "review",
+            select: "game.imageId rating",
+          },
+        })
+
         .then((user: IUserModel) => {
           if (!user) {
             return done(null, false, { message: "Incorrect email." });

@@ -1,8 +1,9 @@
 import { Request } from "express";
-const jwt = require("express-jwt");
+import jwt from "express-jwt";
 import { JWT_SECRET } from "./secrets";
+import * as jwtoken from "jsonwebtoken";
 
-function getTokenFromHeader(req: Request): string | null {
+const getTokenFromHeader = (req: Request): string | null => {
   const headerAuth: string | string[] = req.headers.authorization;
 
   if (headerAuth !== undefined && headerAuth !== null) {
@@ -14,15 +15,24 @@ function getTokenFromHeader(req: Request): string | null {
   } else {
     return null;
   }
-}
+};
 
-function splitToken(authString: string) {
+const splitToken = (authString: string) => {
   if (authString.split(" ")[0] === "Token") {
     return authString.split(" ")[1];
   } else {
     return null;
   }
-}
+};
+
+export const validateToken = (req: Request): any => {
+  return jwtoken.verify(getTokenFromHeader(req), JWT_SECRET, (err, user) => {
+    if (err) {
+      return null;
+    }
+    return user;
+  });
+};
 
 const auth = {
   required: jwt({
