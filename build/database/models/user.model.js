@@ -201,14 +201,5 @@ UserSchema.methods.addDiary = function (id) {
     }
     return this.save();
 };
-// UserSchema.methods.getRecentActivity = (id: any, next: NextFunction) => {
-//   return Diary.find({ user: id, action: { $ne: DiaryAction.Remove } })
-//     .populate("review", { rating: 1, "game.id": 1 })
-//     .populate("gameFeel")
-//     .then((result) => {
-//       return result;
-//     })
-//     .catch(next);
-// };
 exports.User = mongoose_1.model("User", UserSchema);
 //# sourceMappingURL=user.model.js.map

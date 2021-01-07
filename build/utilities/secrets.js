@@ -26,7 +26,7 @@ const path = __importStar(require("path"));
 dotenv.config({ path: ".env" });
 exports.ENVIRONMENT = _.defaultTo(process.env.APP_ENV, "dev");
 exports.IS_PRODUCTION = exports.ENVIRONMENT === "production";
-exports.APP_PORT = _.defaultTo(parseInt(process.env.APP_PORT), 3000);
+exports.APP_PORT = _.defaultTo(process.env.PORT, process.env.PORT);
 exports.LOG_DIRECTORY = _.defaultTo(process.env.LOG_DIRECTORY, path.resolve('logs'));
 exports.JWT_SECRET = _.defaultTo(process.env.JWT_SECRET, "secret");
 exports.SESSION_SECRET = _.defaultTo(process.env.SESSION_SECRET, "secret");

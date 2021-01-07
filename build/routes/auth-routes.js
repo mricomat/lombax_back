@@ -37,7 +37,6 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
     if (!resToken) {
         return res.status(422).json("info");
     }
-    console.log(resToken);
     user_model_1.User.findById(resToken.id)
         .populate({
         path: "diary",
