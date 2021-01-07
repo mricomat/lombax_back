@@ -170,6 +170,7 @@ UserSchema.methods.toAuthJSON = function (): any {
     interests: this.interests,
     favorites: this.favorites,
     following: this.following,
+    followers: this.followers,
     reviews: this.reviews,
     gamesFeels: this.gamesFeels,
     diary: this.diary,

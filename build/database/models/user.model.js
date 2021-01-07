@@ -66,19 +66,16 @@ const UserSchema = new mongoose_1.Schema({
             id: {
                 type: mongoose_1.Schema.Types.Number,
                 unique: false,
-                _id: false,
                 required: [true, "can't be blank"],
             },
             type: {
                 type: mongoose_1.Schema.Types.String,
                 unique: false,
-                _id: false,
                 required: [true, "can't be blank"],
             },
             name: {
                 type: mongoose_1.Schema.Types.String,
                 unique: false,
-                _id: false,
                 required: [true, "can't be blank"],
             },
         },
@@ -162,6 +159,7 @@ UserSchema.methods.toAuthJSON = function () {
         interests: this.interests,
         favorites: this.favorites,
         following: this.following,
+        followers: this.followers,
         reviews: this.reviews,
         gamesFeels: this.gamesFeels,
         diary: this.diary,
