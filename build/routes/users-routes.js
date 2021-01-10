@@ -95,5 +95,42 @@ router.post("/users/login", (req, res, next) => {
         }
     })(req, res, next);
 });
+/**
+ * POST /api/users/registerCheck
+ */
+router.post("/users/registerCheck", (req, res, next) => {
+    if (!req.body.email) {
+        return res.status(422).json({ errors: { email: "Can't be blank" } });
+    }
+    if (!req.body.username) {
+        return res.status(422).json({ errors: { email: "Can't be blank" } });
+    }
+    const user = new user_model_1.User();
+    user.username = req.body.username;
+    user.email = req.body.email;
+    user_model_1.User.find({
+        $or: [{ email: req.body.email }, { username: req.body.username }],
+    })
+        .then((result) => {
+        console.log("result", result);
+        if (result.length > 0) {
+            return res.json({
+                isValid: false,
+                username: result[0].username === req.body.username,
+                email: result[0].email === req.body.email,
+            });
+        }
+        else {
+            return res.json({ isValid: true });
+        }
+    })
+        .catch((error) => {
+        console.log("error", error);
+        if (error.status === 404) {
+            return res.json({ isValid: true });
+        }
+        next(error);
+    });
+});
 exports.UsersRoutes = router;
 //# sourceMappingURL=users-routes.js.map

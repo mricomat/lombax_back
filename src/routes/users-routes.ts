@@ -102,7 +102,6 @@ router.post(
         return next(err);
       }
 
-   
       if (user) {
         user.token = user.generateJWT();
         return res.json({ user: user.toAuthJSON() });
@@ -110,6 +109,47 @@ router.post(
         return res.status(422).json(info);
       }
     })(req, res, next);
+  }
+);
+
+/**
+ * POST /api/users/registerCheck
+ */
+router.post(
+  "/users/registerCheck",
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!req.body.email) {
+      return res.status(422).json({ errors: { email: "Can't be blank" } });
+    }
+    if (!req.body.username) {
+      return res.status(422).json({ errors: { email: "Can't be blank" } });
+    }
+
+    const user: IUserModel = new User();
+
+    user.username = req.body.username;
+    user.email = req.body.email;
+
+    User.find({
+      $or: [{ email: req.body.email }, { username: req.body.username }],
+    })
+      .then((result) => {
+        if (result.length > 0) {
+          return res.json({
+            isValid: false,
+            username: result[0].username === req.body.username,
+            email: result[0].email === req.body.email,
+          });
+        } else {
+          return res.json({ isValid: true });
+        }
+      })
+      .catch((error) => {
+        if (error.status === 404) {
+          return res.json({ isValid: true });
+        }
+        next(error);
+      });
   }
 );
 
