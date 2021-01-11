@@ -70,7 +70,7 @@ router
     upload.array("file", 3),
     (req: Request, res: Response, next: NextFunction) => {
       const files = req.files as Express.Multer.File[];
-
+      console.log(req.body);
       Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],
       }).then(async (image) => {
@@ -98,15 +98,15 @@ router
         const imagesId = await Promise.all(imagesIdPromise);
 
         const user: IUserModel = new User();
-
-        user.name = req.body.name;
-        user.username = req.body.username;
-        user.email = req.body.email;
-        user.setPassword(req.body.password);
-        user.summary = req.body.summary;
-        user.coverId = req.body.coverId;
-        user.backgroundId = req.body.backgroundId;
-        user.interests = req.body.interests;
+        const userReq = req.body.user;
+        user.name = userReq.name;
+        user.username = userReq.username;
+        user.email = userReq.email;
+        user.setPassword(userReq.password);
+        user.summary = userReq.summary;
+        user.coverId = userReq.coverId;
+        user.backgroundId = userReq.backgroundId;
+        user.interests = userReq.interests;
         user.coverId = imagesId[0] || "";
         user.backgroundId = imagesId[1] || "";
 
