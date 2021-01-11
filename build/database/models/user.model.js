@@ -60,7 +60,7 @@ const UserSchema = new mongoose_1.Schema({
         unique: false,
         required: [true, "can't be blank"],
     },
-    summary: {
+    description: {
         type: mongoose_1.Schema.Types.String,
     },
     coverId: {
@@ -164,7 +164,7 @@ UserSchema.methods.toAuthJSON = function () {
         email: this.email,
         birth: this.birth,
         token: this.generateJWT(),
-        summary: this.summary,
+        description: this.description,
         coverId: this.coverId,
         backgroundId: this.backgroundId,
         interests: this.interests,

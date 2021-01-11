@@ -60,7 +60,7 @@ const UserSchema = new Schema(
       unique: false,
       required: [true, "can't be blank"],
     },
-    summary: {
+    description: {
       type: Schema.Types.String,
     },
     coverId: {
@@ -175,7 +175,7 @@ UserSchema.methods.toAuthJSON = function (): any {
     email: this.email,
     birth: this.birth,
     token: this.generateJWT(),
-    summary: this.summary,
+    description: this.description,
     coverId: this.coverId,
     backgroundId: this.backgroundId,
     interests: this.interests,

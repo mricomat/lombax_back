@@ -9,7 +9,7 @@ export interface IUser {
   email: string;
   username: string;
   birth: number;
-  summary?: string;
+  description?: string;
   coverId: string;
   backgroundId: string;
   interests: IGenre[];

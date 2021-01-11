@@ -43,7 +43,7 @@ router.put("/user", authentication_1.authentication.required, (req, res, next) =
             user.coverId = req.body.user.coverId;
         }
         if (typeof req.body.user.bio !== "undefined") {
-            user.summary = req.body.user.summary;
+            user.description = req.body.user.description;
         }
         return user.save().then(() => {
             return res.json({ user: user.toAuthJSON() });
@@ -62,7 +62,7 @@ router.post("/users", (req, res, next) => {
     user.email = req.body.email;
     user.birth = req.body.birth;
     user.setPassword(req.body.password);
-    user.summary = req.body.summary;
+    user.description = req.body.description;
     user.coverId = req.body.coverId;
     user.backgroundId = req.body.backgroundId;
     user.interests = req.body.interests;

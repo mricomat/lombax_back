@@ -48,7 +48,7 @@ router.put(
           user.coverId = req.body.user.coverId;
         }
         if (typeof req.body.user.bio !== "undefined") {
-          user.summary = req.body.user.summary;
+          user.description = req.body.user.description;
         }
 
         return user.save().then(() => {
@@ -71,7 +71,7 @@ router.post("/users", (req: Request, res: Response, next: NextFunction) => {
   user.email = req.body.email;
   user.birth = req.body.birth;
   user.setPassword(req.body.password);
-  user.summary = req.body.summary;
+  user.description = req.body.description;
   user.coverId = req.body.coverId;
   user.backgroundId = req.body.backgroundId;
   user.interests = req.body.interests;
