@@ -48,4 +48,48 @@ router
     }
   );
 
+/**
+ * POST /api/upload
+ */
+router
+  .route("/multipleUpload")
+  .post(
+    upload.array("file", 3),
+    (req: Request, res: Response, next: NextFunction) => {
+      const files = req.files as Express.Multer.File[];
+
+      Image.find({
+        $or: [{ name: files[0].filename }, { name: files[1].filename }],
+      }).then(async (image) => {
+        if (image.length > 0) {
+          return res.status(200).json({
+            success: false,
+            message: "Image already exists",
+          });
+        }
+
+        const imagesIdPromise = await files.map((f) => {
+          let newImage = new Image({
+            name: f.filename,
+            fileId: f.id,
+          });
+
+          return newImage
+            .save()
+            .then((image) => {
+              return image.name;
+            })
+            .catch(next);
+        });
+
+        const imagesId = await Promise.all(imagesIdPromise);
+
+        return res.status(200).json({
+          success: true,
+          imagesId,
+        });
+      });
+    }
+  );
+
 export const UploadRoutes: Router = router;

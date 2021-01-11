@@ -112,7 +112,6 @@ router.post("/users/registerCheck", (req, res, next) => {
         $or: [{ email: req.body.email }, { username: req.body.username }],
     })
         .then((result) => {
-        console.log("result", result);
         if (result.length > 0) {
             return res.json({
                 isValid: false,
@@ -125,7 +124,6 @@ router.post("/users/registerCheck", (req, res, next) => {
         }
     })
         .catch((error) => {
-        console.log("error", error);
         if (error.status === 404) {
             return res.json({ isValid: true });
         }
