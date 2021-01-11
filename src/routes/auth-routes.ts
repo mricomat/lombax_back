@@ -68,10 +68,10 @@ router
   .route("/register")
   .post(
     upload.array("file", 3),
-    (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       const files = req.files as Express.Multer.File[];
       console.log(req.body);
-      return Image.find({
+      const imagesId: any = await Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],
       }).then(async (image) => {
         if (image.length > 0) {
@@ -95,29 +95,31 @@ router
             .catch(next);
         });
 
-        const imagesId = await Promise.all(imagesIdPromise);
-
-        const user: IUserModel = new User();
-
-        user.name = req.body.name;
-        user.username = req.body.username;
-        user.email = req.body.email;
-        user.setPassword(req.body.password);
-        user.summary = req.body.summary;
-        user.coverId = req.body.coverId;
-        user.backgroundId = req.body.backgroundId;
-        user.interests = req.body.interests;
-        user.coverId = imagesId[0] || "";
-        user.backgroundId = imagesId[1] || "";
-
-        console.log("user", user);
-        return user
-          .save()
-          .then(() => {
-            return res.json({ user: user.toAuthJSON() });
-          })
-          .catch(next);
+        return await Promise.all(imagesIdPromise);
       });
+      const user: IUserModel = new User();
+
+      user.name = req.body.name;
+      user.username = req.body.username;
+      user.email = req.body.email;
+      user.setPassword(req.body.password);
+      user.summary = req.body.summary;
+      user.coverId = req.body.coverId;
+      user.backgroundId = req.body.backgroundId;
+      user.interests = req.body.interests;
+      user.coverId = imagesId[0] || "";
+      user.backgroundId = imagesId[1] || "";
+
+      return user
+        .save()
+        .then(() => {
+          console.log("user saved", user);
+          return res.json({ user: user.toAuthJSON() });
+        })
+        .catch((error) => {
+          console.log("user errr", error);
+          next(error);
+        });
     }
   );
 
