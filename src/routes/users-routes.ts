@@ -35,20 +35,25 @@ router.put(
 
         // Update only fields that have values:
         // ISSUE: DRY out code?
-        if (typeof req.body.user.email !== "undefined") {
+        if (typeof req.body.email !== "undefined") {
           user.email = req.body.user.email;
         }
-        if (typeof req.body.user.username !== "undefined") {
+        if (typeof req.body.username !== "undefined") {
           user.username = req.body.user.username;
         }
-        if (typeof req.body.user.password !== "undefined") {
-          user.setPassword(req.body.user.password);
+        if (typeof req.body.password !== "undefined") {
+          user.setPassword(req.body.password);
         }
-        if (typeof req.body.user.image !== "undefined") {
-          user.coverId = req.body.user.coverId;
+        // if (typeof req.body.user.image !== "undefined") {
+        //   user.coverId = req.body.user.coverId;
+        // }
+
+        if (typeof req.body.favorites !== "undefined") {
+          user.favorite = req.body.favorites;
         }
-        if (typeof req.body.user.bio !== "undefined") {
-          user.description = req.body.user.description;
+
+        if (typeof req.body.description !== "undefined") {
+          user.description = req.body.description;
         }
 
         return user.save().then(() => {
