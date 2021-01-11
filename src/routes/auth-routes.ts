@@ -70,7 +70,7 @@ router
     upload.array("file", 3),
     (req: Request, res: Response, next: NextFunction) => {
       const files = req.files as Express.Multer.File[];
-
+      console.log(req.body);
       Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],
       }).then(async (image) => {
@@ -110,6 +110,7 @@ router
         user.coverId = imagesId[0] || "";
         user.backgroundId = imagesId[1] || "";
 
+        console.log("user", user);
         return user
           .save()
           .then(() => {
