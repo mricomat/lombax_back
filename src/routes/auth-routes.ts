@@ -71,7 +71,7 @@ router
     (req: Request, res: Response, next: NextFunction) => {
       const files = req.files as Express.Multer.File[];
       console.log(req.body);
-      Image.find({
+      return Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],
       }).then(async (image) => {
         if (image.length > 0) {
