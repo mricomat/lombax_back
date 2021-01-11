@@ -58,7 +58,7 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
 });
 router
     .route("/register")
-    .post(upload_1.default.array("file", 3), (req, res, next) => {
+    .post(upload_1.default.array("file", 12), (req, res, next) => {
     const files = req.files;
     console.log(req.body);
     image_model_1.Image.find({

@@ -67,7 +67,7 @@ router.post(
 router
   .route("/register")
   .post(
-    upload.array("file", 3),
+    upload.array("file", 12),
     (req: Request, res: Response, next: NextFunction) => {
       const files = req.files as Express.Multer.File[];
       console.log(req.body);
