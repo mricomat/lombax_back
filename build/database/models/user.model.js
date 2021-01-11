@@ -35,6 +35,9 @@ const UserSchema = new mongoose_1.Schema({
         match: [/^[a-zA-Z0-9]+$/, "is invalid"],
         index: true,
     },
+    lastName: {
+        type: mongoose_1.Schema.Types.String,
+    },
     username: {
         type: mongoose_1.Schema.Types.String,
         lowercase: true,
@@ -50,6 +53,12 @@ const UserSchema = new mongoose_1.Schema({
         required: [true, "can't be blank"],
         //match    : [/\S+@\S+\.\S+/, 'is invalid'],
         index: true,
+    },
+    birth: {
+        type: mongoose_1.Schema.Types.Number,
+        lowercase: true,
+        unique: false,
+        required: [true, "can't be blank"],
     },
     summary: {
         type: mongoose_1.Schema.Types.String,
@@ -150,8 +159,10 @@ UserSchema.methods.toAuthJSON = function () {
     return {
         id: this._id,
         name: this.name,
+        lastName: this.lastName,
         username: this.username,
         email: this.email,
+        birth: this.birth,
         token: this.generateJWT(),
         summary: this.summary,
         coverId: this.coverId,

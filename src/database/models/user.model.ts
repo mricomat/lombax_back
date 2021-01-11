@@ -35,6 +35,9 @@ const UserSchema = new Schema(
       match: [/^[a-zA-Z0-9]+$/, "is invalid"],
       index: true,
     },
+    lastName: {
+      type: Schema.Types.String,
+    },
     username: {
       type: Schema.Types.String,
       lowercase: true,
@@ -50,6 +53,12 @@ const UserSchema = new Schema(
       required: [true, "can't be blank"],
       //match    : [/\S+@\S+\.\S+/, 'is invalid'],
       index: true,
+    },
+    birth: {
+      type: Schema.Types.Number,
+      lowercase: true,
+      unique: false,
+      required: [true, "can't be blank"],
     },
     summary: {
       type: Schema.Types.String,
@@ -161,8 +170,10 @@ UserSchema.methods.toAuthJSON = function (): any {
   return {
     id: this._id,
     name: this.name,
+    lastName: this.lastName,
     username: this.username,
     email: this.email,
+    birth: this.birth,
     token: this.generateJWT(),
     summary: this.summary,
     coverId: this.coverId,

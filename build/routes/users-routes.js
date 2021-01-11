@@ -57,8 +57,10 @@ router.put("/user", authentication_1.authentication.required, (req, res, next) =
 router.post("/users", (req, res, next) => {
     const user = new user_model_1.User();
     user.name = req.body.name;
+    user.lastName = req.body.lastName;
     user.username = req.body.username;
     user.email = req.body.email;
+    user.birth = req.body.birth;
     user.setPassword(req.body.password);
     user.summary = req.body.summary;
     user.coverId = req.body.coverId;

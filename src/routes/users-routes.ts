@@ -66,8 +66,10 @@ router.post("/users", (req: Request, res: Response, next: NextFunction) => {
   const user: IUserModel = new User();
 
   user.name = req.body.name;
+  user.lastName = req.body.lastName;
   user.username = req.body.username;
   user.email = req.body.email;
+  user.birth = req.body.birth;
   user.setPassword(req.body.password);
   user.summary = req.body.summary;
   user.coverId = req.body.coverId;

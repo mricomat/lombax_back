@@ -58,9 +58,13 @@ router
     (req: Request, res: Response, next: NextFunction) => {
       const files = req.files as Express.Multer.File[];
 
-      Image.find({
-        $or: [{ name: files[0].filename }, { name: files[1].filename }],
-      }).then(async (image) => {
+      Image.find(
+        files[1]
+          ? {
+              $or: [{ name: files[0].filename }, { name: files[1].filename }],
+            }
+          : { name: files[0].filename }
+      ).then(async (image) => {
         if (image.length > 0) {
           return res.status(200).json({
             success: false,

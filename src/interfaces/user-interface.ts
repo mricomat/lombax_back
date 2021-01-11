@@ -5,8 +5,10 @@ import Diary from "../database/models/diary.model";
 
 export interface IUser {
   name: string;
+  lastName?: string;
   email: string;
   username: string;
+  birth: number;
   summary?: string;
   coverId: string;
   backgroundId: string;
