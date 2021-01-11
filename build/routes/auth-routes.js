@@ -58,10 +58,10 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
 });
 router
     .route("/register")
-    .post(upload_1.default.array("file", 3), async (req, res, next) => {
+    .post(upload_1.default.array("file", 3), (req, res, next) => {
     const files = req.files;
     console.log(req.body);
-    const imagesId = await image_model_1.Image.find({
+    image_model_1.Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],
     }).then(async (image) => {
         if (image.length > 0) {
@@ -82,33 +82,37 @@ router
             })
                 .catch(next);
         });
-        return await Promise.all(imagesIdPromise);
-    });
-    const user = new user_model_1.User();
-    user.name = req.body.name;
-    user.username = req.body.username;
-    user.email = req.body.email;
-    user.setPassword(req.body.password);
-    user.summary = req.body.summary;
-    user.coverId = req.body.coverId;
-    user.backgroundId = req.body.backgroundId;
-    user.interests = req.body.interests;
-    user.coverId = imagesId[0] || "";
-    user.backgroundId = imagesId[1] || "";
-    return user
-        .save()
-        .then(() => {
-        console.log("user saved", user);
-        return res.json({ user: user.toAuthJSON() });
-    })
-        .catch((error) => {
-        console.log("user errr", error);
+        const imagesId = await Promise.all(imagesIdPromise);
         return res.status(200).json({
-            success: false,
-            message: "Image already exists",
+            success: true,
+            imagesId,
         });
-        return next(error);
     });
+    // const user: IUserModel = new User();
+    // user.name = req.body.name;
+    // user.username = req.body.username;
+    // user.email = req.body.email;
+    // user.setPassword(req.body.password);
+    // user.summary = req.body.summary;
+    // user.coverId = req.body.coverId;
+    // user.backgroundId = req.body.backgroundId;
+    // user.interests = req.body.interests;
+    // user.coverId = imagesId[0] || "";
+    // user.backgroundId = imagesId[1] || "";
+    // return user
+    //   .save()
+    //   .then(() => {
+    //     console.log("user saved", user);
+    //     return res.json({ user: user.toAuthJSON() });
+    //   })
+    //   .catch((error) => {
+    //     console.log("user errr", error);
+    //     return res.status(200).json({
+    //       success: false,
+    //       message: "Image already exists",
+    //     });
+    //     return next(error);
+    //   });
 });
 exports.AuthRoutes = router;
 //# sourceMappingURL=auth-routes.js.map
