@@ -103,7 +103,11 @@ router
     })
         .catch((error) => {
         console.log("user errr", error);
-        next(error);
+        return res.status(200).json({
+            success: false,
+            message: "Image already exists",
+        });
+        return next(error);
     });
 });
 exports.AuthRoutes = router;
