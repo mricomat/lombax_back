@@ -50,7 +50,6 @@ router
 router
     .route("/multipleUpload")
     .post(upload_1.default.array("file", 3), (req, res, next) => {
-    console.log(req.body);
     const files = req.files;
     image_model_1.Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],

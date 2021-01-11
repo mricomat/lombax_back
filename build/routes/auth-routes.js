@@ -60,7 +60,8 @@ router
     .route("/register")
     .post(upload_1.default.array("file", 3), (req, res, next) => {
     const files = req.files;
-    image_model_1.Image.find({
+    console.log(req.body);
+    return image_model_1.Image.find({
         $or: [{ name: files[0].filename }, { name: files[1].filename }],
     }).then(async (image) => {
         if (image.length > 0) {
@@ -93,6 +94,7 @@ router
         user.interests = req.body.interests;
         user.coverId = imagesId[0] || "";
         user.backgroundId = imagesId[1] || "";
+        console.log("user", user);
         return user
             .save()
             .then(() => {
