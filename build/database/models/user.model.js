@@ -91,8 +91,26 @@ const UserSchema = new mongoose_1.Schema({
     ],
     favorites: [
         {
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: "Game",
+            id: {
+                type: mongoose_1.Schema.Types.Number,
+                unique: false,
+                required: [true, "can't be blank"],
+            },
+            imageId: {
+                type: mongoose_1.Schema.Types.String,
+                unique: false,
+                required: [true, "can't be blank"],
+            },
+            releaseDate: {
+                type: mongoose_1.Schema.Types.Number,
+                unique: false,
+                required: [true, "can't be blank"],
+            },
+            name: {
+                type: mongoose_1.Schema.Types.String,
+                unique: false,
+                required: [true, "can't be blank"],
+            },
         },
     ],
     following: [

@@ -91,8 +91,26 @@ const UserSchema = new Schema(
     ],
     favorites: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Game",
+        id: {
+          type: Schema.Types.Number,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
+        imageId: {
+          type: Schema.Types.String,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
+        releaseDate: {
+          type: Schema.Types.Number,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
+        name: {
+          type: Schema.Types.String,
+          unique: false,
+          required: [true, "can't be blank"],
+        },
       },
     ],
     following: [

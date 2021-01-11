@@ -43,7 +43,7 @@ router.put("/user", authentication_1.authentication.required, (req, res, next) =
         //   user.coverId = req.body.user.coverId;
         // }
         if (typeof req.body.favorites !== "undefined") {
-            user.favorite = req.body.favorites;
+            user.favorites = req.body.favorites;
         }
         if (typeof req.body.description !== "undefined") {
             user.description = req.body.description;

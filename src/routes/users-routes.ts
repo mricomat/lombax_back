@@ -49,7 +49,7 @@ router.put(
         // }
 
         if (typeof req.body.favorites !== "undefined") {
-          user.favorite = req.body.favorites;
+          user.favorites = req.body.favorites;
         }
 
         if (typeof req.body.description !== "undefined") {
