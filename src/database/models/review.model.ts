@@ -40,7 +40,7 @@ const ReviewSchema = new Schema(
       type: Schema.Types.String,
     },
     rating: {
-      type: Schema.Types.String,
+      type: Schema.Types.Number,
     },
     dateFinished: {
       type: Schema.Types.String,

@@ -41,7 +41,7 @@ const ReviewSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.String,
     },
     rating: {
-        type: mongoose_1.Schema.Types.String,
+        type: mongoose_1.Schema.Types.Number,
     },
     dateFinished: {
         type: mongoose_1.Schema.Types.String,

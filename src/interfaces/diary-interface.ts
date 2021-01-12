@@ -27,7 +27,7 @@ export interface IReview {
   user: IUser;
   game: IGame;
   summary?: string;
-  rating?: string;
+  rating?: number;
   dateFinished?: string;
   timeToBeat?: string;
 }
