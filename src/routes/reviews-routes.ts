@@ -15,7 +15,7 @@ router.get(
   "/review/user",
   authentication.required,
   (req: Request, res: Response, next: NextFunction) => {
-    Review.find({ "user._id": req.params.id })
+    Review.find({ user: req.params.id })
       //.populate("user", "name coverId")
       .then((reviews: IReviewModel[]) => {
         res.status(200).json({ reviews: reviews });
@@ -28,11 +28,11 @@ router.get(
  * GET /api/review/game/user
  */
 router.get(
-  "/review/game/user",
+  "/review/user/game",
   authentication.required,
   (req: Request, res: Response, next: NextFunction) => {
-    Review.find({ "user._id": req.params.userId, "game.id": req.params.gameId })
-      //.populate("user", "name coverId")
+    Review.find({ user: req.query.userId, "game.id": req.query.gameId })
+      // .populate("user", "name coverId")
       .then((reviews: IReviewModel[]) => {
         res.status(200).json({ reviews: reviews });
       })

@@ -11,9 +11,7 @@ const ReviewSchema = new mongoose_1.Schema({
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "User",
-        unique: false,
         required: [true, "can't be blank"],
-        index: true,
     },
     game: {
         id: {

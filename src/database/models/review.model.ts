@@ -10,9 +10,7 @@ const ReviewSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      unique: false,
       required: [true, "can't be blank"],
-      index: true,
     },
     game: {
       id: {

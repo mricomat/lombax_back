@@ -1,11 +1,13 @@
 import { IGame } from "./game-interface";
-import { IUser } from "./user-interface";
+import User from "../database/models/user.model";
+import Review from "../database/models/review.model";
+import GameFeel from "../database/models/gameFeel.model";
 
 export interface IDiary {
   game: IGame;
-  user: IUser;
-  review: IReview;
-  gameFeel: IGameFeel;
+  user: User["_id"];
+  review: Review["_id"];
+  gameFeel: GameFeel["_id"];
   type: DiaryType;
   action: DiaryAction;
 }
@@ -24,7 +26,7 @@ export enum DiaryAction {
 }
 
 export interface IReview {
-  user: IUser;
+  user: User["_id"];
   game: IGame;
   summary?: string;
   rating?: number;
@@ -33,7 +35,7 @@ export interface IReview {
 }
 
 export interface IGameFeel {
-  user: IUser;
+  user: User["_id"];
   game: IGame;
   played?: boolean;
   like?: boolean;

@@ -12,7 +12,7 @@ const router = express_1.Router();
  * GET /api/review/user
  */
 router.get("/review/user", authentication_1.authentication.required, (req, res, next) => {
-    review_model_1.Review.find({ "user._id": req.params.id })
+    review_model_1.Review.find({ user: req.params.id })
         //.populate("user", "name coverId")
         .then((reviews) => {
         res.status(200).json({ reviews: reviews });
@@ -22,9 +22,9 @@ router.get("/review/user", authentication_1.authentication.required, (req, res, 
 /**
  * GET /api/review/game/user
  */
-router.get("/review/game/user", authentication_1.authentication.required, (req, res, next) => {
-    review_model_1.Review.find({ "user._id": req.params.userId, "game.id": req.params.gameId })
-        //.populate("user", "name coverId")
+router.get("/review/user/game", authentication_1.authentication.required, (req, res, next) => {
+    review_model_1.Review.find({ user: req.query.userId, "game.id": req.query.gameId })
+        // .populate("user", "name coverId")
         .then((reviews) => {
         res.status(200).json({ reviews: reviews });
     })
