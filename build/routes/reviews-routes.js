@@ -23,6 +23,7 @@ router.get("/review/user", authentication_1.authentication.required, (req, res, 
  * GET /api/review/game/user
  */
 router.get("/review/user/game", authentication_1.authentication.required, (req, res, next) => {
+    console.log(req.query, req.params);
     review_model_1.Review.find({ user: req.query.userId, "game.id": req.query.gameId })
         // .populate("user", "name coverId")
         .then((reviews) => {

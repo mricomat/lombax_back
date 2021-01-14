@@ -31,6 +31,7 @@ router.get(
   "/review/user/game",
   authentication.required,
   (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.query, req.params);
     Review.find({ user: req.query.userId, "game.id": req.query.gameId })
       // .populate("user", "name coverId")
       .then((reviews: IReviewModel[]) => {
