@@ -9,7 +9,7 @@ import { authentication } from "../utilities/authentication";
 const router: Router = Router();
 
 /**
- * GET /api/review
+ * GET /api/review/user
  */
 router.get(
   "/review/user",
@@ -23,6 +23,38 @@ router.get(
       .catch(next);
   }
 );
+
+/**
+ * GET /api/review/game/user
+ */
+router.get(
+  "/review/game/user",
+  authentication.required,
+  (req: Request, res: Response, next: NextFunction) => {
+    Review.find({ "user._id": req.params.userId, "game.id": req.params.gameId })
+      //.populate("user", "name coverId")
+      .then((reviews: IReviewModel[]) => {
+        res.status(200).json({ reviews: reviews });
+      })
+      .catch(next);
+  }
+);
+
+// /**
+//  * GET /api/review
+//  */
+// router.get(
+//   "/review/game",
+//   authentication.required,
+//   (req: Request, res: Response, next: NextFunction) => {
+//     Review.find({ "user._id": req.params.id })
+//       //.populate("user", "name coverId")
+//       .then((reviews: IReviewModel[]) => {
+//         res.status(200).json({ reviews: reviews });
+//       })
+//       .catch(next);
+//   }
+// );
 
 /**
  * POST /api/review
