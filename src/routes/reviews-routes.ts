@@ -12,11 +12,11 @@ const router: Router = Router();
  * GET /api/review
  */
 router.get(
-  "/review",
+  "/review/user",
   authentication.required,
   (req: Request, res: Response, next: NextFunction) => {
-    Review.find({ "user._id": req.payload.id })
-      .populate("user")
+    Review.find({ "user._id": req.params.id })
+      //.populate("user", "name coverId")
       .then((reviews: IReviewModel[]) => {
         res.status(200).json({ reviews: reviews });
       })

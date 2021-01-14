@@ -12,8 +12,9 @@ const router = express_1.Router();
  * GET /api/review
  */
 router.get("/review", authentication_1.authentication.required, (req, res, next) => {
-    review_model_1.Review.find({ "user._id": req.payload.id })
-        .populate("user")
+    console.log(req.params.id);
+    review_model_1.Review.find({ "user._id": req.params.id })
+        .populate("user", "name coverId")
         .then((reviews) => {
         res.status(200).json({ reviews: reviews });
     })
