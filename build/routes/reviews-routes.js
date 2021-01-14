@@ -9,6 +9,17 @@ const diary_interface_1 = require("../interfaces/diary-interface");
 const authentication_1 = require("../utilities/authentication");
 const router = express_1.Router();
 /**
+ * GET /api/review
+ */
+router.get("/review", authentication_1.authentication.required, (req, res, next) => {
+    review_model_1.Review.find({ "user._id": req.payload.id })
+        .populate("user")
+        .then((reviews) => {
+        res.status(200).json({ reviews: reviews });
+    })
+        .catch(next);
+});
+/**
  * POST /api/review
  */
 router.post("/review", authentication_1.authentication.required, async (req, res, next) => {
@@ -26,29 +37,59 @@ router.post("/review", authentication_1.authentication.required, async (req, res
     review.rating = req.body.rating;
     review.dateFinished = req.body.dateFinished;
     review.timeToBeat = req.body.timeToBeat;
-    return review
-        .save()
-        .then(() => {
-        const diary = new diary_model_1.Diary();
-        diary.user = review.user;
-        diary.game = {
-            id: review.game.id,
-            imageId: review.game.imageId,
-        };
-        diary.review = review._id;
-        diary.type = diary_interface_1.DiaryType.Review;
-        diary.action = diary_interface_1.DiaryAction.Add;
-        return diary
+    if (req.body.record) {
+        return review
             .save()
-            .then(async () => {
-            await user.addReview(review._id);
-            await user.addDiary(diary._id);
+            .then(() => {
+            const diary = new diary_model_1.Diary();
+            diary.user = review.user;
+            diary.game = {
+                id: review.game.id,
+                imageId: review.game.imageId,
+            };
+            diary.review = review._id;
+            diary.type = diary_interface_1.DiaryType.Review;
+            diary.action = diary_interface_1.DiaryAction.Add;
+            return diary
+                .save()
+                .then(async () => {
+                await user.addReview(review._id);
+                await user.addDiary(diary._id);
+                return res.json({
+                    review: review.toJSON(),
+                    diary: diary.toJSON(),
+                });
+            })
+                .catch(next);
+        })
+            .catch(next);
+    }
+    else {
+        return review
+            .save()
+            .then(() => {
             return res.json({
                 review: review.toJSON(),
-                diary: diary.toJSON(),
             });
         })
             .catch(next);
+    }
+});
+/**
+ * PUT /api/review/game
+ */
+router.put("/review", authentication_1.authentication.required, async (req, res, next) => {
+    review_model_1.Review.findById(req.payload.id)
+        .then((review) => {
+        if (!review) {
+            return res.sendStatus(401);
+        }
+        if (typeof req.body.rating !== "undefined") {
+            review.rating = req.body.user.rating;
+        }
+        return review.save().then(() => {
+            return res.json({ review: review.toJSON() });
+        });
     })
         .catch(next);
 });

@@ -9,6 +9,22 @@ import { authentication } from "../utilities/authentication";
 const router: Router = Router();
 
 /**
+ * GET /api/review
+ */
+router.get(
+  "/review",
+  authentication.required,
+  (req: Request, res: Response, next: NextFunction) => {
+    Review.find({ "user._id": req.payload.id })
+      .populate("user")
+      .then((reviews: IReviewModel[]) => {
+        res.status(200).json({ reviews: reviews });
+      })
+      .catch(next);
+  }
+);
+
+/**
  * POST /api/review
  */
 router.post(
@@ -33,30 +49,66 @@ router.post(
     review.dateFinished = req.body.dateFinished;
     review.timeToBeat = req.body.timeToBeat;
 
-    return review
-      .save()
-      .then(() => {
-        const diary: IDiaryModel = new Diary();
-        diary.user = review.user;
-        diary.game = {
-          id: review.game.id,
-          imageId: review.game.imageId,
-        };
-        diary.review = review._id;
-        diary.type = DiaryType.Review;
-        diary.action = DiaryAction.Add;
+    if (req.body.record) {
+      return review
+        .save()
+        .then(() => {
+          const diary: IDiaryModel = new Diary();
+          diary.user = review.user;
+          diary.game = {
+            id: review.game.id,
+            imageId: review.game.imageId,
+          };
+          diary.review = review._id;
+          diary.type = DiaryType.Review;
+          diary.action = DiaryAction.Add;
 
-        return diary
-          .save()
-          .then(async () => {
-            await user.addReview(review._id);
-            await user.addDiary(diary._id);
-            return res.json({
-              review: review.toJSON(),
-              diary: diary.toJSON(),
-            });
-          })
-          .catch(next);
+          return diary
+            .save()
+            .then(async () => {
+              await user.addReview(review._id);
+              await user.addDiary(diary._id);
+              return res.json({
+                review: review.toJSON(),
+                diary: diary.toJSON(),
+              });
+            })
+            .catch(next);
+        })
+        .catch(next);
+    } else {
+      return review
+        .save()
+        .then(() => {
+          return res.json({
+            review: review.toJSON(),
+          });
+        })
+        .catch(next);
+    }
+  }
+);
+
+/**
+ * PUT /api/review/game
+ */
+router.put(
+  "/review",
+  authentication.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    Review.findById(req.payload.id)
+      .then((review: IReviewModel) => {
+        if (!review) {
+          return res.sendStatus(401);
+        }
+
+        if (typeof req.body.rating !== "undefined") {
+          review.rating = req.body.user.rating;
+        }
+
+        return review.save().then(() => {
+          return res.json({ review: review.toJSON() });
+        });
       })
       .catch(next);
   }
