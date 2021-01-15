@@ -129,14 +129,13 @@ router.put(
   "/review",
   authentication.required,
   async (req: Request, res: Response, next: NextFunction) => {
-    Review.findById(req.payload.id)
+    Review.findById(req.body.id)
       .then((review: IReviewModel) => {
         if (!review) {
-          return res.sendStatus(401);
+          return res.sendStatus(404);
         }
-
         if (typeof req.body.rating !== "undefined") {
-          review.rating = req.body.user.rating;
+          review.rating = req.body.rating;
         }
 
         return review.save().then(() => {

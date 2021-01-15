@@ -106,13 +106,13 @@ router.post("/review", authentication_1.authentication.required, async (req, res
  * PUT /api/review/game
  */
 router.put("/review", authentication_1.authentication.required, async (req, res, next) => {
-    review_model_1.Review.findById(req.payload.id)
+    review_model_1.Review.findById(req.body.id)
         .then((review) => {
         if (!review) {
-            return res.sendStatus(401);
+            return res.sendStatus(404);
         }
         if (typeof req.body.rating !== "undefined") {
-            review.rating = req.body.user.rating;
+            review.rating = req.body.rating;
         }
         return review.save().then(() => {
             return res.json({ review: review.toJSON() });
