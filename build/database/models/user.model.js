@@ -131,12 +131,10 @@ const UserSchema = new mongoose_1.Schema({
             ref: "Review",
         },
     ],
-    gamesFeels: [
-        {
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: "GameFeel",
-        },
-    ],
+    gameFeel: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "GameFeel",
+    },
     diary: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
@@ -190,7 +188,7 @@ UserSchema.methods.toAuthJSON = function () {
         following: this.following,
         followers: this.followers,
         reviews: this.reviews,
-        gamesFeels: this.gamesFeels,
+        gameFeel: this.gameFeel,
         diary: this.diary,
     };
 };
@@ -241,6 +239,12 @@ UserSchema.methods.addReview = function (id) {
 UserSchema.methods.addDiary = function (id) {
     if (this.diary.indexOf(id) === -1) {
         this.diary.push(id);
+    }
+    return this.save();
+};
+UserSchema.methods.addGameFeel = function (id) {
+    if (this.gameFeel.indexOf(id) === -1) {
+        this.gameFeel.push(id);
     }
     return this.save();
 };

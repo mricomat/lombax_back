@@ -25,6 +25,14 @@ export enum DiaryAction {
   Remove = "REMOVE",
 }
 
+export enum GameStatus {
+  WantPlay = "WANT_TO_PLAY",
+  Playing = "PLAYING",
+  Beaten = "BEATEN",
+  Completed = "COMPLETED",
+  Abandoned = "ABANDONED",
+}
+
 export interface IReview {
   user: User["_id"];
   game: IGame;
@@ -37,6 +45,6 @@ export interface IReview {
 export interface IGameFeel {
   user: User["_id"];
   game: IGame;
-  played?: boolean;
+  gameStatus: GameStatus;
   like?: boolean;
 }

@@ -26,8 +26,8 @@ const GameFeelSchema = new Schema(
         required: [true, "can't be blank"],
       },
     },
-    played: {
-      type: Schema.Types.Boolean,
+    gameStatus: {
+      type: Schema.Types.String,
     },
     like: {
       type: Schema.Types.Boolean,

@@ -26,8 +26,8 @@ const GameFeelSchema = new mongoose_1.Schema({
             required: [true, "can't be blank"],
         },
     },
-    played: {
-        type: mongoose_1.Schema.Types.Boolean,
+    gameStatus: {
+        type: mongoose_1.Schema.Types.String,
     },
     like: {
         type: mongoose_1.Schema.Types.Boolean,

@@ -22,6 +22,7 @@ export default interface IUserModel extends IUser, Document {
   isFavorite(id: string): boolean;
   addReview(id: string): Promise<IUser>;
   addDiary(id: string): Promise<IUser>;
+  addGameFeel(id: string): Promise<IUser>;
 }
 
 // ISSUE: Own every parameter and any missing dependencies
@@ -131,12 +132,10 @@ const UserSchema = new Schema(
         ref: "Review",
       },
     ],
-    gamesFeels: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "GameFeel",
-      },
-    ],
+    gameFeel: {
+      type: Schema.Types.ObjectId,
+      ref: "GameFeel",
+    },
     diary: [
       {
         type: Schema.Types.ObjectId,
@@ -201,7 +200,7 @@ UserSchema.methods.toAuthJSON = function (): any {
     following: this.following,
     followers: this.followers,
     reviews: this.reviews,
-    gamesFeels: this.gamesFeels,
+    gameFeel: this.gameFeel,
     diary: this.diary,
   };
 };
@@ -265,6 +264,14 @@ UserSchema.methods.addReview = function (id: string) {
 UserSchema.methods.addDiary = function (id: string) {
   if (this.diary.indexOf(id) === -1) {
     this.diary.push(id);
+  }
+
+  return this.save();
+};
+
+UserSchema.methods.addGameFeel = function (id: string) {
+  if (this.gameFeel.indexOf(id) === -1) {
+    this.gameFeel.push(id);
   }
 
   return this.save();

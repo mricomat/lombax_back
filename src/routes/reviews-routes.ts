@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
-import IUserModel, { User } from "../database/models/user.model";
 
+import IUserModel, { User } from "../database/models/user.model";
 import IDiaryModel, { Diary } from "../database/models/diary.model";
 import IReviewModel, { Review } from "../database/models/review.model";
 import { DiaryAction, DiaryType } from "../interfaces/diary-interface";

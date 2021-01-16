@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DiaryAction = exports.DiaryType = void 0;
+exports.GameStatus = exports.DiaryAction = exports.DiaryType = void 0;
 var DiaryType;
 (function (DiaryType) {
     DiaryType["Review"] = "REVIEW";
@@ -14,4 +14,12 @@ var DiaryAction;
     DiaryAction["Edit"] = "EDIT";
     DiaryAction["Remove"] = "REMOVE";
 })(DiaryAction = exports.DiaryAction || (exports.DiaryAction = {}));
+var GameStatus;
+(function (GameStatus) {
+    GameStatus["WantPlay"] = "WANT_TO_PLAY";
+    GameStatus["Playing"] = "PLAYING";
+    GameStatus["Beaten"] = "BEATEN";
+    GameStatus["Completed"] = "COMPLETED";
+    GameStatus["Abandoned"] = "ABANDONED";
+})(GameStatus = exports.GameStatus || (exports.GameStatus = {}));
 //# sourceMappingURL=diary-interface.js.map

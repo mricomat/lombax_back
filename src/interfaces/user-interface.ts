@@ -16,7 +16,7 @@ export interface IUser {
   following: User[];
   followers: User[];
   reviews: Review[];
-  gamesFeels: GameFeel[];
+  gamesFeel: GameFeel;
   diary: Diary[];
 }
 
