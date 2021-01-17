@@ -47,6 +47,13 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
             select: "game.imageId rating",
         },
     })
+        .populate({
+        path: "diary",
+        populate: {
+            path: "gameFeel",
+            select: "game.imageId gameStatus",
+        },
+    })
         .then((user) => {
         if (!user) {
             return res.status(404).json({ errors: "User doesn't found" });
