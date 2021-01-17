@@ -51,6 +51,7 @@ router.post(
           path: "review",
           select: "game.imageId rating",
         },
+        options: { sort: { createdAt: -1 } },
       })
       .populate({
         path: "diary",
@@ -58,6 +59,7 @@ router.post(
           path: "gameFeel",
           select: "game.imageId gameStatus",
         },
+        options: { sort: { createdAt: -1 } },
       })
       .then((user: IUserModel) => {
         if (!user) {

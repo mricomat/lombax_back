@@ -19,6 +19,7 @@ passport_1.default.use(new LocalStrategy({
             path: "review",
             select: "game.imageId rating",
         },
+        options: { sort: { createdAt: -1 } },
     })
         .populate({
         path: "diary",
@@ -26,6 +27,7 @@ passport_1.default.use(new LocalStrategy({
             path: "gameFeel",
             select: "game.imageId gameStatus",
         },
+        options: { sort: { createdAt: -1 } },
     })
         .then((user) => {
         if (!user) {

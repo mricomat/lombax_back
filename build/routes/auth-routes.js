@@ -46,6 +46,7 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
             path: "review",
             select: "game.imageId rating",
         },
+        options: { sort: { createdAt: -1 } },
     })
         .populate({
         path: "diary",
@@ -53,6 +54,7 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
             path: "gameFeel",
             select: "game.imageId gameStatus",
         },
+        options: { sort: { createdAt: -1 } },
     })
         .then((user) => {
         if (!user) {
