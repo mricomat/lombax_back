@@ -20,6 +20,13 @@ passport_1.default.use(new LocalStrategy({
             select: "game.imageId rating",
         },
     })
+        .populate({
+        path: "diary",
+        populate: {
+            path: "gameFeel",
+            select: "game.imageId gameStatus",
+        },
+    })
         .then((user) => {
         if (!user) {
             return done(null, false, { message: "Incorrect credentials" });

@@ -22,6 +22,13 @@ passport.use(
             select: "game.imageId rating",
           },
         })
+        .populate({
+          path: "diary",
+          populate: {
+            path: "gameFeel",
+            select: "game.imageId gameStatus",
+          },
+        })
 
         .then((user: IUserModel) => {
           if (!user) {
