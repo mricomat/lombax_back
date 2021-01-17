@@ -20,7 +20,7 @@ router.post("/gameFeel", authentication_1.authentication.required, async (req, r
         user: req.body.userId,
         "game.id": req.body.game.id,
     });
-    if (findFeel) {
+    if (!findFeel) {
         const gameFeel = new gameFeel_model_1.GameFeel();
         gameFeel.user = req.body.userId;
         gameFeel.game.id = req.body.game.id;
