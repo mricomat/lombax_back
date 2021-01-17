@@ -19,7 +19,7 @@ router.get(
           user: req.query.userId,
           "game.id": req.query.gameId,
         })
-          .sort({ createdAt: 1 })
+          .sort({ createdAt: -1 })
           .then((gameFeel: IGameFeel) => {
             res.status(200).json({ reviews: reviews, gameFeel });
           })
