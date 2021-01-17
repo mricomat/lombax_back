@@ -250,5 +250,12 @@ UserSchema.methods.addGameFeel = function (id) {
     }
     return this.save();
 };
+UserSchema.methods.removeGameFeel = function (id) {
+    const index = this.gameFeels.indexOf(id);
+    if (index > -1) {
+        this.gameFeels.splice(index, 1);
+    }
+    return this.save();
+};
 exports.User = mongoose_1.model("User", UserSchema);
 //# sourceMappingURL=user.model.js.map

@@ -23,6 +23,7 @@ export default interface IUserModel extends IUser, Document {
   addReview(id: string): Promise<IUser>;
   addDiary(id: string): Promise<IUser>;
   addGameFeel(id: string): Promise<IUser>;
+  removeGameFeel(id: string): Promise<IUser>;
 }
 
 // ISSUE: Own every parameter and any missing dependencies
@@ -279,4 +280,12 @@ UserSchema.methods.addGameFeel = function (id: string) {
   return this.save();
 };
 
+UserSchema.methods.removeGameFeel = function (id: string) {
+  const index = this.gameFeels.indexOf(id);
+  if (index > -1) {
+    this.gameFeels.splice(index, 1);
+  }
+
+  return this.save();
+};
 export const User: Model<IUserModel> = model<IUserModel>("User", UserSchema);
