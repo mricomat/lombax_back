@@ -52,7 +52,7 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
         path: "diary",
         populate: {
             path: "gameFeel",
-            select: "game.imageId gameStatus",
+            select: "game.imageId gameStatus like",
         },
         options: { sort: { createdAt: -1 } },
     })

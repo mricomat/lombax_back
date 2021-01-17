@@ -27,7 +27,7 @@ passport.use(
           path: "diary",
           populate: {
             path: "gameFeel",
-            select: "game.imageId gameStatus",
+            select: "game.imageId gameStatus like",
           },
           options: { sort: { createdAt: -1 } },
         })
