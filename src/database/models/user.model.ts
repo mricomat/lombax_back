@@ -132,10 +132,12 @@ const UserSchema = new Schema(
         ref: "Review",
       },
     ],
-    gameFeel: {
-      type: Schema.Types.ObjectId,
-      ref: "GameFeel",
-    },
+    gameFeels: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "GameFeel",
+      },
+    ],
     diary: [
       {
         type: Schema.Types.ObjectId,
@@ -200,7 +202,7 @@ UserSchema.methods.toAuthJSON = function (): any {
     following: this.following,
     followers: this.followers,
     reviews: this.reviews,
-    gameFeel: this.gameFeel,
+    gameFeels: this.gameFeels,
     diary: this.diary,
   };
 };
@@ -270,8 +272,8 @@ UserSchema.methods.addDiary = function (id: string) {
 };
 
 UserSchema.methods.addGameFeel = function (id: string) {
-  if (this.gameFeel.indexOf(id) === -1) {
-    this.gameFeel.push(id);
+  if (this.gameFeels.indexOf(id) === -1) {
+    this.gameFeels.push(id);
   }
 
   return this.save();
