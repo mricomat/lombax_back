@@ -16,6 +16,7 @@ router.get("/game", authentication_1.authentication.required, (req, res, next) =
             user: req.query.userId,
             "game.id": req.query.gameId,
         })
+            .sort({ createdAT: 1 })
             .then((gameFeel) => {
             res.status(200).json({ reviews: reviews, gameFeel });
         })

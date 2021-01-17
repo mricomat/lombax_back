@@ -19,6 +19,7 @@ router.get(
           user: req.query.userId,
           "game.id": req.query.gameId,
         })
+          .sort({ createdAT: 1 })
           .then((gameFeel: IGameFeel) => {
             res.status(200).json({ reviews: reviews, gameFeel });
           })
