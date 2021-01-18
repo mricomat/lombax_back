@@ -8,16 +8,29 @@ const router: Router = Router();
 /**
  * GET /api/user
  */
-router.get(
-  "/user",
-  (req: Request, res: Response, next: NextFunction) => {
-    User.findById(req.payload.id)
-      .then((user: IUserModel) => {
-        res.status(200).json({ user: user.toAuthJSON() });
-      })
-      .catch(next);
-  }
-);
+router.get("/user", (req: Request, res: Response, next: NextFunction) => {
+  User.findById(req.payload.id)
+    .populate({
+      path: "diary",
+      populate: {
+        path: "review",
+        select: "game.imageId rating summary",
+      },
+      options: { sort: { createdAt: -1 } },
+    })
+    .populate({
+      path: "diary",
+      populate: {
+        path: "gameFeel",
+        select: "game.imageId gameStatus like",
+      },
+      options: { sort: { createdAt: -1 } },
+    })
+    .then((user: IUserModel) => {
+      res.status(200).json({ user: user.toAuthJSON() });
+    })
+    .catch(next);
+});
 
 router.get("/users", (req: Request, res: Response, next: NextFunction) => {
   User.find({

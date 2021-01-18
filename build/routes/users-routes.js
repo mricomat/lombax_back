@@ -14,6 +14,22 @@ const router = express_1.Router();
  */
 router.get("/user", (req, res, next) => {
     user_model_1.User.findById(req.payload.id)
+        .populate({
+        path: "diary",
+        populate: {
+            path: "review",
+            select: "game.imageId rating summary",
+        },
+        options: { sort: { createdAt: -1 } },
+    })
+        .populate({
+        path: "diary",
+        populate: {
+            path: "gameFeel",
+            select: "game.imageId gameStatus like",
+        },
+        options: { sort: { createdAt: -1 } },
+    })
         .then((user) => {
         res.status(200).json({ user: user.toAuthJSON() });
     })
