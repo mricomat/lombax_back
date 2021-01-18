@@ -20,6 +20,21 @@ router.get(
   }
 );
 
+router.get("/users", (req: Request, res: Response, next: NextFunction) => {
+  User.find({
+    $or: [
+      { name: new RegExp("^" + req.query.search, "i") },
+      { username: new RegExp("^" + req.query.search, "i") },
+    ],
+  })
+    .select("name username coverId")
+    .limit(20)
+    .then((users: IUserModel[]) => {
+      res.status(200).json({ users });
+    })
+    .catch(next);
+});
+
 /**
  * PUT /api/user
  */

@@ -19,6 +19,20 @@ router.get("/user", authentication_1.authentication.required, (req, res, next) =
     })
         .catch(next);
 });
+router.get("/users", (req, res, next) => {
+    user_model_1.User.find({
+        $or: [
+            { name: new RegExp("^" + req.query.search, "i") },
+            { username: new RegExp("^" + req.query.search, "i") },
+        ],
+    })
+        .select("name username coverId")
+        .limit(20)
+        .then((users) => {
+        res.status(200).json({ users });
+    })
+        .catch(next);
+});
 /**
  * PUT /api/user
  */
