@@ -12,7 +12,7 @@ const router = express_1.Router();
 /**
  * GET /api/user
  */
-router.get("/user", authentication_1.authentication.required, (req, res, next) => {
+router.get("/user", (req, res, next) => {
     user_model_1.User.findById(req.payload.id)
         .then((user) => {
         res.status(200).json({ user: user.toAuthJSON() });
@@ -26,7 +26,7 @@ router.get("/users", (req, res, next) => {
             { username: new RegExp("^" + req.query.search, "i") },
         ],
     })
-        .select("name username coverId")
+        .select("name username coverId backgroundId")
         .limit(20)
         .then((users) => {
         res.status(200).json({ users });

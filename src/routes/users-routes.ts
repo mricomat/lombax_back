@@ -10,7 +10,6 @@ const router: Router = Router();
  */
 router.get(
   "/user",
-  authentication.required,
   (req: Request, res: Response, next: NextFunction) => {
     User.findById(req.payload.id)
       .then((user: IUserModel) => {
@@ -27,7 +26,7 @@ router.get("/users", (req: Request, res: Response, next: NextFunction) => {
       { username: new RegExp("^" + req.query.search, "i") },
     ],
   })
-    .select("name username coverId")
+    .select("name username coverId backgroundId")
     .limit(20)
     .then((users: IUserModel[]) => {
       res.status(200).json({ users });
