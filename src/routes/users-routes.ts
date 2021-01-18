@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import IUserModel, { User } from "../database/models/user.model";
 import passport from "passport";
 import { authentication } from "../utilities/authentication";
+import { ObjectId } from "mongodb";
 
 const router: Router = Router();
 
@@ -26,7 +27,22 @@ router.get("/user", (req: Request, res: Response, next: NextFunction) => {
       },
       options: { sort: { createdAt: -1 } },
     })
-    .then((user: IUserModel) => {
+    .then(async (user: IUserModel) => {
+      const counts = await User.aggregate()
+        .match({ _id: new ObjectId(user._id) })
+        .project({
+          _id: 0,
+          reviewsCount: {
+            $size: "$reviews",
+          },
+          diaryCount: {
+            $size: "$diary",
+          },
+          gameFeelsCount: {
+            $size: "$gameFeels",
+          },
+        });
+
       res.status(200).json({ user: user.toAuthJSON() });
     })
     .catch(next);

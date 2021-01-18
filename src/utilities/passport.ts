@@ -2,6 +2,7 @@ import passport from "passport";
 import IUserModel, { User } from "../database/models/user.model";
 import { Diary } from "../database/models/diary.model";
 import passportLocal from "passport-local";
+import { ObjectId } from "mongodb";
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -32,14 +33,28 @@ passport.use(
           options: { sort: { createdAt: -1 } },
         })
 
-        .then((user: IUserModel) => {
+        .then(async (user: IUserModel) => {
+          const counts = await User.aggregate()
+            .match({ _id: new ObjectId(user._id) })
+            .project({
+              _id: 0,
+              reviewsCount: {
+                $size: "$reviews",
+              },
+              diaryCount: {
+                $size: "$diary",
+              },
+              gameFeelsCount: {
+                $size: "$gameFeels",
+              },
+            });
           if (!user) {
             return done(null, false, { message: "Incorrect credentials" });
           }
           if (!user.validPassword(password)) {
             return done(null, false, { message: "Incorrect credentials" });
           }
-          return done(null, user);
+          return done(null, { ...user, counts });
         })
         .catch(done);
     }

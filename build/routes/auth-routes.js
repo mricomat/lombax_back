@@ -10,6 +10,7 @@ const authentication_1 = require("../utilities/authentication");
 const user_model_1 = require("../database/models/user.model");
 const upload_1 = __importDefault(require("../middleware/upload"));
 const image_model_1 = require("../database/models/image.model");
+const mongodb_1 = require("mongodb");
 const router = express_1.Router();
 /**
  * POST /api/users
@@ -34,11 +35,25 @@ router.post("/login", (req, res, next) => {
         }
     })(req, res, next);
 });
-router.post("/refreshToken", authentication_1.authentication.required, (req, res, next) => {
+router.post("/refreshToken", authentication_1.authentication.required, async (req, res, next) => {
     const resToken = authentication_1.validateToken(req);
     if (!resToken) {
         return res.status(422).json("info");
     }
+    const counts = await user_model_1.User.aggregate()
+        .match({ _id: new mongodb_1.ObjectId(resToken.id) })
+        .project({
+        _id: 0,
+        reviewsCount: {
+            $size: "$reviews",
+        },
+        diaryCount: {
+            $size: "$diary",
+        },
+        gameFeelsCount: {
+            $size: "$gameFeels",
+        },
+    });
     user_model_1.User.findById(resToken.id)
         .populate({
         path: "diary",
@@ -46,7 +61,7 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
             path: "review",
             select: "game.imageId rating summary",
         },
-        options: { sort: { createdAt: -1 } },
+        options: { sort: { createdAt: -1 }, limit: 15 },
     })
         .populate({
         path: "diary",
@@ -54,14 +69,15 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
             path: "gameFeel",
             select: "game.imageId gameStatus like",
         },
-        options: { sort: { createdAt: -1 } },
+        options: { sort: { createdAt: -1 }, limit: 15 },
     })
         .then((user) => {
         if (!user) {
             return res.status(404).json({ errors: "User doesn't found" });
         }
         user.token = user.generateJWT();
-        return res.json({ user: user.toAuthJSON() });
+        const userJson = user.toAuthJSON();
+        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts }) });
     })
         .catch(next);
 });

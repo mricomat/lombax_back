@@ -4,6 +4,7 @@ import { authentication, validateToken } from "../utilities/authentication";
 import IUserModel, { User } from "../database/models/user.model";
 import upload from "../middleware/upload";
 import IImageModel, { Image } from "../database/models/image.model";
+import { ObjectId } from "mongodb";
 
 const router: Router = Router();
 
@@ -39,11 +40,26 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
 router.post(
   "/refreshToken",
   authentication.required,
-  (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const resToken = validateToken(req);
     if (!resToken) {
       return res.status(422).json("info");
     }
+    const counts = await User.aggregate()
+      .match({ _id: new ObjectId(resToken.id) })
+      .project({
+        _id: 0,
+        reviewsCount: {
+          $size: "$reviews",
+        },
+        diaryCount: {
+          $size: "$diary",
+        },
+        gameFeelsCount: {
+          $size: "$gameFeels",
+        },
+      });
+
     User.findById(resToken.id)
       .populate({
         path: "diary",
@@ -51,7 +67,7 @@ router.post(
           path: "review",
           select: "game.imageId rating summary",
         },
-        options: { sort: { createdAt: -1 } },
+        options: { sort: { createdAt: -1 }, limit: 15 },
       })
       .populate({
         path: "diary",
@@ -59,7 +75,7 @@ router.post(
           path: "gameFeel",
           select: "game.imageId gameStatus like",
         },
-        options: { sort: { createdAt: -1 } },
+        options: { sort: { createdAt: -1 }, limit: 15 },
       })
       .then((user: IUserModel) => {
         if (!user) {
@@ -67,7 +83,8 @@ router.post(
         }
         user.token = user.generateJWT();
 
-        return res.json({ user: user.toAuthJSON() });
+        const userJson = user.toAuthJSON();
+        return res.json({ user: { ...userJson, counts } });
       })
       .catch(next);
   }

@@ -8,6 +8,7 @@ const express_1 = require("express");
 const user_model_1 = require("../database/models/user.model");
 const passport_1 = __importDefault(require("passport"));
 const authentication_1 = require("../utilities/authentication");
+const mongodb_1 = require("mongodb");
 const router = express_1.Router();
 /**
  * GET /api/user
@@ -30,7 +31,21 @@ router.get("/user", (req, res, next) => {
         },
         options: { sort: { createdAt: -1 } },
     })
-        .then((user) => {
+        .then(async (user) => {
+        const counts = await user_model_1.User.aggregate()
+            .match({ _id: new mongodb_1.ObjectId(user._id) })
+            .project({
+            _id: 0,
+            reviewsCount: {
+                $size: "$reviews",
+            },
+            diaryCount: {
+                $size: "$diary",
+            },
+            gameFeelsCount: {
+                $size: "$gameFeels",
+            },
+        });
         res.status(200).json({ user: user.toAuthJSON() });
     })
         .catch(next);
