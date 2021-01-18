@@ -49,7 +49,7 @@ router.post(
         path: "diary",
         populate: {
           path: "review",
-          select: "game.imageId rating",
+          select: "game.imageId rating summary",
         },
         options: { sort: { createdAt: -1 } },
       })

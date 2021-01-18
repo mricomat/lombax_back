@@ -44,7 +44,7 @@ router.post("/refreshToken", authentication_1.authentication.required, (req, res
         path: "diary",
         populate: {
             path: "review",
-            select: "game.imageId rating",
+            select: "game.imageId rating summary",
         },
         options: { sort: { createdAt: -1 } },
     })
