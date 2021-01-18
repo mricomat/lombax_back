@@ -9,7 +9,7 @@ const router: Router = Router();
  * GET /api/user
  */
 router.get("/user", (req: Request, res: Response, next: NextFunction) => {
-  User.findById(req.payload.id)
+  User.findById(req.query.id)
     .populate({
       path: "diary",
       populate: {

@@ -13,7 +13,7 @@ const router = express_1.Router();
  * GET /api/user
  */
 router.get("/user", (req, res, next) => {
-    user_model_1.User.findById(req.payload.id)
+    user_model_1.User.findById(req.query.id)
         .populate({
         path: "diary",
         populate: {
