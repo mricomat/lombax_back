@@ -54,7 +54,7 @@ passport.use(
           if (!user.validPassword(password)) {
             return done(null, false, { message: "Incorrect credentials" });
           }
-          return done(null, { ...user, counts });
+          return done(null, { ...user, counts: counts[0] });
         })
         .catch(done);
     }

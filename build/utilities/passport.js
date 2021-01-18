@@ -51,7 +51,7 @@ passport_1.default.use(new LocalStrategy({
         if (!user.validPassword(password)) {
             return done(null, false, { message: "Incorrect credentials" });
         }
-        return done(null, Object.assign(Object.assign({}, user), { counts }));
+        return done(null, Object.assign(Object.assign({}, user), { counts: counts[0] }));
     })
         .catch(done);
 }));

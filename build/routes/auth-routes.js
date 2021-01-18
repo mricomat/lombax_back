@@ -77,7 +77,7 @@ router.post("/refreshToken", authentication_1.authentication.required, async (re
         }
         user.token = user.generateJWT();
         const userJson = user.toAuthJSON();
-        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts }) });
+        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts: counts[0] }) });
     })
         .catch(next);
 });

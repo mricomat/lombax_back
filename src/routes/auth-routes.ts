@@ -84,7 +84,7 @@ router.post(
         user.token = user.generateJWT();
 
         const userJson = user.toAuthJSON();
-        return res.json({ user: { ...userJson, counts } });
+        return res.json({ user: { ...userJson, counts: counts[0] } });
       })
       .catch(next);
   }

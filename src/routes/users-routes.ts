@@ -42,8 +42,8 @@ router.get("/user", (req: Request, res: Response, next: NextFunction) => {
             $size: "$gameFeels",
           },
         });
-
-      res.status(200).json({ user: user.toAuthJSON() });
+      const userJson = user.toAuthJSON();
+      return res.json({ user: { ...userJson, counts: counts[0] } });
     })
     .catch(next);
 });
