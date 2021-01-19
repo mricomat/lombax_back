@@ -31,21 +31,18 @@ router.get("/review/user/game", authentication_1.authentication.required, (req, 
     })
         .catch(next);
 });
-// /**
-//  * GET /api/review
-//  */
-// router.get(
-//   "/review/game",
-//   authentication.required,
-//   (req: Request, res: Response, next: NextFunction) => {
-//     Review.find({ "user._id": req.params.id })
-//       //.populate("user", "name coverId")
-//       .then((reviews: IReviewModel[]) => {
-//         res.status(200).json({ reviews: reviews });
-//       })
-//       .catch(next);
-//   }
-// );
+/**
+ * GET /api/review
+ */
+router.get("/reviews/user", (req, res, next) => {
+    review_model_1.Review.find({ user: req.query.id, summary: { $ne: "" } })
+        .limit(10)
+        //.populate("user", "name username")
+        .then((reviews) => {
+        res.status(200).json({ reviews: reviews });
+    })
+        .catch(next);
+});
 /**
  * POST /api/review
  */
