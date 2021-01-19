@@ -32,29 +32,14 @@ passport.use(
           },
           options: { sort: { createdAt: -1 } },
         })
-
         .then(async (user: IUserModel) => {
-          const counts = await User.aggregate()
-            .match({ _id: new ObjectId(user._id) })
-            .project({
-              _id: 0,
-              reviewsCount: {
-                $size: "$reviews",
-              },
-              diaryCount: {
-                $size: "$diary",
-              },
-              gameFeelsCount: {
-                $size: "$gameFeels",
-              },
-            });
           if (!user) {
             return done(null, false, { message: "Incorrect credentials" });
           }
           if (!user.validPassword(password)) {
             return done(null, false, { message: "Incorrect credentials" });
           }
-          return done(null, { ...user, counts: counts[0] });
+          return done(null, user);
         })
         .catch(done);
     }

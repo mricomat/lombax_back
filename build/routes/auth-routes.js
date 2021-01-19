@@ -28,7 +28,22 @@ router.post("/login", (req, res, next) => {
         }
         if (user) {
             user.token = user.generateJWT();
-            return res.json({ user: user.toAuthJSON() });
+            const counts = await user_model_1.User.aggregate()
+                .match({ _id: new mongodb_1.ObjectId(user._id) })
+                .project({
+                _id: 0,
+                reviewsCount: {
+                    $size: "$reviews",
+                },
+                diaryCount: {
+                    $size: "$diary",
+                },
+                gameFeelsCount: {
+                    $size: "$gameFeels",
+                },
+            });
+            const userJson = user.toAuthJSON();
+            return res.json({ user: Object.assign(Object.assign({}, userJson), { counts: counts[0] }) });
         }
         else {
             return res.status(422).json(info);

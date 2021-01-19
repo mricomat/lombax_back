@@ -29,7 +29,22 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
       }
       if (user) {
         user.token = user.generateJWT();
-        return res.json({ user: user.toAuthJSON() });
+        const counts = await User.aggregate()
+          .match({ _id: new ObjectId(user._id) })
+          .project({
+            _id: 0,
+            reviewsCount: {
+              $size: "$reviews",
+            },
+            diaryCount: {
+              $size: "$diary",
+            },
+            gameFeelsCount: {
+              $size: "$gameFeels",
+            },
+          });
+        const userJson = user.toAuthJSON();
+        return res.json({ user: { ...userJson, counts: counts[0] } });
       } else {
         return res.status(422).json(info);
       }
