@@ -16,6 +16,8 @@ export default interface IUserModel extends IUser, Document {
   toProfileJSONFor(user: IUserModel): any;
   isFollowing(id: string): boolean;
   follow(id: string): Promise<IUser>;
+  follower(id: string): Promise<IUser>;
+  unfollower(id: string): Promise<IUser>;
   unfollow(id: string): Promise<IUser>;
   favorite(id: string): Promise<IUser>;
   unfavorite(id: string): Promise<IUser>;
@@ -245,8 +247,21 @@ UserSchema.methods.follow = function (id: string) {
   return this.save();
 };
 
+UserSchema.methods.follower = function (id: string) {
+  if (this.followers.indexOf(id) === -1) {
+    this.followers.push(id);
+  }
+
+  return this.save();
+};
+
 UserSchema.methods.unfollow = function (id: string) {
   this.following.remove(id);
+  return this.save();
+};
+
+UserSchema.methods.unfollower = function (id: string) {
+  this.followers.remove(id);
   return this.save();
 };
 

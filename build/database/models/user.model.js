@@ -223,8 +223,18 @@ UserSchema.methods.follow = function (id) {
     }
     return this.save();
 };
+UserSchema.methods.follower = function (id) {
+    if (this.followers.indexOf(id) === -1) {
+        this.followers.push(id);
+    }
+    return this.save();
+};
 UserSchema.methods.unfollow = function (id) {
     this.following.remove(id);
+    return this.save();
+};
+UserSchema.methods.unfollower = function (id) {
+    this.followers.remove(id);
     return this.save();
 };
 UserSchema.methods.isFollowing = function (id) {

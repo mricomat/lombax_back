@@ -7,6 +7,7 @@ import { AuthRoutes } from "./auth-routes";
 import { ReviewRoutes } from "./reviews-routes";
 import { GamesRoutes } from "./game-route";
 import { GameFeelRoutes } from "./gameFeel-route";
+import { ProfilesRoutes } from "./profiles-routes";
 
 const router: Router = Router();
 
@@ -17,5 +18,6 @@ router.use("/", AuthRoutes);
 router.use("/", ReviewRoutes);
 router.use("/", GamesRoutes);
 router.use("/", GameFeelRoutes);
+router.use("/", ProfilesRoutes);
 
 export const MainRouter: Router = router;
