@@ -50,4 +50,48 @@ router.post(
   }
 );
 
+/**
+ * POST /api/following
+ */
+router.get("/following", (req: Request, res: Response, next: NextFunction) => {
+  const offset =
+    typeof req.query.offset === "string" ? req.query.offset : undefined;
+  User.findById(req.query.id)
+    .sort({ createdAt: -1 })
+    .skip(parseInt(offset))
+    .limit(10)
+    .select("following")
+    .populate("following", "name username coverId")
+    .then((user: IUserModel) => {
+      return res.status(200).json({
+        following: user.following,
+        count: user.following.length,
+        offset: parseInt(offset),
+      });
+    })
+    .catch(next);
+});
+
+/**
+ * POST /api/following
+ */
+router.get("/followers", (req: Request, res: Response, next: NextFunction) => {
+  const offset =
+    typeof req.query.offset === "string" ? req.query.offset : undefined;
+  User.findById(req.query.id)
+    .sort({ createdAt: -1 })
+    .skip(parseInt(offset))
+    .limit(10)
+    .select("followers")
+    .populate("followers", "name username coverId")
+    .then((user: IUserModel) => {
+      return res.status(200).json({
+        followers: user.followers,
+        count: user.followers.length,
+        offset: parseInt(offset),
+      });
+    })
+    .catch(next);
+});
+
 export const ProfilesRoutes: Router = router;
