@@ -43,7 +43,11 @@ router.get("/reviews/user", (req, res, next) => {
         .then((reviews) => {
         res
             .status(200)
-            .json({ reviews: reviews, count: reviews.length, offset });
+            .json({
+            reviews: reviews,
+            count: reviews.length,
+            offset: parseInt(offset),
+        });
     })
         .catch(next);
 });

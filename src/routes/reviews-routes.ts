@@ -56,7 +56,11 @@ router.get(
       .then((reviews: IReviewModel[]) => {
         res
           .status(200)
-          .json({ reviews: reviews, count: reviews.length, offset });
+          .json({
+            reviews: reviews,
+            count: reviews.length,
+            offset: parseInt(offset),
+          });
       })
       .catch(next);
   }

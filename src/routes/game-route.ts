@@ -30,4 +30,24 @@ router.get(
   }
 );
 
+/**
+ * GET /api/game
+ */
+router.get("/games/user", (req: Request, res: Response, next: NextFunction) => {
+  const offset =
+    typeof req.query.offset === "string" ? req.query.offset : undefined;
+  GameFeel.find({
+    user: req.query.id,
+    gameStatus: { $ne: null },
+  })
+    .sort({ createdAt: -1 })
+    .skip(parseInt(offset))
+    .then((gameFeels: IGameFeel[]) => {
+      res
+        .status(200)
+        .json({ gameFeels, count: gameFeels.length, offset: parseInt(offset) });
+    })
+    .catch(next);
+});
+
 export const GamesRoutes: Router = router;
