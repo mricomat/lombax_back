@@ -67,10 +67,10 @@ const getUserCounts = async (id) => {
         _id: 0,
     });
     return {
-        likesCount: (likesCount && likesCount[0].count) || 0,
-        diaryCounts: (diaryCounts && diaryCounts[0].count) || 0,
-        reviewsCount: (reviewsCount && reviewsCount[0].count) || 0,
-        gamesCount: (gamesCount && gamesCount[0].count) || 0,
+        likesCount: (likesCount[0] && likesCount[0].count) || 0,
+        diaryCounts: (diaryCounts[0] && diaryCounts[0].count) || 0,
+        reviewsCount: (reviewsCount[0] && reviewsCount[0].count) || 0,
+        gamesCount: (gamesCount[0] && gamesCount[0].count) || 0,
     };
 };
 router.post("/refreshToken", authentication_1.authentication.required, async (req, res, next) => {
