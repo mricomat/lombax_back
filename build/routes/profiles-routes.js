@@ -47,11 +47,14 @@ router.post("/unfollow", authentication_1.authentication.required, (req, res, ne
 router.get("/following", (req, res, next) => {
     const offset = typeof req.query.offset === "string" ? req.query.offset : undefined;
     user_model_1.User.findById(req.query.id)
-        .sort({ createdAt: -1 })
-        .skip(parseInt(offset))
-        .limit(10)
         .select("following")
-        .populate("following", "name username coverId")
+        .populate({
+        path: "following",
+        select: "name username coverId",
+        sort: { createdAt: -1 },
+        limit: 10,
+        skip: parseInt(offset),
+    })
         .then((user) => {
         return res.status(200).json({
             following: user.following,
@@ -67,11 +70,14 @@ router.get("/following", (req, res, next) => {
 router.get("/followers", (req, res, next) => {
     const offset = typeof req.query.offset === "string" ? req.query.offset : undefined;
     user_model_1.User.findById(req.query.id)
-        .sort({ createdAt: -1 })
-        .skip(parseInt(offset))
-        .limit(10)
         .select("followers")
-        .populate("followers", "name username coverId")
+        .populate({
+        path: "followers",
+        select: "name username coverId",
+        sort: { createdAt: -1 },
+        limit: 10,
+        skip: parseInt(offset),
+    })
         .then((user) => {
         return res.status(200).json({
             followers: user.followers,
