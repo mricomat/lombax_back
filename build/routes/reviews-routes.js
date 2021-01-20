@@ -23,7 +23,6 @@ router.get("/review/user", authentication_1.authentication.required, (req, res, 
  * GET /api/review/game/user
  */
 router.get("/review/user/game", authentication_1.authentication.required, (req, res, next) => {
-    console.log(req.query, req.params);
     review_model_1.Review.find({ user: req.query.userId, "game.id": req.query.gameId })
         // .populate("user", "name coverId")
         .then((reviews) => {
@@ -35,11 +34,16 @@ router.get("/review/user/game", authentication_1.authentication.required, (req, 
  * GET /api/review
  */
 router.get("/reviews/user", (req, res, next) => {
+    const offset = typeof req.query.offset === "string" ? req.query.offset : undefined;
     review_model_1.Review.find({ user: req.query.id, summary: { $ne: "" } })
+        .sort({ createdAt: -1 })
+        .skip(parseInt(offset))
         .limit(10)
         .populate("user", "name username coverId")
         .then((reviews) => {
-        res.status(200).json({ reviews: reviews });
+        res
+            .status(200)
+            .json({ reviews: reviews, count: reviews.length, offset });
     })
         .catch(next);
 });
