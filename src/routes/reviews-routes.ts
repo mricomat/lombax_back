@@ -49,7 +49,7 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     Review.find({ user: req.query.id, summary: { $ne: "" } })
       .limit(10)
-      //.populate("user", "name username")
+      .populate("user", "name username coverId")
       .then((reviews: IReviewModel[]) => {
         res.status(200).json({ reviews: reviews });
       })
@@ -75,6 +75,7 @@ router.post(
     review.user = req.body.userId;
     review.game.id = req.body.game.id;
     review.game.imageId = req.body.game.cover.image_id;
+    review.game.backgroundId = req.body.game.screenshots[0].image_id;
     review.game.releaseDate = req.body.game.first_release_date;
     review.game.name = req.body.game.name;
     review.summary = req.body.summary;
