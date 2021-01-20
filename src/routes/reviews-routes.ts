@@ -46,7 +46,7 @@ router.get(
  */
 router.get(
   "/reviews/user",
-  (req: Request, res: Response, next: NextFunction) => {
+   (req: Request, res: Response, next: NextFunction) => {
     Review.find({ user: req.query.id, summary: { $ne: "" } })
       .limit(10)
       .populate("user", "name username coverId")
