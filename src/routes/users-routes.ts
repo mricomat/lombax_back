@@ -3,6 +3,8 @@ import IUserModel, { User } from "../database/models/user.model";
 import passport from "passport";
 import { authentication } from "../utilities/authentication";
 import { ObjectId } from "mongodb";
+import { GameFeel } from "../database/models/gameFeel.model";
+import { Review } from "../database/models/review.model";
 
 const router: Router = Router();
 
@@ -28,25 +30,51 @@ router.get("/user", (req: Request, res: Response, next: NextFunction) => {
       options: { sort: { createdAt: -1 } },
     })
     .then(async (user: IUserModel) => {
-      const counts = await User.aggregate()
-        .match({ _id: new ObjectId(user._id) })
-        .project({
-          _id: 0,
-          reviewsCount: {
-            $size: "$reviews",
-          },
-          diaryCount: {
-            $size: "$diary",
-          },
-          gameFeelsCount: {
-            $size: "$gameFeels",
-          },
-        });
+      const counts = await getUserCounts(user._id);
       const userJson = user.toAuthJSON();
-      return res.json({ user: { ...userJson, counts: counts[0] } });
+      return res.json({ user: { ...userJson, counts } });
     })
     .catch(next);
 });
+
+const getUserCounts = async (id: string) => {
+  const diaryCounts = await User.aggregate()
+    .match({ _id: new ObjectId(id) })
+    .project({
+      _id: 0,
+      count: {
+        $size: "$diary",
+      },
+    });
+
+  const reviewsCount = await Review.aggregate()
+    .match({ user: id, summary: { $ne: "" } })
+    .group({ _id: null, count: { $sum: 1 } })
+    .project({
+      _id: 0,
+    });
+
+  const gamesCount = await GameFeel.aggregate()
+    .match({ user: id, gameStatus: { $ne: null } })
+    .group({ _id: null, count: { $sum: 1 } })
+    .project({
+      _id: 0,
+    });
+
+  const likesCount = await GameFeel.aggregate()
+    .match({ user: id, like: true })
+    .group({ _id: null, count: { $sum: 1 } })
+    .project({
+      _id: 0,
+    });
+
+  return {
+    likesCount: likesCount[0].count,
+    diaryCounts: diaryCounts[0].count,
+    reviewsCount: reviewsCount[0].count,
+    gamesCount: gamesCount[0].count,
+  };
+};
 
 router.get("/users", (req: Request, res: Response, next: NextFunction) => {
   User.find({

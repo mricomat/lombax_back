@@ -9,6 +9,8 @@ const user_model_1 = require("../database/models/user.model");
 const passport_1 = __importDefault(require("passport"));
 const authentication_1 = require("../utilities/authentication");
 const mongodb_1 = require("mongodb");
+const gameFeel_model_1 = require("../database/models/gameFeel.model");
+const review_model_1 = require("../database/models/review.model");
 const router = express_1.Router();
 /**
  * GET /api/user
@@ -32,25 +34,46 @@ router.get("/user", (req, res, next) => {
         options: { sort: { createdAt: -1 } },
     })
         .then(async (user) => {
-        const counts = await user_model_1.User.aggregate()
-            .match({ _id: new mongodb_1.ObjectId(user._id) })
-            .project({
-            _id: 0,
-            reviewsCount: {
-                $size: "$reviews",
-            },
-            diaryCount: {
-                $size: "$diary",
-            },
-            gameFeelsCount: {
-                $size: "$gameFeels",
-            },
-        });
+        const counts = await getUserCounts(user._id);
         const userJson = user.toAuthJSON();
-        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts: counts[0] }) });
+        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts }) });
     })
         .catch(next);
 });
+const getUserCounts = async (id) => {
+    const diaryCounts = await user_model_1.User.aggregate()
+        .match({ _id: new mongodb_1.ObjectId(id) })
+        .project({
+        _id: 0,
+        count: {
+            $size: "$diary",
+        },
+    });
+    const reviewsCount = await review_model_1.Review.aggregate()
+        .match({ user: id, summary: { $ne: "" } })
+        .group({ _id: null, count: { $sum: 1 } })
+        .project({
+        _id: 0,
+    });
+    const gamesCount = await gameFeel_model_1.GameFeel.aggregate()
+        .match({ user: id, gameStatus: { $ne: null } })
+        .group({ _id: null, count: { $sum: 1 } })
+        .project({
+        _id: 0,
+    });
+    const likesCount = await gameFeel_model_1.GameFeel.aggregate()
+        .match({ user: id, like: true })
+        .group({ _id: null, count: { $sum: 1 } })
+        .project({
+        _id: 0,
+    });
+    return {
+        likesCount: likesCount[0].count,
+        diaryCounts: diaryCounts[0].count,
+        reviewsCount: reviewsCount[0].count,
+        gamesCount: gamesCount[0].count,
+    };
+};
 router.get("/users", (req, res, next) => {
     user_model_1.User.find({
         $or: [

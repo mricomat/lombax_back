@@ -11,6 +11,8 @@ const user_model_1 = require("../database/models/user.model");
 const upload_1 = __importDefault(require("../middleware/upload"));
 const image_model_1 = require("../database/models/image.model");
 const mongodb_1 = require("mongodb");
+const gameFeel_model_1 = require("../database/models/gameFeel.model");
+const review_model_1 = require("../database/models/review.model");
 const router = express_1.Router();
 /**
  * POST /api/users
@@ -28,47 +30,55 @@ router.post("/login", (req, res, next) => {
         }
         if (user) {
             user.token = user.generateJWT();
-            const counts = await user_model_1.User.aggregate()
-                .match({ _id: new mongodb_1.ObjectId(user._id) })
-                .project({
-                _id: 0,
-                reviewsCount: {
-                    $size: "$reviews",
-                },
-                diaryCount: {
-                    $size: "$diary",
-                },
-                gameFeelsCount: {
-                    $size: "$gameFeels",
-                },
-            });
+            const counts = await getUserCounts(user._id);
             const userJson = user.toAuthJSON();
-            return res.json({ user: Object.assign(Object.assign({}, userJson), { counts: counts[0] }) });
+            return res.json({ user: Object.assign(Object.assign({}, userJson), { counts }) });
         }
         else {
             return res.status(422).json(info);
         }
     })(req, res, next);
 });
+const getUserCounts = async (id) => {
+    const diaryCounts = await user_model_1.User.aggregate()
+        .match({ _id: new mongodb_1.ObjectId(id) })
+        .project({
+        _id: 0,
+        count: {
+            $size: "$diary",
+        },
+    });
+    const reviewsCount = await review_model_1.Review.aggregate()
+        .match({ user: id, summary: { $ne: "" } })
+        .group({ _id: null, count: { $sum: 1 } })
+        .project({
+        _id: 0,
+    });
+    const gamesCount = await gameFeel_model_1.GameFeel.aggregate()
+        .match({ user: id, gameStatus: { $ne: null } })
+        .group({ _id: null, count: { $sum: 1 } })
+        .project({
+        _id: 0,
+    });
+    const likesCount = await gameFeel_model_1.GameFeel.aggregate()
+        .match({ user: id, like: true })
+        .group({ _id: null, count: { $sum: 1 } })
+        .project({
+        _id: 0,
+    });
+    return {
+        likesCount: likesCount[0].count,
+        diaryCounts: diaryCounts[0].count,
+        reviewsCount: reviewsCount[0].count,
+        gamesCount: gamesCount[0].count,
+    };
+};
 router.post("/refreshToken", authentication_1.authentication.required, async (req, res, next) => {
     const resToken = authentication_1.validateToken(req);
     if (!resToken) {
         return res.status(422).json("info");
     }
-    const counts = await user_model_1.User.aggregate()
-        .match({ _id: new mongodb_1.ObjectId(resToken.id) })
-        .project({
-        _id: 0,
-        reviewsCount: {
-            $size: "$reviews",
-        },
-        diaryCount: {
-            $size: "$diary",
-        },
-        gameFeelsCount: {
-            $size: "$gameFeels",
-        },
-    });
+    const counts = await getUserCounts(resToken.id);
     user_model_1.User.findById(resToken.id)
         .populate({
         path: "diary",
@@ -92,7 +102,7 @@ router.post("/refreshToken", authentication_1.authentication.required, async (re
         }
         user.token = user.generateJWT();
         const userJson = user.toAuthJSON();
-        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts: counts[0] }) });
+        return res.json({ user: Object.assign(Object.assign({}, userJson), { counts }) });
     })
         .catch(next);
 });
