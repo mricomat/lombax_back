@@ -82,7 +82,8 @@ router.post("/review", authentication_1.authentication.required, async (req, res
     gameFeel.game = game;
     gameFeel.gameStatus = req.body.gameStatus || "BEATEN";
     // If we pass from completed game to want to play or playing
-    if (findFeel.gameStatus !== diary_interface_2.GameStatus.Playing &&
+    if (findFeel &&
+        findFeel.gameStatus !== diary_interface_2.GameStatus.Playing &&
         findFeel.gameStatus !== diary_interface_2.GameStatus.WantPlay &&
         (gameFeel.gameStatus === diary_interface_2.GameStatus.Playing ||
             gameFeel.gameStatus === diary_interface_2.GameStatus.WantPlay)) {
@@ -119,7 +120,14 @@ router.post("/review", authentication_1.authentication.required, async (req, res
             .catch(next);
     }
     else {
-        // TODO remove all reviews with the userId, that are not inside user.reviews except this review.
+        const reviewsToDelete = await review_model_1.Review.find({
+            user: req.body.userId,
+            "game.id": game.id,
+            _id: { $nin: [...user.reviews] },
+        });
+        await Promise.all(reviewsToDelete.map(async (item) => {
+            await item.remove();
+        }));
         return review
             .save()
             .then(async () => {

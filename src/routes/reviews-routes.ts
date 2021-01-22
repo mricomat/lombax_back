@@ -110,6 +110,7 @@ router.post(
 
     // If we pass from completed game to want to play or playing
     if (
+      findFeel &&
       findFeel.gameStatus !== GameStatus.Playing &&
       findFeel.gameStatus !== GameStatus.WantPlay &&
       (gameFeel.gameStatus === GameStatus.Playing ||
@@ -150,7 +151,18 @@ router.post(
         })
         .catch(next);
     } else {
-      // TODO remove all reviews with the userId, that are not inside user.reviews except this review.
+      const reviewsToDelete = await Review.find({
+        user: req.body.userId,
+        "game.id": game.id,
+        _id: { $nin: [...user.reviews] },
+      });
+
+      await Promise.all(
+        reviewsToDelete.map(async (item) => {
+          await item.remove();
+        })
+      );
+
       return review
         .save()
         .then(async () => {
