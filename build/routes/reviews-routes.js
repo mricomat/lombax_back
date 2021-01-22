@@ -100,6 +100,7 @@ router.post("/review", authentication_1.authentication.required, async (req, res
             diary.review = review._id;
             diary.type = diary_interface_1.DiaryType.Review;
             diary.action = diary_interface_1.DiaryAction.Add;
+            diary.gameFeel = gameFeel._id;
             return diary
                 .save()
                 .then(async () => {

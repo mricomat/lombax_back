@@ -131,6 +131,7 @@ router.post(
           diary.review = review._id;
           diary.type = DiaryType.Review;
           diary.action = DiaryAction.Add;
+          diary.gameFeel = gameFeel._id;
 
           return diary
             .save()
