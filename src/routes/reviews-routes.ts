@@ -3,8 +3,11 @@ import { NextFunction, Request, Response, Router } from "express";
 import IUserModel, { User } from "../database/models/user.model";
 import IDiaryModel, { Diary } from "../database/models/diary.model";
 import IReviewModel, { Review } from "../database/models/review.model";
+import IGameFeel, { GameFeel } from "../database/models/gameFeel.model";
 import { DiaryAction, DiaryType } from "../interfaces/diary-interface";
+import { IGame } from "../interfaces/game-interface";
 import { authentication } from "../utilities/authentication";
+import { GameStatus } from "../interfaces/diary-interface";
 
 const router: Router = Router();
 
@@ -54,13 +57,11 @@ router.get(
       .limit(10)
       .populate("user", "name username coverId")
       .then((reviews: IReviewModel[]) => {
-        res
-          .status(200)
-          .json({
-            reviews: reviews,
-            count: reviews.length,
-            offset: parseInt(offset),
-          });
+        res.status(200).json({
+          reviews: reviews,
+          count: reviews.length,
+          offset: parseInt(offset),
+        });
       })
       .catch(next);
   }
@@ -81,16 +82,43 @@ router.post(
       next("Incorrect parameters");
     }
 
+    const game: IGame = {
+      id: req.body.game.id,
+      imageId: req.body.game.cover.image_id,
+      backgroundId: req.body.game.screenshots[0].image_id,
+      releaseDate: req.body.game.first_release_date,
+      name: req.body.game.name,
+    };
+
     review.user = req.body.userId;
-    review.game.id = req.body.game.id;
-    review.game.imageId = req.body.game.cover.image_id;
-    review.game.backgroundId = req.body.game.screenshots[0].image_id;
-    review.game.releaseDate = req.body.game.first_release_date;
-    review.game.name = req.body.game.name;
+    review.game = game;
     review.summary = req.body.summary;
     review.rating = req.body.rating;
     review.dateFinished = req.body.dateFinished;
     review.timeToBeat = req.body.timeToBeat;
+
+    const gameFeel: IGameFeel = new GameFeel();
+
+    const findFeel = await GameFeel.findOne({
+      user: req.body.userId,
+      "game.id": req.body.game.id,
+    });
+
+    gameFeel.user = req.body.userId;
+    gameFeel.game = game;
+    gameFeel.gameStatus = req.body.gameStatus || "BEATEN";
+
+    // If we pass from completed game to want to play or playing
+    if (
+      findFeel.gameStatus !== GameStatus.Playing &&
+      findFeel.gameStatus !== GameStatus.WantPlay &&
+      (gameFeel.gameStatus === GameStatus.Playing ||
+        gameFeel.gameStatus === GameStatus.WantPlay)
+    ) {
+      gameFeel.replaying = true;
+    }
+
+    const resGameFeel = await gameFeel.save();
 
     if (req.body.record) {
       return review
@@ -98,10 +126,7 @@ router.post(
         .then(() => {
           const diary: IDiaryModel = new Diary();
           diary.user = review.user;
-          diary.game = {
-            id: review.game.id,
-            imageId: review.game.imageId,
-          };
+          diary.game = game;
           diary.review = review._id;
           diary.type = DiaryType.Review;
           diary.action = DiaryAction.Add;
@@ -109,11 +134,16 @@ router.post(
           return diary
             .save()
             .then(async () => {
+              if (findFeel) {
+                await user.removeGameFeel(findFeel._id);
+              }
               await user.addReview(review._id);
               await user.addDiary(diary._id);
+              await user.addGameFeel(gameFeel._id);
               return res.json({
                 review: review.toJSON(),
                 diary: diary.toJSON(),
+                gameFeel: gameFeel.toJSON(),
               });
             })
             .catch(next);
@@ -125,6 +155,7 @@ router.post(
         .then(() => {
           return res.json({
             review: review.toJSON(),
+            gameFeel: resGameFeel.toJSON(),
           });
         })
         .catch(next);

@@ -29,7 +29,7 @@ const GameFeelSchema = new Schema(
     gameStatus: {
       type: Schema.Types.String,
     },
-    like: {
+    replaying: {
       type: Schema.Types.Boolean,
     },
   },

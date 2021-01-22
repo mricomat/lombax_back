@@ -7,6 +7,7 @@ const diary_interface_1 = require("../interfaces/diary-interface");
 const gameFeel_model_1 = require("../database/models/gameFeel.model");
 const authentication_1 = require("../utilities/authentication");
 const user_model_1 = require("../database/models/user.model");
+const diary_interface_2 = require("../interfaces/diary-interface");
 const router = express_1.Router();
 /**
  * POST /api/gameFeel
@@ -21,39 +22,57 @@ router.post("/gameFeel", authentication_1.authentication.required, async (req, r
         "game.id": req.body.game.id,
     });
     const gameFeel = new gameFeel_model_1.GameFeel();
+    const game = {
+        id: req.body.game.id,
+        imageId: req.body.game.cover.image_id,
+        backgroundId: req.body.game.screenshots[0].image_id,
+        releaseDate: req.body.game.first_release_date,
+        name: req.body.game.name,
+    };
     gameFeel.user = req.body.userId;
-    gameFeel.game.id = req.body.game.id;
-    gameFeel.game.imageId = req.body.game.cover.image_id;
-    gameFeel.game.releaseDate = req.body.game.first_release_date;
-    gameFeel.game.name = req.body.game.name;
+    gameFeel.game = game;
     gameFeel.gameStatus = req.body.gameStatus;
-    gameFeel.like = req.body.like;
+    // If we pass from completed game to want to play or playing
+    if (findFeel.gameStatus !== diary_interface_2.GameStatus.Playing &&
+        findFeel.gameStatus !== diary_interface_2.GameStatus.WantPlay &&
+        (gameFeel.gameStatus === diary_interface_2.GameStatus.Playing ||
+            gameFeel.gameStatus === diary_interface_2.GameStatus.WantPlay)) {
+        gameFeel.replaying = true;
+    }
     return gameFeel
         .save()
-        .then(() => {
-        const diary = new diary_model_1.Diary();
-        diary.user = gameFeel.user;
-        diary.game = {
-            id: gameFeel.game.id,
-            imageId: gameFeel.game.imageId,
-        };
-        diary.gameFeel = gameFeel._id;
-        diary.type = diary_interface_1.DiaryType.GameFeel;
-        diary.action = diary_interface_1.DiaryAction.Add;
-        return diary
-            .save()
-            .then(async () => {
+        .then(async () => {
+        if (req.body.record) {
+            const diary = new diary_model_1.Diary();
+            diary.user = gameFeel.user;
+            diary.game = game;
+            diary.gameFeel = gameFeel._id;
+            diary.type = diary_interface_1.DiaryType.GameFeel;
+            diary.action = diary_interface_1.DiaryAction.Add;
+            return diary
+                .save()
+                .then(async () => {
+                if (findFeel) {
+                    await user.removeGameFeel(findFeel._id);
+                }
+                await user.addGameFeel(gameFeel._id);
+                await user.addDiary(diary._id);
+                return res.json({
+                    gameFeel: gameFeel.toJSON(),
+                    diary: diary.toJSON(),
+                });
+            })
+                .catch(next);
+        }
+        else {
             if (findFeel) {
                 await user.removeGameFeel(findFeel._id);
             }
             await user.addGameFeel(gameFeel._id);
-            await user.addDiary(diary._id);
             return res.json({
                 gameFeel: gameFeel.toJSON(),
-                diary: diary.toJSON(),
             });
-        })
-            .catch(next);
+        }
     })
         .catch(next);
 });

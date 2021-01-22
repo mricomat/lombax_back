@@ -29,7 +29,7 @@ const GameFeelSchema = new mongoose_1.Schema({
     gameStatus: {
         type: mongoose_1.Schema.Types.String,
     },
-    like: {
+    replaying: {
         type: mongoose_1.Schema.Types.Boolean,
     },
 }, { timestamps: true });

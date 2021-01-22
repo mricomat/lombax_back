@@ -12,6 +12,7 @@ const router = express_1.Router();
 router.get("/game", authentication_1.authentication.required, (req, res, next) => {
     review_model_1.Review.find({ user: req.query.userId, "game.id": req.query.gameId })
         .sort({ createdAt: -1 })
+        .limit(6)
         .then((reviews) => {
         gameFeel_model_1.GameFeel.findOne({
             user: req.query.userId,

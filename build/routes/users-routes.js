@@ -55,6 +55,7 @@ const getUserCounts = async (id) => {
         .project({
         _id: 0,
     });
+    // TODO cambiar, pues pueden haber mas de un game stateus por juego
     const gamesCount = await gameFeel_model_1.GameFeel.aggregate()
         .match({ user: id, gameStatus: { $ne: null } })
         .group({ _id: null, count: { $sum: 1 } })

@@ -46,5 +46,5 @@ export interface IGameFeel {
   user: User["_id"];
   game: IGame;
   gameStatus: GameStatus;
-  like?: boolean;
+  replaying?: boolean;
 }

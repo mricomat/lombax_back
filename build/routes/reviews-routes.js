@@ -5,8 +5,10 @@ const express_1 = require("express");
 const user_model_1 = require("../database/models/user.model");
 const diary_model_1 = require("../database/models/diary.model");
 const review_model_1 = require("../database/models/review.model");
+const gameFeel_model_1 = require("../database/models/gameFeel.model");
 const diary_interface_1 = require("../interfaces/diary-interface");
 const authentication_1 = require("../utilities/authentication");
+const diary_interface_2 = require("../interfaces/diary-interface");
 const router = express_1.Router();
 /**
  * GET /api/review/user
@@ -41,9 +43,7 @@ router.get("/reviews/user", (req, res, next) => {
         .limit(10)
         .populate("user", "name username coverId")
         .then((reviews) => {
-        res
-            .status(200)
-            .json({
+        res.status(200).json({
             reviews: reviews,
             count: reviews.length,
             offset: parseInt(offset),
@@ -60,37 +60,58 @@ router.post("/review", authentication_1.authentication.required, async (req, res
     if (!user) {
         next("Incorrect parameters");
     }
+    const game = {
+        id: req.body.game.id,
+        imageId: req.body.game.cover.image_id,
+        backgroundId: req.body.game.screenshots[0].image_id,
+        releaseDate: req.body.game.first_release_date,
+        name: req.body.game.name,
+    };
     review.user = req.body.userId;
-    review.game.id = req.body.game.id;
-    review.game.imageId = req.body.game.cover.image_id;
-    review.game.backgroundId = req.body.game.screenshots[0].image_id;
-    review.game.releaseDate = req.body.game.first_release_date;
-    review.game.name = req.body.game.name;
+    review.game = game;
     review.summary = req.body.summary;
     review.rating = req.body.rating;
     review.dateFinished = req.body.dateFinished;
     review.timeToBeat = req.body.timeToBeat;
+    const gameFeel = new gameFeel_model_1.GameFeel();
+    const findFeel = await gameFeel_model_1.GameFeel.findOne({
+        user: req.body.userId,
+        "game.id": req.body.game.id,
+    });
+    gameFeel.user = req.body.userId;
+    gameFeel.game = game;
+    gameFeel.gameStatus = req.body.gameStatus || "BEATEN";
+    // If we pass from completed game to want to play or playing
+    if (findFeel.gameStatus !== diary_interface_2.GameStatus.Playing &&
+        findFeel.gameStatus !== diary_interface_2.GameStatus.WantPlay &&
+        (gameFeel.gameStatus === diary_interface_2.GameStatus.Playing ||
+            gameFeel.gameStatus === diary_interface_2.GameStatus.WantPlay)) {
+        gameFeel.replaying = true;
+    }
+    const resGameFeel = await gameFeel.save();
     if (req.body.record) {
         return review
             .save()
             .then(() => {
             const diary = new diary_model_1.Diary();
             diary.user = review.user;
-            diary.game = {
-                id: review.game.id,
-                imageId: review.game.imageId,
-            };
+            diary.game = game;
             diary.review = review._id;
             diary.type = diary_interface_1.DiaryType.Review;
             diary.action = diary_interface_1.DiaryAction.Add;
             return diary
                 .save()
                 .then(async () => {
+                if (findFeel) {
+                    await user.removeGameFeel(findFeel._id);
+                }
                 await user.addReview(review._id);
                 await user.addDiary(diary._id);
+                await user.addGameFeel(gameFeel._id);
                 return res.json({
                     review: review.toJSON(),
                     diary: diary.toJSON(),
+                    gameFeel: gameFeel.toJSON(),
                 });
             })
                 .catch(next);
@@ -103,6 +124,7 @@ router.post("/review", authentication_1.authentication.required, async (req, res
             .then(() => {
             return res.json({
                 review: review.toJSON(),
+                gameFeel: resGameFeel.toJSON(),
             });
         })
             .catch(next);
