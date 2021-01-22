@@ -48,22 +48,22 @@ const getUserCounts = async (id: string) => {
     });
 
   const reviewsCount = await Review.aggregate()
-    .match({ user: id, summary: { $ne: "" } })
+    .match({ user: new ObjectId(id), summary: { $ne: "" } })
     .group({ _id: null, count: { $sum: 1 } })
     .project({
       _id: 0,
     });
 
-    // TODO cambiar, pues pueden haber mas de un game stateus por juego
+  // TODO cambiar, pues pueden haber mas de un game stateus por juego
   const gamesCount = await GameFeel.aggregate()
-    .match({ user: id, gameStatus: { $ne: null } })
+    .match({ user: new ObjectId(id), gameStatus: { $ne: null } })
     .group({ _id: null, count: { $sum: 1 } })
     .project({
       _id: 0,
     });
 
   const likesCount = await GameFeel.aggregate()
-    .match({ user: id, like: true })
+    .match({ user: new ObjectId(id), like: true })
     .group({ _id: null, count: { $sum: 1 } })
     .project({
       _id: 0,

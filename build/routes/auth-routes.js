@@ -49,19 +49,19 @@ const getUserCounts = async (id) => {
         },
     });
     const reviewsCount = await review_model_1.Review.aggregate()
-        .match({ user: id, summary: { $ne: "" } })
+        .match({ user: new mongodb_1.ObjectId(id), summary: { $ne: "" } })
         .group({ _id: null, count: { $sum: 1 } })
         .project({
         _id: 0,
     });
     const gamesCount = await gameFeel_model_1.GameFeel.aggregate()
-        .match({ user: id, gameStatus: { $ne: null } })
+        .match({ user: new mongodb_1.ObjectId(id), gameStatus: { $ne: null } })
         .group({ _id: null, count: { $sum: 1 } })
         .project({
         _id: 0,
     });
     const likesCount = await gameFeel_model_1.GameFeel.aggregate()
-        .match({ user: id, like: true })
+        .match({ user: new mongodb_1.ObjectId(id), like: true })
         .group({ _id: null, count: { $sum: 1 } })
         .project({
         _id: 0,
