@@ -60,12 +60,15 @@ const getUserCounts = async (id: string) => {
       _id: 0,
     });
 
-  // TODO cambiar, pues pueden haber mas de un game stateus por juego
   const gamesCount = await GameFeel.aggregate()
     .match({ user: new ObjectId(id), gameStatus: { $ne: null } })
-    .group({ _id: null, count: { $sum: 1 } })
+    .group({ _id: "$game.id", count: { $addToSet: "$game.id" } })
     .project({
       _id: 0,
+      count: 1,
+      size: {
+        $size: "$count",
+      },
     });
 
   const likesCount = await GameFeel.aggregate()
@@ -79,7 +82,7 @@ const getUserCounts = async (id: string) => {
     likesCount: (likesCount[0] && likesCount[0].count) || 0,
     diaryCounts: (diaryCounts[0] && diaryCounts[0].count) || 0,
     reviewsCount: (reviewsCount[0] && reviewsCount[0].count) || 0,
-    gamesCount: (gamesCount[0] && gamesCount[0].count) || 0,
+    gamesCount: (gamesCount[0] && gamesCount[0].size) || 0,
   };
 };
 

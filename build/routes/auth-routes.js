@@ -62,9 +62,13 @@ const getUserCounts = async (id) => {
     });
     const gamesCount = await gameFeel_model_1.GameFeel.aggregate()
         .match({ user: new mongodb_1.ObjectId(id), gameStatus: { $ne: null } })
-        .group({ _id: null, count: { $sum: 1 } })
+        .group({ _id: "$game.id", count: { $addToSet: "$game.id" } })
         .project({
         _id: 0,
+        count: 1,
+        size: {
+            $size: "$count",
+        },
     });
     const likesCount = await gameFeel_model_1.GameFeel.aggregate()
         .match({ user: new mongodb_1.ObjectId(id), like: true })
@@ -76,7 +80,7 @@ const getUserCounts = async (id) => {
         likesCount: (likesCount[0] && likesCount[0].count) || 0,
         diaryCounts: (diaryCounts[0] && diaryCounts[0].count) || 0,
         reviewsCount: (reviewsCount[0] && reviewsCount[0].count) || 0,
-        gamesCount: (gamesCount[0] && gamesCount[0].count) || 0,
+        gamesCount: (gamesCount[0] && gamesCount[0].size) || 0,
     };
 };
 router.post("/refreshToken", authentication_1.authentication.required, async (req, res, next) => {
