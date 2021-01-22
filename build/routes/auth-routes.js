@@ -49,7 +49,13 @@ const getUserCounts = async (id) => {
         },
     });
     const reviewsCount = await review_model_1.Review.aggregate()
-        .match({ user: new mongodb_1.ObjectId(id), summary: { $ne: "" } })
+        .match({
+        $and: [
+            { summary: { $ne: "" } },
+            { summary: { $exists: true } },
+            { user: new mongodb_1.ObjectId(id) },
+        ],
+    })
         .group({ _id: null, count: { $sum: 1 } })
         .project({
         _id: 0,

@@ -48,7 +48,13 @@ const getUserCounts = async (id: string) => {
     });
 
   const reviewsCount = await Review.aggregate()
-    .match({ user: new ObjectId(id), summary: { $ne: "" } })
+    .match({
+      $and: [
+        { summary: { $ne: "" } },
+        { summary: { $exists: true } },
+        { user: new ObjectId(id) },
+      ],
+    })
     .group({ _id: null, count: { $sum: 1 } })
     .project({
       _id: 0,
