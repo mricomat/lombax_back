@@ -15,7 +15,6 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     Review.find({ user: req.query.userId, "game.id": req.query.gameId })
       .sort({ createdAt: -1 })
-      .limit(6)
       .then((reviews: IReviewModel[]) => {
         GameFeel.findOne({
           user: req.query.userId,

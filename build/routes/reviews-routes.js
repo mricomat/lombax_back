@@ -119,9 +119,14 @@ router.post("/review", authentication_1.authentication.required, async (req, res
             .catch(next);
     }
     else {
+        // TODO remove all reviews with the userId, that are not inside user.reviews except this review.
         return review
             .save()
-            .then(() => {
+            .then(async () => {
+            if (findFeel) {
+                await user.removeGameFeel(findFeel._id);
+            }
+            await user.addGameFeel(gameFeel._id);
             return res.json({
                 review: review.toJSON(),
                 gameFeel: resGameFeel.toJSON(),
