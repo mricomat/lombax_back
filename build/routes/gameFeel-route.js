@@ -33,7 +33,8 @@ router.post("/gameFeel", authentication_1.authentication.required, async (req, r
     gameFeel.game = game;
     gameFeel.gameStatus = req.body.gameStatus;
     // If we pass from completed game to want to play or playing
-    if (findFeel.gameStatus !== diary_interface_2.GameStatus.Playing &&
+    if (findFeel &&
+        findFeel.gameStatus !== diary_interface_2.GameStatus.Playing &&
         findFeel.gameStatus !== diary_interface_2.GameStatus.WantPlay &&
         (gameFeel.gameStatus === diary_interface_2.GameStatus.Playing ||
             gameFeel.gameStatus === diary_interface_2.GameStatus.WantPlay)) {

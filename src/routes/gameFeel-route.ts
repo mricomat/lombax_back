@@ -44,6 +44,7 @@ router.post(
 
     // If we pass from completed game to want to play or playing
     if (
+      findFeel &&
       findFeel.gameStatus !== GameStatus.Playing &&
       findFeel.gameStatus !== GameStatus.WantPlay &&
       (gameFeel.gameStatus === GameStatus.Playing ||
