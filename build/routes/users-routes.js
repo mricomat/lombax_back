@@ -81,7 +81,7 @@ const getUserCounts = async (id) => {
         likesCount: (likesCount[0] && likesCount[0].count) || 0,
         diaryCounts: (diaryCounts[0] && diaryCounts[0].count) || 0,
         reviewsCount: (reviewsCount[0] && reviewsCount[0].count) || 0,
-        gamesCount: (gamesCount[0] && gamesCount[0].size) || 0,
+        gamesCount: (gamesCount && gamesCount.length) || 0,
     };
 };
 router.get("/users", (req, res, next) => {
