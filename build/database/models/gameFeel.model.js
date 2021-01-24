@@ -25,6 +25,21 @@ const GameFeelSchema = new mongoose_1.Schema({
             unique: false,
             required: [true, "can't be blank"],
         },
+        backgroundId: {
+            type: mongoose_1.Schema.Types.String,
+            unique: false,
+            required: [true, "can't be blank"],
+        },
+        releaseDate: {
+            type: mongoose_1.Schema.Types.Number,
+            unique: false,
+            required: [true, "can't be blank"],
+        },
+        name: {
+            type: mongoose_1.Schema.Types.String,
+            unique: false,
+            required: [true, "can't be blank"],
+        },
     },
     gameStatus: {
         type: mongoose_1.Schema.Types.String,

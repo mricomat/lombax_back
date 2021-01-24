@@ -22,6 +22,7 @@ router.post("/gameFeel", authentication_1.authentication.required, async (req, r
         "game.id": req.body.game.id,
     });
     const gameFeel = new gameFeel_model_1.GameFeel();
+    console.log(req.body.game);
     const game = {
         id: req.body.game.id,
         imageId: req.body.game.cover.image_id,

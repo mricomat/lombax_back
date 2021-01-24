@@ -25,6 +25,21 @@ const GameFeelSchema = new Schema(
         unique: false,
         required: [true, "can't be blank"],
       },
+      backgroundId: {
+        type: Schema.Types.String,
+        unique: false,
+        required: [true, "can't be blank"],
+      },
+      releaseDate: {
+        type: Schema.Types.Number,
+        unique: false,
+        required: [true, "can't be blank"],
+      },
+      name: {
+        type: Schema.Types.String,
+        unique: false,
+        required: [true, "can't be blank"],
+      },
     },
     gameStatus: {
       type: Schema.Types.String,
