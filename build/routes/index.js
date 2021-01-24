@@ -10,6 +10,7 @@ const reviews_routes_1 = require("./reviews-routes");
 const game_route_1 = require("./game-route");
 const gameFeel_route_1 = require("./gameFeel-route");
 const profiles_routes_1 = require("./profiles-routes");
+const diary_route_1 = require("./diary-route");
 const router = express_1.Router();
 router.use("/", users_routes_1.UsersRoutes);
 router.use("/", upload_routes_1.UploadRoutes);
@@ -19,5 +20,6 @@ router.use("/", reviews_routes_1.ReviewRoutes);
 router.use("/", game_route_1.GamesRoutes);
 router.use("/", gameFeel_route_1.GameFeelRoutes);
 router.use("/", profiles_routes_1.ProfilesRoutes);
+router.use("/", diary_route_1.DiaryRoutes);
 exports.MainRouter = router;
 //# sourceMappingURL=index.js.map
