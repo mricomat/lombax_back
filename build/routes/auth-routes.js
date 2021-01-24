@@ -41,7 +41,7 @@ router.post("/login", (req, res, next) => {
 });
 const getUserCounts = async (id) => {
     const diaryCounts = await user_model_1.User.aggregate()
-        .match({ _id: new mongodb_1.ObjectId(id) })
+        .match({ user: new mongodb_1.ObjectId(id) })
         .project({
         _id: 0,
         count: {
