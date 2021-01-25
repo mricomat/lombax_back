@@ -45,12 +45,13 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
 
 const getUserCounts = async (id: string) => {
   const diaryCounts = await User.aggregate()
-    .match({ user: new ObjectId(id) })
+    .match({ _id: new ObjectId(id) })
     .project({
       _id: 0,
       count: {
         $size: "$diary",
       },
+
     });
 
   const reviewsCount = await Review.aggregate()
