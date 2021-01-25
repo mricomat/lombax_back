@@ -37,7 +37,13 @@ router.get("/review/user/game", authentication_1.authentication.required, (req, 
  */
 router.get("/reviews/user", (req, res, next) => {
     const offset = typeof req.query.offset === "string" ? req.query.offset : undefined;
-    review_model_1.Review.find({ user: req.query.id, summary: { $ne: "" } })
+    review_model_1.Review.find({
+        $and: [
+            { user: req.query.id },
+            { summary: { $ne: "" } },
+            { summary: { $exists: true } },
+        ],
+    })
         .sort({ createdAt: -1 })
         .skip(parseInt(offset))
         .limit(10)

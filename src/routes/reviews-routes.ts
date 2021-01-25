@@ -51,7 +51,13 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     const offset =
       typeof req.query.offset === "string" ? req.query.offset : undefined;
-    Review.find({ user: req.query.id, summary: { $ne: "" } })
+    Review.find({
+      $and: [
+        { user: req.query.id },
+        { summary: { $ne: "" } },
+        { summary: { $exists: true } },
+      ],
+    })
       .sort({ createdAt: -1 })
       .skip(parseInt(offset))
       .limit(10)
