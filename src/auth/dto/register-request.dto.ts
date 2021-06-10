@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsDate, IsEmail, IsNotEmpty, IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsAlphanumeric, IsDate, IsEmail, IsNotEmpty, ValidateNested, IsOptional, IsString } from "class-validator";
 import { Transform, Type } from "class-transformer";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
@@ -7,6 +7,7 @@ import { toLowerCaseStringHelper } from "../../utils/transformers-helpers/to-low
 import { ErrorMessages } from "../../utils/error-messages";
 import { IsValidPassword } from "../../common/custom-validators/is-valid-password.custom-validator";
 import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
+import { DocumentDto } from "../../common/dto/document.dto";
 
 export class RegisterRequestDto {
   @ApiProperty()
@@ -59,8 +60,20 @@ export class RegisterRequestDto {
   @IsNotEmpty()
   password: string;
 
+  @ApiPropertyOptional({ type: DocumentDto })
+  @Type(() => DocumentDto)
+  @IsOptional()
+  @ValidateNested()
+  @IsNotEmpty()
+  avatarImage?: DocumentDto;
+
+  @ApiPropertyOptional({ type: DocumentDto })
+  @Type(() => DocumentDto)
+  @IsOptional()
+  @ValidateNested()
+  @IsNotEmpty()
+  backgroundImage?: DocumentDto;
+
   // TODO
   // Interests
-  // avatar
-  // background
 }

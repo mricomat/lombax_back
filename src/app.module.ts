@@ -9,6 +9,8 @@ import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { ClassValidatorErrorsToValidationExceptionFactory } from "./common/pipes/validation-factory.pipe";
 import { UsersModule } from "./users/users.module";
+import { FilesModule } from "./files/file.module";
+import { FilesModuleConfigInterface } from "./files/interfaces/files-module-config.interface";
 
 const configFiles = resolve(__dirname, "config", "**", "!(*.d).{ts,js}");
 
@@ -33,6 +35,11 @@ const appInterceptor = <T>(cons: T) => ({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.get("database") as TypeOrmModuleOptions,
+    }),
+    FilesModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService): FilesModuleConfigInterface => configService.get("aws") as FilesModuleConfigInterface,
     }),
     UsersModule,
     AuthModule,

@@ -6,6 +6,7 @@ import { Exclude } from "class-transformer";
 
 import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
 import { RolesEnum } from "../enums/roles.enum";
+import { FileEntity } from '../../files/file.entity';
 
 @Entity('Users')
 export class UserEntity extends BaseEntityAbstract {
@@ -49,6 +50,16 @@ export class UserEntity extends BaseEntityAbstract {
   @IsAlphaBlank()
   @Column()
   summary: string;
+
+  @ApiResponseProperty()
+  @OneToOne(() => FileEntity, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  avatarImage?: FileEntity;
+
+  @ApiResponseProperty()
+  @OneToOne(() => FileEntity, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  backgroundImage?: FileEntity;
 
   @ApiResponseProperty({ enum: RolesEnum })
   @IsString()
