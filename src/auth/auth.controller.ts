@@ -52,6 +52,9 @@ export class AuthController {
   @ApiUnprocessableEntityResponse({
     type: ValidationException,
   })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
   @ApiInternalServerErrorResponse({
     type: InternalServerErrorException,
   })

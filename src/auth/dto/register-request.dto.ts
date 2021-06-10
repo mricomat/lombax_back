@@ -20,7 +20,6 @@ export class RegisterRequestDto {
   @Transform(trimStringHelper)
   @IsString()
   @IsAlphaBlank()
-  @IsNotEmpty()
   lastName: string;
 
   @ApiProperty()

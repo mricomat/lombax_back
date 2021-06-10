@@ -7,6 +7,7 @@ import { Exclude } from "class-transformer";
 import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
 import { RolesEnum } from "../enums/roles.enum";
 
+@Entity('Users')
 export class UserEntity extends BaseEntityAbstract {
   @ApiResponseProperty()
   @IsString()
