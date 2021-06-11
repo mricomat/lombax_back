@@ -5,4 +5,5 @@ export const ErrorMessages = {
   UserEmailAlreadyExists: "El correo electrónico ingresado ya esta en uso. Por favor, ingrese otro correo electrónico y vuelva intentarlo",
   UsernameAlreadyExists: "El nombre de usuario ingresado ya esta en uso. Por favor, ingrese otro nombre de usuario y vuelva intentarlo",
   InvalidRegisterBody: "Los parámetros de registro no son válidos.",
+  UserNotFound: 'El usuario no existe. Por favor, use otro usuario y vuelva a intentarlo',
 };

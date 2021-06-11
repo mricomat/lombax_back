@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { UserEntity } from "./entity/user.entity";
 import { UsersSubscriber } from "./subscribers/users.subscriber";
+import { UsersController } from './users.controller';
 import { UsersService } from "./users.service";
 
 @Module({
@@ -16,8 +17,8 @@ import { UsersService } from "./users.service";
       useFactory: (configService: ConfigService) => configService.get("jwt") as JwtModuleOptions,
     }),
   ],
-  controllers: [],
-  providers: [UsersSubscriber],
-  exports: [],
+  controllers: [UsersController],
+  providers: [UsersService, UsersSubscriber],
+  exports: [UsersService],
 })
 export class UsersModule {}
