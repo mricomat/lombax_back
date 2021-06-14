@@ -1,14 +1,16 @@
 import { BaseEntityAbstract } from "../../common/entities/base-entity.abstract";
 import { IsAlphanumeric, IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsString } from "class-validator";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, OneToMany } from "typeorm";
 import { ApiResponseProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 
 import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
 import { RolesEnum } from "../enums/roles.enum";
-import { FileEntity } from '../../files/file.entity';
+import { FileEntity } from "../../files/file.entity";
+import { GenreEntity } from "src/genres/genre.entity";
+import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 
-@Entity('Users')
+@Entity("Users")
 export class UserEntity extends BaseEntityAbstract {
   @ApiResponseProperty()
   @IsString()
@@ -52,21 +54,35 @@ export class UserEntity extends BaseEntityAbstract {
   summary: string;
 
   @ApiResponseProperty()
-  @OneToOne(() => FileEntity, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => FileEntity, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn()
   avatarImage?: FileEntity;
 
   @ApiResponseProperty()
-  @OneToOne(() => FileEntity, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => FileEntity, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn()
   backgroundImage?: FileEntity;
 
+  @ApiResponseProperty()
+  @IsDate()
+  @IsNotEmpty()
+  @Column({ type: 'timestamptz' })
+  birthday: Date;
+  
   @ApiResponseProperty({ enum: RolesEnum })
   @IsString()
   @IsEnum(RolesEnum)
   @IsNotEmpty()
   @Column({ enum: RolesEnum, default: RolesEnum.USER })
   role: RolesEnum;
+
+  @ApiResponseProperty()
+  @ManyToMany(() => GenreEntity, { cascade: true, onDelete: "CASCADE" })
+  @JoinTable()
+  interests: GenreEntity[];
+
+  @OneToMany(() => GameFeelEntity, (gameFeel) => gameFeel.user)
+  gameFeels?: GameFeelEntity[];
 
   @ApiResponseProperty()
   @IsOptional()

@@ -10,7 +10,11 @@ import { AuthModule } from "./auth/auth.module";
 import { ClassValidatorErrorsToValidationExceptionFactory } from "./common/pipes/validation-factory.pipe";
 import { UsersModule } from "./users/users.module";
 import { FilesModule } from "./files/file.module";
+import { GenresModule } from "./genres/genres.module";
 import { FilesModuleConfigInterface } from "./files/interfaces/files-module-config.interface";
+import { GamesModule } from "./games/games.module";
+import { GamesFeelsModule } from "./gameFeel/gameFeels.module";
+import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
 
 const configFiles = resolve(__dirname, "config", "**", "!(*.d).{ts,js}");
 
@@ -42,9 +46,17 @@ const appInterceptor = <T>(cons: T) => ({
       useFactory: (configService: ConfigService): FilesModuleConfigInterface => configService.get("aws") as FilesModuleConfigInterface,
     }),
     UsersModule,
+    GenresModule,
+    GamesFeelsModule,
+    GamesModule,
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, appPipe(ClassValidatorErrorsToValidationExceptionFactory), appInterceptor(ClassSerializerInterceptor)],
+  providers: [
+    AppService,
+    appPipe(ClassValidatorErrorsToValidationExceptionFactory),
+    appInterceptor(ClassSerializerInterceptor),
+    appInterceptor(LoggingInterceptor),
+  ],
 })
 export class AppModule {}

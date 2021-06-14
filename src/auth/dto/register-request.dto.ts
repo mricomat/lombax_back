@@ -1,4 +1,15 @@
-import { IsAlphanumeric, IsDate, IsEmail, IsNotEmpty, ValidateNested, IsOptional, IsString } from "class-validator";
+import {
+  IsAlphanumeric,
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  ValidateNested,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ArrayMinSize,
+  ArrayUnique,
+} from "class-validator";
 import { Transform, Type } from "class-transformer";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
@@ -74,6 +85,12 @@ export class RegisterRequestDto {
   @IsNotEmpty()
   backgroundImage?: DocumentDto;
 
-  // TODO
-  // Interests
+  @ApiProperty({ description: "Array of IDs from each tag" })
+  @IsOptional()
+  @IsUUID("4", { each: true })
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  @ArrayMinSize(3)
+  @ArrayUnique()
+  interests?: string[];
 }

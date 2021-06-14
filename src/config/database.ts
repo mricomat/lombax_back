@@ -3,7 +3,6 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, NODE_ENV, DB_SSL } = process.env;
 
-console.log(__dirname, [path.resolve(__dirname, "..", "**/**.entity!(*.d).{ts,js}")]);
 export default {
   type: "postgres",
   database: DB_NAME,

@@ -1,0 +1,7 @@
+export enum GameStatusEnum {
+  WANT_TO_PLAY = "WANT_TO_PLAY",
+  PLAYING = "PLAYING",
+  BEATEN = "BEATEN",
+  COMPLETED = "COMPLETED",
+  ABANDONED = "ABANDONED",
+}

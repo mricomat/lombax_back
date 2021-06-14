@@ -1,0 +1,3 @@
+export const SESSION_TOKEN_METHOD = 'SESSION';
+
+export const SESSION_TOKEN_EXPIRATION = '12h';
