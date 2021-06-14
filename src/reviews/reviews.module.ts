@@ -9,10 +9,11 @@ import { ReviewsService } from "./reviews.service";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 import { ReviewEntity } from "./review.entity";
 import { GamesFeelsService } from "src/gameFeel/gameFeels.service";
+import { DiariesService } from "src/diaries/diaries.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([ReviewEntity, GameFeelEntity, GameEntity]), AuthModule, GamesModule, GameFeelEntity],
   controllers: [ReviewsController],
-  providers: [ReviewsService, GamesService, GamesFeelsService],
+  providers: [ReviewsService, GamesService, GamesFeelsService, DiariesService],
 })
 export class ReviewsModule {}

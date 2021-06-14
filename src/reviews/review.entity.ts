@@ -6,6 +6,7 @@ import { BaseEntityAbstract } from "../common/entities/base-entity.abstract";
 import { GameEntity } from "src/games/game.entity";
 import { UserEntity } from "src/users/entity/user.entity";
 import { IsAlphaBlank } from "../common/custom-validators/is-alpha-blank.custom-validator";
+import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 
 @Entity("Reviews")
 export class ReviewEntity extends BaseEntityAbstract {
@@ -14,8 +15,13 @@ export class ReviewEntity extends BaseEntityAbstract {
   @JoinColumn()
   game: GameEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.gameFeels, { cascade: true, onDelete: "CASCADE" })
+  @ManyToOne(() => UserEntity, (user) => user.reviews, { cascade: true, onDelete: "CASCADE" })
   user: UserEntity;
+
+  @ApiResponseProperty()
+  @OneToOne(() => GameFeelEntity, { cascade: true, onDelete: "CASCADE" })
+  @JoinColumn()
+  gameFeel: GameFeelEntity;
 
   @ApiResponseProperty()
   @IsString()

@@ -16,6 +16,7 @@ import { GamesModule } from "./games/games.module";
 import { GamesFeelsModule } from "./gameFeel/gameFeels.module";
 import { ReviewsModule } from "./reviews/reviews.module";
 import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
+import { DiariesModule } from "./diaries/diaries.module";
 
 const configFiles = resolve(__dirname, "config", "**", "!(*.d).{ts,js}");
 
@@ -51,6 +52,7 @@ const appInterceptor = <T>(cons: T) => ({
     GamesFeelsModule,
     GamesModule,
     ReviewsModule,
+    DiariesModule,
     AuthModule,
   ],
   controllers: [AppController],

@@ -9,6 +9,7 @@ import { GameEntity } from "src/games/game.entity";
 import { GamesService } from "src/games/games.service";
 import { ReviewEntity } from "./review.entity";
 import { ReviewRequestDto } from "./dto/review-request.dto";
+import { DiariesService } from "src/diaries/diaries.service";
 
 @Injectable()
 export class ReviewsService {
@@ -16,7 +17,9 @@ export class ReviewsService {
     @InjectConnection() private readonly connection: Connection,
     @InjectRepository(GameFeelEntity) private readonly gamesFeelsRepository: Repository<GameFeelEntity>,
     @InjectRepository(GameEntity) private readonly gamesRepository: Repository<GameEntity>,
+    @InjectRepository(ReviewEntity) private readonly reviewsRepository: Repository<ReviewEntity>,
     private readonly gamesService: GamesService,
+    private readonly diaryService: DiariesService,
   ) {}
 
   async saveNewReview(user: UserEntity, reviewBody: ReviewRequestDto): Promise<SuccessResponseDto> {
@@ -25,16 +28,9 @@ export class ReviewsService {
       ? await this.gamesRepository.findOne({ idS: reviewBody.game.idS })
       : await this.gamesService.saveNewGame(reviewBody.game);
 
-    await this.connection.transaction(
-      async (entityManager): Promise<ReviewEntity> => {
-        await this.gamesFeelsRepository.save({ gameStatus: reviewBody.gameStatus, game, user });
-
-        const reviewsTransactionalRepository = entityManager.getRepository(ReviewEntity);
-        const newGameFeel = await reviewsTransactionalRepository.save({ ...reviewBody, game, user });
-
-        return newGameFeel;
-      },
-    );
+    const gameFeel = await this.gamesFeelsRepository.save({ gameStatus: reviewBody.gameStatus, game, user });
+    const review = await this.reviewsRepository.save({ ...reviewBody, game, user, gameFeel });
+    await this.diaryService.saveNewDiary(user, { review: review, game });
 
     return {
       status: "successful",

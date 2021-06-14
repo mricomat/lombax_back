@@ -9,6 +9,8 @@ import { RolesEnum } from "../enums/roles.enum";
 import { FileEntity } from "../../files/file.entity";
 import { GenreEntity } from "src/genres/genre.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
+import { ReviewEntity } from "src/reviews/review.entity";
+import { DiaryEntity } from "src/diaries/diary.entity";
 
 @Entity("Users")
 export class UserEntity extends BaseEntityAbstract {
@@ -66,9 +68,9 @@ export class UserEntity extends BaseEntityAbstract {
   @ApiResponseProperty()
   @IsDate()
   @IsNotEmpty()
-  @Column({ type: 'timestamptz' })
+  @Column({ type: "timestamptz" })
   birthday: Date;
-  
+
   @ApiResponseProperty({ enum: RolesEnum })
   @IsString()
   @IsEnum(RolesEnum)
@@ -83,6 +85,12 @@ export class UserEntity extends BaseEntityAbstract {
 
   @OneToMany(() => GameFeelEntity, (gameFeel) => gameFeel.user)
   gameFeels?: GameFeelEntity[];
+
+  @OneToMany(() => ReviewEntity, (review) => review.user)
+  reviews?: ReviewEntity[];
+
+  @OneToMany(() => DiaryEntity, (diary) => diary.user)
+  diary?: DiaryEntity[];
 
   @ApiResponseProperty()
   @IsOptional()
