@@ -16,4 +16,7 @@ export const ErrorMessages = {
     ' Por favor, usa el formato "bearer token" para el header "authorization" y vuelva a intentarlo',
   BadJwtToken: "El JSON Web Token utilizado no es valido. Por favor, ingrese uno valido y vuelva a intentarlo",
   WrongCredentials: "Correo electrónico o contraseña incorrectos. Por favor, ingrese las credenciales correctas y vuelva a intentarlo",
+  FollowIdSameId: "El ID del usuario con el que tratas seguir, es tu mismo ID",
+  NotFollowing: "No estás siguiendo a este usuario",
+  AlreadyFollowing: "Ya sigues a este usuario",
 };

@@ -32,6 +32,7 @@ import { LoginResponseDto } from "./dto/login-response.dto";
 import { RefreshTokenEntity } from "./refresh-token.entity";
 import { REFRESH_TOKEN_METHOD } from "./constants/refresh-token.constants";
 import { CreateSessionAndRefreshTokensResponseInterface } from "./interfaces/create-session-and-refresh-tokens-response.interface";
+import { UsersService } from "src/users/users.service";
 
 export class AuthService {
   private readonly applicationUrl: string;
@@ -44,6 +45,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly filesService: FilesService,
+    private readonly usersService: UsersService,
   ) {
     this.applicationUrl = this.configService.get("application.applicationUrl") as string;
   }
@@ -122,6 +124,8 @@ export class AuthService {
       ])
       .getOne();
 
+    const totalInfo = await this.usersService.getTotalInfo(user);
+
     const prevRefreshTokenPromise = this.refreshTokensRepository.findOne({ user }, { select: ["id", "token"] });
 
     if (!user) {
@@ -151,7 +155,7 @@ export class AuthService {
 
     return {
       ...tokens,
-      user,
+      user: { ...user, ...totalInfo },
     };
   }
 

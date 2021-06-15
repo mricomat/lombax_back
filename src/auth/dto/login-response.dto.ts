@@ -33,20 +33,20 @@ class UserLoginData {
   @ApiResponseProperty()
   interests: GenreEntity[];
 
-  // @ApiResponseProperty()
-  // totalFollowers: number;
+  @ApiResponseProperty()
+  totalFollowers: number;
 
-  // @ApiResponseProperty()
-  // totalFollowing: number;
+  @ApiResponseProperty()
+  totalFollowing: number;
 
-  // @ApiResponseProperty()
-  // totalReviews: number;
+  @ApiResponseProperty()
+  totalReviews: number;
 
-  // @ApiResponseProperty()
-  // totalGames: number;
+  @ApiResponseProperty()
+  totalGames: number;
 
-  // @ApiResponseProperty()
-  // totalDiary: number;
+  @ApiResponseProperty()
+  totalDiary: number;
 
   // @ApiResponseProperty()
   // totalLikes: number;
