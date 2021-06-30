@@ -22,7 +22,7 @@ export class CommentsService {
     @InjectRepository(CommentEntity) private readonly commentsRepository: Repository<CommentEntity>,
   ) {}
 
-  async listPostComments(
+  async listReviewComments(
     reviewId: string,
     paginationQuery: PaginationQueryInterface,
     user: UserEntity,

@@ -16,10 +16,11 @@ import { CommentEntity } from "./entities/comment.entity";
 import { CommentsController } from "./controllers/comments.controller";
 import { CommentsService } from "./services/comments.service";
 import { LikesService } from "./services/likes.service";
+import { DiaryEntity } from "src/diaries/diary.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ReviewEntity, GameFeelEntity, GameEntity, FileEntity, LikeEntity, CommentEntity]),
+    TypeOrmModule.forFeature([ReviewEntity, GameFeelEntity, GameEntity, FileEntity, LikeEntity, CommentEntity, DiaryEntity]),
     AuthModule,
     GamesModule,
     GameFeelEntity,

@@ -40,11 +40,21 @@ import { FilterByQuery } from "src/common/queries/filter-by.query";
 import { FilterByFieldTypeEnum } from "src/common/enums/filter-by-field-type.enum";
 import { ReviewEntity } from "../entities/review.entity";
 import { ListResponseDto } from "src/common/dto/list-response.dto";
+import { CommentEntity } from "../entities/comment.entity";
+import { CreateCommentRequestDto } from "../dto/create-comment-request.dto";
+import { CommentsService } from "../services/comments.service";
+import { ListCommentsResponseDto } from "../dto/list-comments-response.dto";
+import { ListReviewLikesResponseDto } from "../dto/list-review-likes-response.dto";
+import { LikesService } from "../services/likes.service";
 
 @ApiTags("Reviews")
 @Controller("reviews")
 export class ReviewsController {
-  constructor(private readonly reviewsService: ReviewsService) {}
+  constructor(
+    private readonly reviewsService: ReviewsService,
+    private readonly commentsService: CommentsService,
+    private readonly likesService: LikesService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
@@ -129,9 +139,7 @@ export class ReviewsController {
     return this.reviewsService.getGameReviews(paginationQuery, gameIdS, { maxRating, minRating, popularity });
   }
 
-  @UseGuards(AuthGuard)
   @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
-  @ApiBearerAuth()
   @Get(":reviewId")
   @ApiOperation({
     description: "Get a review by ID",
@@ -189,5 +197,248 @@ export class ReviewsController {
   })
   deletePost(@Param("reviewId") reviewId: string, @RequestUserQuery() user: UserEntity): Promise<SuccessResponseDto> {
     return this.reviewsService.deleteReview(reviewId, user);
+  }
+
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Post(":reviewId/comments")
+  @ApiOperation({
+    description: "Creates a new comment for a review",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiCreatedResponse({
+    type: CommentEntity,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  createComment(
+    @Param("reviewId") reviewId: string,
+    @RequestUserQuery() user: UserEntity,
+    @Body() createCommentBody: CreateCommentRequestDto,
+  ): Promise<CommentEntity> {
+    return this.commentsService.createComment(reviewId, createCommentBody, user);
+  }
+
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @Get(":reviewId/comments")
+  @ApiOperation({
+    description: "List a review's comments",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiOkResponse({
+    type: ListResponseDto,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  listReviewComments(
+    @Param("reviewId") reviewId: string,
+    @PaginationQuery() paginationQuery: PaginationQueryInterface,
+    @RequestUserQuery() user: UserEntity,
+  ): Promise<ListResponseDto<ListCommentsResponseDto>> {
+    return this.commentsService.listReviewComments(reviewId, paginationQuery, user);
+  }
+
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Post(":reviewId/comments/:commentId")
+  @ApiOperation({
+    description: "Creates a new nested comment for a review",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiParam({
+    name: "commentId",
+    required: true,
+    type: "string",
+  })
+  @ApiCreatedResponse({
+    type: CommentEntity,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  createChildComment(
+    @Param("reviewId") reviewId: string,
+    @Param("commentId") commentId: string,
+    @RequestUserQuery() user: UserEntity,
+    @Body() createCommentBody: CreateCommentRequestDto,
+  ): Promise<CommentEntity> {
+    return this.commentsService.createChildComment(reviewId, commentId, createCommentBody, user);
+  }
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Delete(":reviewId/comments/:commentId")
+  @ApiOperation({
+    description: "Delete a comment",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiParam({
+    name: "commentId",
+    required: true,
+    type: "string",
+  })
+  @ApiNoContentResponse({
+    type: SuccessResponseDto,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  deleteComment(
+    @Param("reviewId") reviewId: string,
+    @Param("commentId") commentId: string,
+    @RequestUserQuery() user: UserEntity,
+  ): Promise<SuccessResponseDto> {
+    return this.commentsService.deleteComment(reviewId, commentId, user);
+  }
+
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @Get(":reviewId/likes")
+  @ApiOperation({
+    description: "List a review's likes",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiOkResponse({
+    type: ListResponseDto,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  listPostLikes(
+    @Param("reviewId") reviewId: string,
+    @PaginationQuery() paginationQuery: PaginationQueryInterface,
+    @RequestUserQuery() user: UserEntity,
+  ): Promise<ListResponseDto<ListReviewLikesResponseDto>> {
+    return this.likesService.listReviewsLikes(reviewId, paginationQuery);
+  }
+
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Post(":reviewId/likes")
+  @ApiOperation({
+    description: "Creates a new like for a review",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiCreatedResponse({
+    type: SuccessResponseDto,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  likePost(@Param("reviewId") reviewId: string, @RequestUserQuery() user: UserEntity): Promise<SuccessResponseDto> {
+    return this.likesService.likeReview(reviewId, user);
+  }
+
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Delete(":reviewId/likes")
+  @ApiOperation({
+    description: "Delete a like for a review",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiNoContentResponse({
+    type: SuccessResponseDto,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  unlikePost(@Param("reviewId") reviewId: string, @RequestUserQuery() user: UserEntity): Promise<SuccessResponseDto> {
+    return this.likesService.unlikeReview(reviewId, user);
   }
 }
