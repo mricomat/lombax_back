@@ -7,10 +7,13 @@ import { AuthModule } from "../auth/auth.module";
 import { GameEntity } from "src/games/game.entity";
 import { GamesModule } from "src/games/games.module";
 import { GamesService } from "src/games/games.service";
+import { DiariesService } from "src/diaries/diaries.service";
+import { DiaryEntity } from "src/diaries/diary.entity";
+import { ReviewEntity } from "src/reviews/review.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GameFeelEntity, GameEntity]), AuthModule, GamesModule],
+  imports: [TypeOrmModule.forFeature([GameFeelEntity, GameEntity, DiaryEntity, ReviewEntity]), AuthModule, GamesModule],
   controllers: [GameFeelsController],
-  providers: [GamesFeelsService, GamesService],
+  providers: [GamesFeelsService, GamesService, DiariesService],
 })
 export class GamesFeelsModule {}

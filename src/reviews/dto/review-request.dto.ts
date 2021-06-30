@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsDate, IsNotEmpty, IsString, IsNumberString, IsOptional } from "class-validator";
+import { IsDate, IsNotEmpty, IsString, IsNumberString, IsOptional, IsNumber } from "class-validator";
 import { Type } from "class-transformer";
 
 import { GameRequestDto } from "src/games/dto/game-request.dto";
@@ -19,10 +19,9 @@ export class ReviewRequestDto {
   summary: string;
 
   @ApiProperty()
-  @IsString()
-  @IsNumberString()
+  @IsNumber()
   @IsOptional()
-  rating: string;
+  rating: number;
 
   @ApiProperty()
   @IsDate()
@@ -30,10 +29,9 @@ export class ReviewRequestDto {
   dateFinished: Date;
 
   @ApiProperty()
-  @IsString()
-  @IsNumberString()
+  @IsNumber()
   @IsOptional()
-  timeToBeat: string;
+  timeToBeat: number;
 
   @ApiProperty()
   @IsString()

@@ -4,9 +4,12 @@ import { GamesController } from "./games.controller";
 import { GameEntity } from "./game.entity";
 import { GamesService } from "./games.service";
 import { AuthModule } from "../auth/auth.module";
+import { UserEntity } from "src/users/entity/user.entity";
+import { ReviewEntity } from "src/reviews/review.entity";
+import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GameEntity]), AuthModule],
+  imports: [TypeOrmModule.forFeature([GameEntity, UserEntity, ReviewEntity, GameFeelEntity]), AuthModule],
   controllers: [GamesController],
   providers: [GamesService],
 })

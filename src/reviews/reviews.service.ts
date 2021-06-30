@@ -14,7 +14,6 @@ import { DiariesService } from "src/diaries/diaries.service";
 @Injectable()
 export class ReviewsService {
   constructor(
-    @InjectConnection() private readonly connection: Connection,
     @InjectRepository(GameFeelEntity) private readonly gamesFeelsRepository: Repository<GameFeelEntity>,
     @InjectRepository(GameEntity) private readonly gamesRepository: Repository<GameEntity>,
     @InjectRepository(ReviewEntity) private readonly reviewsRepository: Repository<ReviewEntity>,

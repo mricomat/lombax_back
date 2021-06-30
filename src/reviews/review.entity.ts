@@ -1,5 +1,5 @@
 import { ApiResponseProperty } from "@nestjs/swagger";
-import { IsOptional, IsNotEmpty, IsNumberString, IsString, IsDate } from "class-validator";
+import { IsOptional, IsNotEmpty, IsNumberString, IsString, IsDate, IsNumber } from "class-validator";
 import { Column, Entity, OneToOne, JoinColumn, ManyToOne } from "typeorm";
 
 import { BaseEntityAbstract } from "../common/entities/base-entity.abstract";
@@ -30,11 +30,10 @@ export class ReviewEntity extends BaseEntityAbstract {
   summary: string;
 
   @ApiResponseProperty()
+  @IsNumber()
   @IsOptional()
-  @IsString()
-  @IsNumberString()
-  @Column()
-  rating: string;
+  @Column({ nullable: true })
+  rating: number;
 
   @ApiResponseProperty()
   @IsDate()
@@ -43,8 +42,7 @@ export class ReviewEntity extends BaseEntityAbstract {
 
   @ApiResponseProperty()
   @IsOptional()
-  @IsString()
-  @IsNumberString()
+  @IsNumber()
   @Column()
-  timeToBeat: string;
+  timeToBeat: number;
 }
