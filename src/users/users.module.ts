@@ -9,7 +9,7 @@ import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
 import { DiaryEntity } from "src/diaries/diary.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { FollowEntity } from "src/follows/follow.entity";
 import { AuthModule } from "src/auth/auth.module";
 

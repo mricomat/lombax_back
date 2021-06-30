@@ -8,10 +8,10 @@ import { GameEntity } from "./game.entity";
 import { GameRequestDto } from "./dto/game-request.dto";
 import { ErrorMessages } from "../utils/error-messages";
 import { UserEntity } from "src/users/entity/user.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 import { GetAvgRatingGameDto } from "./dto/get-avg-rating-game.dto";
-import { GetAvgTimeToBeatGameDto } from "./dto/get-avg-timeToBeat-game.dto copy";
+import { GetAvgTimeToBeatGameDto } from "./dto/get-avg-timeToBeat-game.dto";
 import { GetGameInfoDto } from "./dto/get-game-info.dto";
 
 @Injectable()

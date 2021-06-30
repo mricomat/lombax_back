@@ -4,7 +4,7 @@ import { IsNotEmpty, IsOptional } from "class-validator";
 
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 import { GameRequestDto } from "src/games/dto/game-request.dto";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 
 export class DiaryRequestDto {
   @ApiProperty()

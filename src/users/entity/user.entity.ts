@@ -9,7 +9,7 @@ import { RolesEnum } from "../enums/roles.enum";
 import { FileEntity } from "../../files/file.entity";
 import { GenreEntity } from "src/genres/genre.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { DiaryEntity } from "src/diaries/diary.entity";
 
 @Entity("Users")

@@ -6,7 +6,7 @@ import { UserEntity } from "./entity/user.entity";
 import { GetUserProfileResponseDto } from "./dto/get-user-profile-response.dto";
 import { ErrorMessages } from "../utils/error-messages";
 import { DiaryEntity } from "src/diaries/diary.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 import { FollowEntity } from "src/follows/follow.entity";
 

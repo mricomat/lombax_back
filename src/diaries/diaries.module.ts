@@ -6,7 +6,7 @@ import { GameEntity } from "src/games/game.entity";
 import { GamesModule } from "src/games/games.module";
 import { GamesService } from "src/games/games.service";
 import { DiaryEntity } from "./diary.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GamesFeelsModule } from "src/gameFeel/gameFeels.module";
 import { ReviewsModule } from "src/reviews/reviews.module";
 import { DiariesController } from "./diaries.controller";

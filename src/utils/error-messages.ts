@@ -19,4 +19,12 @@ export const ErrorMessages = {
   FollowIdSameId: "El ID del usuario con el que tratas seguir, es tu mismo ID",
   NotFollowing: "No estás siguiendo a este usuario",
   AlreadyFollowing: "Ya sigues a este usuario",
+  TakeQueryParamIsNotNumber: "El parámetro query Take no es un numero. Si deseas usar este parámetro, debes ingresar un numero",
+  SkipQueryParamIsNotNumber: "El parámetro query Skip no es un numero. Si deseas usar este parámetro, debes ingresar un numero",
+  SortByBadRequest: "Los parámetros de filtrado no son correctos",
+  ReviewNotFound: "No se pudo encontrar el review",
+  ReviewAlreadyLiked: "Ya has dado like a este review anteriormente, no puedes dar like al mismo mas de 1 vez",
+  CommentIsAlreadyLiked: "Ya haz dado like a este comentario anteriormente, no puedes dar like al mismo mas de 1 vez",
+  CommentNotFound: 'No se pudo encontrar el comentario',
+  CommentIsNotParent: 'No se puede crear una respuesta a este comentario porque no es un comentario padre',
 };

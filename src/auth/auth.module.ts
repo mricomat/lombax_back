@@ -10,7 +10,7 @@ import { GenreEntity } from "src/genres/genre.entity";
 import { RefreshTokenEntity } from "./refresh-token.entity";
 import { UsersService } from "src/users/users.service";
 import { DiaryEntity } from "src/diaries/diary.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 import { FollowEntity } from "src/follows/follow.entity";
 

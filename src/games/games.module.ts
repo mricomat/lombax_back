@@ -5,7 +5,7 @@ import { GameEntity } from "./game.entity";
 import { GamesService } from "./games.service";
 import { AuthModule } from "../auth/auth.module";
 import { UserEntity } from "src/users/entity/user.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 
 @Module({

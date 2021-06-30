@@ -5,7 +5,7 @@ import { Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from "type
 import { BaseEntityAbstract } from "../common/entities/base-entity.abstract";
 import { GameEntity } from "src/games/game.entity";
 import { UserEntity } from "src/users/entity/user.entity";
-import { ReviewEntity } from "src/reviews/review.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 
 @Entity("Diaries")
