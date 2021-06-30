@@ -1,6 +1,6 @@
 import { ObjectLiteral, Repository, Connection } from "typeorm";
 import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import { Injectable, ConflictException, BadRequestException } from "@nestjs/common";
+import { Injectable, ConflictException, BadRequestException, NotFoundException, ForbiddenException } from "@nestjs/common";
 
 import { SuccessResponseDto } from "../../common/dto/success-response.dto";
 import { GameFeelEntity } from "../../gameFeel/gameFeel.entity";
@@ -13,6 +13,9 @@ import { DiariesService } from "src/diaries/diaries.service";
 import { PaginationQueryInterface } from "src/common/queries/pagination.query";
 import { ListReviewsGameFiltersInterface } from "../interfaces/list-reviews-game-filters.interface";
 import { ListResponseDto } from "src/common/dto/list-response.dto";
+import { ErrorMessages } from "src/utils/error-messages";
+import { RolesEnum } from "src/users/enums/roles.enum";
+import { DiaryEntity } from "src/diaries/diary.entity";
 
 @Injectable()
 export class ReviewsService {
@@ -20,6 +23,7 @@ export class ReviewsService {
     @InjectRepository(GameFeelEntity) private readonly gamesFeelsRepository: Repository<GameFeelEntity>,
     @InjectRepository(GameEntity) private readonly gamesRepository: Repository<GameEntity>,
     @InjectRepository(ReviewEntity) private readonly reviewsRepository: Repository<ReviewEntity>,
+    @InjectRepository(DiaryEntity) private readonly diaryRepository: Repository<DiaryEntity>,
     private readonly gamesService: GamesService,
     private readonly diaryService: DiariesService,
   ) {}
@@ -76,5 +80,41 @@ export class ReviewsService {
     const [items, totalItems] = await query.getManyAndCount();
 
     return { items, totalItems };
+  }
+
+  async getGameReviewById(reviewId: string): Promise<ReviewEntity> {
+    // TODO Select
+    return this.reviewsRepository.createQueryBuilder("review").where({ id: reviewId }).getOne();
+  }
+
+  async deleteReview(reviewId: string, user: UserEntity): Promise<SuccessResponseDto> {
+    const review = await this.reviewsRepository
+      .createQueryBuilder("review")
+      .leftJoinAndSelect("review.user", "user")
+      .select(["review.id", "user.id"])
+      .where({ id: reviewId })
+      .getOne();
+
+    if (!review) {
+      throw new NotFoundException(ErrorMessages.ReviewNotFound);
+    }
+
+    if (review.user.id !== user.id && user.role !== RolesEnum.ADMIN) {
+      throw new ForbiddenException(ErrorMessages.UnauthorizedUser);
+    }
+
+    await this.reviewsRepository.delete(review);
+
+    const diary = await this.diaryRepository
+      .createQueryBuilder("diary")
+      .leftJoinAndSelect("diary.review", "review")
+      .where("review.id = :reviewId", { reviewId })
+      .getOne();
+
+    if (diary) {
+      await this.diaryRepository.delete(diary);
+    }
+
+    return { status: "successful" };
   }
 }

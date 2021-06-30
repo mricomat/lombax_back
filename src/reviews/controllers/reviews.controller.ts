@@ -9,6 +9,8 @@ import {
   UnauthorizedException,
   Body,
   Get,
+  Param,
+  Delete,
 } from "@nestjs/common";
 import {
   ApiBadRequestResponse,
@@ -22,6 +24,7 @@ import {
   ApiBearerAuth,
   ApiParam,
   ApiOkResponse,
+  ApiNoContentResponse,
 } from "@nestjs/swagger";
 
 import { SuccessResponseDto } from "../../common/dto/success-response.dto";
@@ -124,5 +127,67 @@ export class ReviewsController {
     @FilterByQuery({ field: "popularity", type: FilterByFieldTypeEnum.STRING }) popularity: string,
   ): Promise<ListResponseDto<ReviewEntity>> {
     return this.reviewsService.getGameReviews(paginationQuery, gameIdS, { maxRating, minRating, popularity });
+  }
+
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Get(":reviewId")
+  @ApiOperation({
+    description: "Get a review by ID",
+  })
+  @ApiParam({
+    name: "reviewId",
+    type: "string",
+    required: true,
+  })
+  @ApiOkResponse({
+    type: ReviewEntity,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  getPostById(@Param("reviewId") reviewId: string): Promise<ReviewEntity> {
+    return this.reviewsService.getGameReviewById(reviewId);
+  }
+
+  @UseGuards(AuthGuard)
+  @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
+  @ApiBearerAuth()
+  @Delete(":reviewId")
+  @ApiOperation({
+    description: "Delete a Review",
+  })
+  @ApiParam({
+    name: "reviewId",
+    required: true,
+    type: "string",
+  })
+  @ApiNoContentResponse({
+    type: SuccessResponseDto,
+  })
+  @ApiBadRequestResponse({
+    type: BadRequestException,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+  })
+  @ApiUnprocessableEntityResponse({
+    type: ValidationException,
+  })
+  @ApiInternalServerErrorResponse({
+    type: InternalServerErrorException,
+  })
+  deletePost(@Param("reviewId") reviewId: string, @RequestUserQuery() user: UserEntity): Promise<SuccessResponseDto> {
+    return this.reviewsService.deleteReview(reviewId, user);
   }
 }
