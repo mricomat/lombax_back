@@ -1,18 +1,18 @@
+import { UsersService } from 'src/users/users.service';
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
+import { GenreEntity } from 'src/genres/genre.entity';
+import { GameFeelEntity } from 'src/gameFeel/gameFeel.entity';
+import { FollowEntity } from 'src/follows/follow.entity';
+import { DiaryEntity } from "src/diaries/diary.entity";
 import { ConfigModule, ConfigService } from "nestjs-config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { JwtModule, JwtModuleOptions } from "@nestjs/jwt";
 import { forwardRef, Module } from "@nestjs/common";
 
-import { AuthService } from "./auth.service";
-import { AuthController } from "./auth.controller";
-import { UserEntity } from "../users/entity/user.entity";
-import { GenreEntity } from "src/genres/genre.entity";
 import { RefreshTokenEntity } from "./refresh-token.entity";
-import { UsersService } from "src/users/users.service";
-import { DiaryEntity } from "src/diaries/diary.entity";
-import { ReviewEntity } from "src/reviews/entities/review.entity";
-import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
-import { FollowEntity } from "src/follows/follow.entity";
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { UserEntity } from '../users/entity/user.entity';
 
 @Module({
   imports: [

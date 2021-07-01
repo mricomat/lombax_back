@@ -1,14 +1,14 @@
 import { ObjectLiteral, Repository, Connection } from "typeorm";
-import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import { Injectable } from "@nestjs/common";
-import axios from "axios";
+import axios from 'axios';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 
-import { GenreEntity } from "./genre.entity";
-import { GenreUploadInterface } from "./interface/genre-upload.interface";
+import { GenreUploadInterface } from './interface/genre-upload.interface';
+import { GenreEntity } from './genre.entity';
 import { GenreTypeEnum } from "./enum/genre-type.enum";
 import { ListGenresResponseDto } from "./dto/list-genres-response.dto";
-import { SuccessResponseDto } from "../common/dto/success-response.dto";
-import IGDBConfig from "../config/igdbapi";
+import IGDBConfig from '../config/igdbapi';
+import { SuccessResponseDto } from '../common/dto/success-response.dto';
 
 @Injectable()
 export class GenresService {
@@ -56,9 +56,7 @@ export class GenresService {
         {},
         { params: { client_id: IGDBConfig.igdbClientId, client_secret: IGDBConfig.igdbClientSecret, grant_type: "client_credentials" } },
       )
-      .then((response) => {
-        return response.data.access_token;
-      })
+      .then((response) => response.data.access_token)
       .catch((err) => console.log(err));
   }
 
@@ -72,13 +70,11 @@ export class GenresService {
 
     return await axios
       .post(`${IGDBConfig.igdbUrl}${endPoint}`, body, { headers })
-      .then((response) => {
-        return { error: false, data: response.data, url: endPoint };
-      })
+      .then((response) => ({ error: false, data: response.data, url: endPoint }))
       .catch((err) => {
         console.log(err);
         const error = JSON.parse(JSON.stringify(err));
-        //console.log(endPoint, error);
+        // console.log(endPoint, error);
         return { error: true, data: error, url: endPoint };
       });
   }

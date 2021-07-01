@@ -1,10 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsOptional } from "class-validator";
-
-import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
 import { GameRequestDto } from "src/games/dto/game-request.dto";
-import { ReviewEntity } from "src/reviews/entities/review.entity";
+import { GameFeelEntity } from 'src/gameFeel/gameFeel.entity';
+import { IsNotEmpty, IsOptional } from "class-validator";
+import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class DiaryRequestDto {
   @ApiProperty()

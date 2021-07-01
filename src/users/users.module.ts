@@ -1,17 +1,17 @@
-import { JwtModule, JwtModuleOptions } from "@nestjs/jwt";
-import { ConfigModule, ConfigService } from "nestjs-config";
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-
-import { UserEntity } from "./entity/user.entity";
-import { UsersSubscriber } from "./subscribers/users.subscriber";
-import { UsersController } from "./users.controller";
-import { UsersService } from "./users.service";
-import { DiaryEntity } from "src/diaries/diary.entity";
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
-import { ReviewEntity } from "src/reviews/entities/review.entity";
-import { FollowEntity } from "src/follows/follow.entity";
-import { AuthModule } from "src/auth/auth.module";
+import { FollowEntity } from 'src/follows/follow.entity';
+import { DiaryEntity } from "src/diaries/diary.entity";
+import { AuthModule } from 'src/auth/auth.module';
+import { ConfigModule, ConfigService } from "nestjs-config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
+import { Module } from "@nestjs/common";
+
+import { UsersService } from "./users.service";
+import { UsersController } from './users.controller';
+import { UsersSubscriber } from "./subscribers/users.subscriber";
+import { UserEntity } from "./entity/user.entity";
 
 @Module({
   imports: [

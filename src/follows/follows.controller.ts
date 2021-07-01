@@ -1,3 +1,6 @@
+import { RequestUserQuery } from 'src/common/queries/request-user.query';
+import { ValidationException } from "src/common/exceptions/validation.exception";
+import { SuccessResponseDto } from 'src/common/dto/success-response.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -13,7 +16,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
 import {
   BadRequestException,
   Body,
@@ -29,16 +32,13 @@ import {
   SetMetadata,
   UnauthorizedException,
   UseGuards,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
-import { FollowsService } from "./follows.service";
+import { FollowsService } from './follows.service';
+import { CreateFollowRequestDto } from './dto/create-follow-request.dto';
+import { RolesEnum } from '../users/enums/roles.enum';
+import { UserEntity } from '../users/entity/user.entity';
 import { AuthGuard } from "../auth/guards/auth.guard";
-import { RolesEnum } from "../users/enums/roles.enum";
-import { UserEntity } from "../users/entity/user.entity";
-import { SuccessResponseDto } from "src/common/dto/success-response.dto";
-import { ValidationException } from "src/common/exceptions/validation.exception";
-import { RequestUserQuery } from "src/common/queries/request-user.query";
-import { CreateFollowRequestDto } from "./dto/create-follow-request.dto";
 
 @ApiTags("Follows")
 @Controller("follows")

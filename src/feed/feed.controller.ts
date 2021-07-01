@@ -1,3 +1,8 @@
+import { RolesEnum } from 'src/users/enums/roles.enum';
+import { IGDBSectionDto } from 'src/igdb/igdb-section.dto';
+import { FilterByQuery } from "src/common/queries/filter-by.query";
+import { ValidationException } from "src/common/exceptions/validation.exception";
+import { FilterByFieldTypeEnum } from "src/common/enums/filter-by-field-type.enum";
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -10,7 +15,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
 import {
   BadRequestException,
   Body,
@@ -23,13 +28,9 @@ import {
   SetMetadata,
   UnauthorizedException,
   UseGuards,
-} from "@nestjs/common";
-import { ValidationException } from "src/common/exceptions/validation.exception";
+} from '@nestjs/common';
+
 import { FeedService } from "./feed.service";
-import { RolesEnum } from "src/users/enums/roles.enum";
-import { FilterByQuery } from "src/common/queries/filter-by.query";
-import { FilterByFieldTypeEnum } from "src/common/enums/filter-by-field-type.enum";
-import { IGDBSectionDto } from "src/igdb/igdb-section.dto";
 
 @ApiTags("Feed")
 @Controller("feed")

@@ -1,8 +1,8 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { GameRequestDto } from 'src/games/dto/game-request.dto';
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { GameRequestDto } from "src/games/dto/game-request.dto";
 import { GameStatusEnum } from "../enum/gameStatus.enum";
 
 export class GameFeelRequestDto {

@@ -1,10 +1,10 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
-import {  Type } from "class-transformer";
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from "class-transformer";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GameRequestDto {
   @ApiProperty()
-  //@Transform(trimStringHelper)
+  // @Transform(trimStringHelper)
   @IsString()
   @IsNotEmpty()
   name: string;

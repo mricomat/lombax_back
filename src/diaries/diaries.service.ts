@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-
+import { Connection, Repository } from 'typeorm';
 import { UserEntity } from "src/users/entity/user.entity";
-import { Connection, Repository } from "typeorm";
-import { SuccessResponseDto } from "../common/dto/success-response.dto";
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
+
+import { DiaryRequestDto } from './dto/diary-request.dto';
 import { DiaryEntity } from "./diary.entity";
-import { DiaryRequestDto } from "./dto/diary-request.dto";
+import { SuccessResponseDto } from "../common/dto/success-response.dto";
 
 @Injectable()
 export class DiariesService {
@@ -16,9 +16,7 @@ export class DiariesService {
       async (entityManager): Promise<DiaryEntity> => {
         const diaryTransactionalRepository = entityManager.getRepository(DiaryEntity);
 
-        const diary = await diaryTransactionalRepository.save({ ...diaryBody, game: diaryBody.game, user });
-
-        return diary;
+        return await diaryTransactionalRepository.save({ ...diaryBody, game: diaryBody.game, user });
       },
     );
 

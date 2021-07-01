@@ -2,18 +2,16 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 
-import { CommentEntity } from "../entities/comment.entity";
-
-import { ErrorMessages } from "../../utils/error-messages";
-import { RolesEnum } from "../../users/enums/roles.enum";
-import { UserEntity } from "../../users/entity/user.entity";
-
-import { PaginationQueryInterface } from "../../common/queries/pagination.query";
-import { SuccessResponseDto } from "../../common/dto/success-response.dto";
-import { ListResponseDto } from "../../common/dto/list-response.dto";
-import { ReviewEntity } from "../entities/review.entity";
-import { ListCommentsResponseDto } from "../dto/list-comments-response.dto";
-import { CreateCommentRequestDto } from "../dto/create-comment-request.dto";
+import { ReviewEntity } from '../entities/review.entity';
+import { CommentEntity } from '../entities/comment.entity';
+import { ListCommentsResponseDto } from '../dto/list-comments-response.dto';
+import { CreateCommentRequestDto } from '../dto/create-comment-request.dto';
+import { ErrorMessages } from '../../utils/error-messages';
+import { RolesEnum } from '../../users/enums/roles.enum';
+import { UserEntity } from '../../users/entity/user.entity';
+import { PaginationQueryInterface } from '../../common/queries/pagination.query';
+import { SuccessResponseDto } from '../../common/dto/success-response.dto';
+import { ListResponseDto } from '../../common/dto/list-response.dto';
 
 @Injectable()
 export class CommentsService {
@@ -77,7 +75,12 @@ export class CommentsService {
     return this.commentsRepository.save({ ...createCommentBody, review, user });
   }
 
-  async createChildComment(reviewId: string, commentId: string, createCommentBody: CreateCommentRequestDto, user: UserEntity): Promise<CommentEntity> {
+  async createChildComment(
+    reviewId: string,
+    commentId: string,
+    createCommentBody: CreateCommentRequestDto,
+    user: UserEntity,
+  ): Promise<CommentEntity> {
     const reviewPromise = this.reviewRepository.findOne({ id: reviewId }, { select: ["id"] });
 
     const parentCommentPromise = this.commentsRepository

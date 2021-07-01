@@ -1,12 +1,12 @@
 import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
-
-import { FollowEntity } from "./follow.entity";
-import { SuccessResponseDto } from "src/common/dto/success-response.dto";
+import { ErrorMessages } from 'src/utils/error-messages';
 import { UserEntity } from "src/users/entity/user.entity";
-import { CreateFollowRequestDto } from "./dto/create-follow-request.dto";
-import { ErrorMessages } from "src/utils/error-messages";
+import { SuccessResponseDto } from 'src/common/dto/success-response.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+
+import { FollowEntity } from './follow.entity';
+import { CreateFollowRequestDto } from './dto/create-follow-request.dto';
 
 @Injectable()
 export class FollowsService {

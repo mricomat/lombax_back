@@ -1,15 +1,4 @@
 import {
-  BadRequestException, Controller,
-  Delete,
-  Get,
-  InternalServerErrorException,
-  Param,
-  Post,
-  SetMetadata,
-  UnauthorizedException,
-  UseGuards
-} from '@nestjs/common';
-import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -20,20 +9,32 @@ import {
   ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
-  ApiUnprocessableEntityResponse
-} from '@nestjs/swagger';
-import { AuthGuard } from '../../auth/guards/auth.guard';
-import { ListResponseDto } from '../../common/dto/list-response.dto';
-import { SuccessResponseDto } from '../../common/dto/success-response.dto';
-import { ValidationException } from '../../common/exceptions/validation.exception';
-import { PaginationQuery, PaginationQueryInterface } from '../../common/queries/pagination.query';
-import { RequestUserQuery } from '../../common/queries/request-user.query';
-import { UserEntity } from '../../users/entity/user.entity';
-import { RolesEnum } from '../../users/enums/roles.enum';
-import { ListReviewLikesResponseDto } from '../dto/list-review-likes-response.dto';
-import { CommentsService } from '../services/comments.service';
-import { LikesService } from '../services/likes.service';
+  ApiUnprocessableEntityResponse,
+} from "@nestjs/swagger";
+import {
+  BadRequestException,
+  Controller,
+  Delete,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Post,
+  SetMetadata,
+  UnauthorizedException,
+  UseGuards,
+} from "@nestjs/common";
 
+import { CommentsService } from "../services/comments.service";
+import { ListReviewLikesResponseDto } from '../dto/list-review-likes-response.dto';
+import { RolesEnum } from "../../users/enums/roles.enum";
+import { UserEntity } from '../../users/entity/user.entity';
+import { RequestUserQuery } from "../../common/queries/request-user.query";
+import { PaginationQuery, PaginationQueryInterface } from '../../common/queries/pagination.query';
+import { ValidationException } from "../../common/exceptions/validation.exception";
+import { SuccessResponseDto } from '../../common/dto/success-response.dto';
+import { ListResponseDto } from "../../common/dto/list-response.dto";
+import { AuthGuard } from "../../auth/guards/auth.guard";
+import { LikesService } from '../services/likes.service';
 
 @ApiTags('Comments')
 @Controller('reviews/comments')

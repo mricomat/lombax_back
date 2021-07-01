@@ -1,5 +1,4 @@
 import { Entity, ManyToOne } from "typeorm";
-
 import { UserEntity } from "src/users/entity/user.entity";
 import { BaseEntityAbstract } from "src/common/entities/base-entity.abstract";
 

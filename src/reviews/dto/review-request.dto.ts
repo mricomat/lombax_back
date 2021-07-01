@@ -1,10 +1,10 @@
+import { GameRequestDto } from 'src/games/dto/game-request.dto';
+import { GameStatusEnum } from 'src/gameFeel/enum/gameStatus.enum';
+import { IsDate, IsNotEmpty, IsString, IsNumberString, IsOptional, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsDate, IsNotEmpty, IsString, IsNumberString, IsOptional, IsNumber } from "class-validator";
-import { Type } from "class-transformer";
 
-import { GameRequestDto } from "src/games/dto/game-request.dto";
-import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
-import { GameStatusEnum } from "src/gameFeel/enum/gameStatus.enum";
+import { IsAlphaBlank } from '../../common/custom-validators/is-alpha-blank.custom-validator';
 
 export class ReviewRequestDto {
   @ApiProperty()

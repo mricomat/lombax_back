@@ -1,16 +1,5 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Controller,
-  InternalServerErrorException,
-  Post,
-  SetMetadata,
-  UseGuards,
-  UnauthorizedException,
-  Body,
-  Param,
-  Get,
-} from "@nestjs/common";
+import { UserEntity } from 'src/users/entity/user.entity';
+import { RequestUserQuery } from "src/common/queries/request-user.query";
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
@@ -23,18 +12,29 @@ import {
   ApiBearerAuth,
   ApiParam,
   ApiOkResponse,
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
+import {
+  BadRequestException,
+  ConflictException,
+  Controller,
+  InternalServerErrorException,
+  Post,
+  SetMetadata,
+  UseGuards,
+  UnauthorizedException,
+  Body,
+  Param,
+  Get,
+} from '@nestjs/common';
 
-import { SuccessResponseDto } from "../common/dto/success-response.dto";
-import { ValidationException } from "../common/exceptions/validation.exception";
-import { RolesEnum } from "../users/enums/roles.enum";
+import { GamesService } from './games.service';
+import { GameEntity } from './game.entity';
+import { GetGameInfoDto } from './dto/get-game-info.dto';
 import { GameRequestDto } from "./dto/game-request.dto";
-import { GamesService } from "./games.service";
+import { RolesEnum } from '../users/enums/roles.enum';
+import { ValidationException } from "../common/exceptions/validation.exception";
+import { SuccessResponseDto } from "../common/dto/success-response.dto";
 import { AuthGuard } from "../auth/guards/auth.guard";
-import { GameEntity } from "./game.entity";
-import { RequestUserQuery } from "src/common/queries/request-user.query";
-import { UserEntity } from "src/users/entity/user.entity";
-import { GetGameInfoDto } from "./dto/get-game-info.dto";
 
 @ApiTags("Games")
 @Controller("games")
@@ -82,9 +82,9 @@ export class GamesController {
     required: true,
     type: "string",
   })
-   @ApiOkResponse({
-     type: GetGameInfoDto,
-   })
+  @ApiOkResponse({
+    type: GetGameInfoDto,
+  })
   @ApiBadRequestResponse({
     type: BadRequestException,
   })

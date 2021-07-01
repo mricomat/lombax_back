@@ -1,18 +1,18 @@
 import { ObjectLiteral, Repository, Connection, Brackets } from "typeorm";
+import { UserEntity } from 'src/users/entity/user.entity';
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
+import { GameFeelEntity } from 'src/gameFeel/gameFeel.entity';
+import axios from 'axios';
 import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
 import { Injectable, ConflictException } from "@nestjs/common";
-import axios from "axios";
 
-import { SuccessResponseDto } from "../common/dto/success-response.dto";
-import { GameEntity } from "./game.entity";
-import { GameRequestDto } from "./dto/game-request.dto";
-import { ErrorMessages } from "../utils/error-messages";
-import { UserEntity } from "src/users/entity/user.entity";
-import { ReviewEntity } from "src/reviews/entities/review.entity";
-import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
+import { GameEntity } from './game.entity';
+import { GetGameInfoDto } from './dto/get-game-info.dto';
+import { GetAvgTimeToBeatGameDto } from './dto/get-avg-timeToBeat-game.dto';
 import { GetAvgRatingGameDto } from "./dto/get-avg-rating-game.dto";
-import { GetAvgTimeToBeatGameDto } from "./dto/get-avg-timeToBeat-game.dto";
-import { GetGameInfoDto } from "./dto/get-game-info.dto";
+import { GameRequestDto } from './dto/game-request.dto';
+import { ErrorMessages } from '../utils/error-messages';
+import { SuccessResponseDto } from "../common/dto/success-response.dto";
 
 @Injectable()
 export class GamesService {
@@ -34,9 +34,7 @@ export class GamesService {
       async (entityManager): Promise<GameEntity> => {
         const gamesTransactionalRepository = entityManager.getRepository(GameEntity);
 
-        const newGame = await gamesTransactionalRepository.save({ ...gameBody });
-
-        return newGame;
+        return await gamesTransactionalRepository.save({ ...gameBody });
       },
     );
 

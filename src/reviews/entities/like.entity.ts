@@ -1,9 +1,9 @@
 import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { CommentEntity } from './comment.entity';
-import { UserEntity } from '../../users/entity/user.entity';
-import { BaseEntityAbstract } from '../../common/entities/base-entity.abstract';
-import { ReviewEntity } from './review.entity';
+import { ReviewEntity } from "./review.entity";
+import { CommentEntity } from "./comment.entity";
+import { UserEntity } from "../../users/entity/user.entity";
+import { BaseEntityAbstract } from "../../common/entities/base-entity.abstract";
 
 @Entity('Likes')
 export class LikeEntity extends BaseEntityAbstract {

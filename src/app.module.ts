@@ -1,24 +1,24 @@
-import { ClassSerializerInterceptor, Module, ValidationError, ValidationPipe } from "@nestjs/common";
-import { resolve } from "path";
-import { ConfigModule, ConfigService } from "nestjs-config";
-import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { resolve } from 'path';
+import { ConfigModule, ConfigService } from 'nestjs-config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ClassSerializerInterceptor, Module, ValidationError, ValidationPipe } from '@nestjs/common';
 
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { AuthModule } from "./auth/auth.module";
-import { ClassValidatorErrorsToValidationExceptionFactory } from "./common/pipes/validation-factory.pipe";
 import { UsersModule } from "./users/users.module";
-import { FilesModule } from "./files/file.module";
-import { GenresModule } from "./genres/genres.module";
-import { FilesModuleConfigInterface } from "./files/interfaces/files-module-config.interface";
-import { GamesModule } from "./games/games.module";
-import { GamesFeelsModule } from "./gameFeel/gameFeels.module";
-import { ReviewsModule } from "./reviews/reviews.module";
-import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
-import { DiariesModule } from "./diaries/diaries.module";
+import { ReviewsModule } from './reviews/reviews.module';
+import { GenresModule } from './genres/genres.module';
+import { GamesModule } from './games/games.module';
+import { GamesFeelsModule } from './gameFeel/gameFeels.module';
 import { FollowsModule } from "./follows/follows.module";
+import { FilesModuleConfigInterface } from "./files/interfaces/files-module-config.interface";
+import { FilesModule } from './files/file.module';
 import { FeedModule } from "./feed/feed.module";
+import { DiariesModule } from './diaries/diaries.module';
+import { ClassValidatorErrorsToValidationExceptionFactory } from './common/pipes/validation-factory.pipe';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { AuthModule } from './auth/auth.module';
+import { AppService } from "./app.service";
+import { AppController } from './app.controller';
 
 const configFiles = resolve(__dirname, "config", "**", "!(*.d).{ts,js}");
 

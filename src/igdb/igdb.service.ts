@@ -18,9 +18,7 @@ export class IGDBService {
         {},
         { params: { client_id: IGDBConfig.igdbClientId, client_secret: IGDBConfig.igdbClientSecret, grant_type: "client_credentials" } },
       )
-      .then((response) => {
-        return response.data.access_token;
-      })
+      .then((response) => response.data.access_token)
       .catch((err) => console.log(err));
   }
 
@@ -33,9 +31,7 @@ export class IGDBService {
 
     return await axios
       .post(`/games`, query, { headers })
-      .then((response) => {
-        return { error: false, data: response.data };
-      })
+      .then((response) => ({ error: false, data: response.data }))
       .catch((err) => {
         console.log(err);
         const error = JSON.parse(JSON.stringify(err));

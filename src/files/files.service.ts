@@ -1,17 +1,17 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { Inject, Injectable } from "@nestjs/common";
-import { v4, v5 } from "uuid";
-import { AWSError, S3 } from "aws-sdk";
-import { DeepPartial, Repository } from "typeorm";
+import { v4, v5 } from 'uuid';
+import { DeepPartial, Repository } from 'typeorm';
+import { Readable } from "stream";
 import { GetObjectRequest, ManagedUpload } from "aws-sdk/clients/s3";
-import { Readable } from 'stream';
+import { AWSError, S3 } from "aws-sdk";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 
-import { FileEntity } from "./file.entity";
-import { S3_BASE_URL } from "./constants/s3-base-url.constants";
-import { FILES_CONFIG } from "./constants/files-module.constants";
+import { ReadableFileInterface } from "./interfaces/readable-file.interface";
 import { FilesModuleConfigInterface } from "./interfaces/files-module-config.interface";
 import { FileToUploadInterface } from "./interfaces/file-to-upload.interface";
-import { ReadableFileInterface } from './interfaces/readable-file.interface';
+import { FileEntity } from './file.entity';
+import { S3_BASE_URL } from './constants/s3-base-url.constants';
+import { FILES_CONFIG } from './constants/files-module.constants';
 
 @Injectable()
 export class FilesService {

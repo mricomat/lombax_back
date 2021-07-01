@@ -1,7 +1,14 @@
-import { Connection, Repository, In } from "typeorm";
+import { v4, v5 } from 'uuid';
+import { Connection, Repository, In } from 'typeorm';
+import { UsersService } from 'src/users/users.service';
+import { GenreEntity } from "src/genres/genre.entity";
+import { FileEntity } from 'src/files/file.entity';
+import { DocumentDto } from 'src/common/dto/document.dto';
+import { LoginRequestDto } from "src/auth/dto/login-request.dto";
 import { ConfigService } from "nestjs-config";
-import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import { JwtService } from "@nestjs/jwt";
+import { compare } from "bcrypt";
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import {
   BadRequestException,
   ConflictException,
@@ -11,28 +18,22 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
-} from "@nestjs/common";
-import { v4, v5 } from "uuid";
-import { compare } from "bcrypt";
+} from '@nestjs/common';
 
-import { UserEntity } from "../users/entity/user.entity";
+import { RefreshTokenEntity } from "./refresh-token.entity";
+import { CreateSessionAndRefreshTokensResponseInterface } from "./interfaces/create-session-and-refresh-tokens-response.interface";
 import { RegisterRequestDto } from "./dto/register-request.dto";
-import { SuccessResponseDto } from "../common/dto/success-response.dto";
-import { ErrorMessages } from "../utils/error-messages";
+import { SESSION_TOKEN_EXPIRATION, SESSION_TOKEN_METHOD } from "./constants/session-token.constants";
+import { ErrorMessages } from '../utils/error-messages';
+import { UserEntity } from "../users/entity/user.entity";
+import { SuccessResponseDto } from '../common/dto/success-response.dto';
 import { USERS_FOLDER } from "../users/constants/users-folder.constants";
 import { FileToUploadInterface } from "../files/interfaces/file-to-upload.interface";
 import { FilesService } from "../files/files.service";
-import { FileEntity } from "src/files/file.entity";
-import { DocumentDto } from "src/common/dto/document.dto";
-import { GenreEntity } from "src/genres/genre.entity";
-import { LoginRequestDto } from "src/auth/dto/login-request.dto";
+
 import { TokenInterface } from "../common/interfaces/token.interface";
-import { SESSION_TOKEN_EXPIRATION, SESSION_TOKEN_METHOD } from "./constants/session-token.constants";
-import { LoginResponseDto } from "./dto/login-response.dto";
-import { RefreshTokenEntity } from "./refresh-token.entity";
+import { LoginResponseDto } from './dto/login-response.dto';
 import { REFRESH_TOKEN_METHOD } from "./constants/refresh-token.constants";
-import { CreateSessionAndRefreshTokensResponseInterface } from "./interfaces/create-session-and-refresh-tokens-response.interface";
-import { UsersService } from "src/users/users.service";
 
 export class AuthService {
   private readonly applicationUrl: string;
@@ -80,14 +81,12 @@ export class AuthService {
       async (entityManager): Promise<UserEntity> => {
         const usersTransactionalRepository = entityManager.getRepository(UserEntity);
 
-        const newUser = await usersTransactionalRepository.save({
+        return await usersTransactionalRepository.save({
           ...registerBody,
           avatarImage: avatarFile,
           backgroundImage: backgroundFile,
           interests: newGenres,
         });
-
-        return newUser;
       },
     );
 

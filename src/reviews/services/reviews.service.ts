@@ -1,21 +1,23 @@
 import { ObjectLiteral, Repository, Connection } from "typeorm";
-import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import { Injectable, ConflictException, BadRequestException, NotFoundException, ForbiddenException } from "@nestjs/common";
-
-import { SuccessResponseDto } from "../../common/dto/success-response.dto";
-import { GameFeelEntity } from "../../gameFeel/gameFeel.entity";
-import { UserEntity } from "src/users/entity/user.entity";
+import { ErrorMessages } from 'src/utils/error-messages';
+import { RolesEnum } from 'src/users/enums/roles.enum';
+import { UserEntity } from 'src/users/entity/user.entity';
+import { GamesService } from 'src/games/games.service';
 import { GameEntity } from "src/games/game.entity";
-import { GamesService } from "src/games/games.service";
-import { ReviewEntity } from "../entities/review.entity";
-import { ReviewRequestDto } from "../dto/review-request.dto";
+import { DiaryEntity } from 'src/diaries/diary.entity';
 import { DiariesService } from "src/diaries/diaries.service";
 import { PaginationQueryInterface } from "src/common/queries/pagination.query";
-import { ListReviewsGameFiltersInterface } from "../interfaces/list-reviews-game-filters.interface";
 import { ListResponseDto } from "src/common/dto/list-response.dto";
-import { ErrorMessages } from "src/utils/error-messages";
-import { RolesEnum } from "src/users/enums/roles.enum";
-import { DiaryEntity } from "src/diaries/diary.entity";
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Injectable, ConflictException, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
+
+import { GameFeelEntity } from "../../gameFeel/gameFeel.entity";
+import { SuccessResponseDto } from "../../common/dto/success-response.dto";
+
+import { ReviewEntity } from "../entities/review.entity";
+import { ReviewRequestDto } from "../dto/review-request.dto";
+
+import { ListReviewsGameFiltersInterface } from "../interfaces/list-reviews-game-filters.interface";
 
 @Injectable()
 export class ReviewsService {
@@ -36,7 +38,7 @@ export class ReviewsService {
 
     const gameFeel = await this.gamesFeelsRepository.save({ gameStatus: reviewBody.gameStatus, game, user });
     const review = await this.reviewsRepository.save({ ...reviewBody, game, user, gameFeel });
-    await this.diaryService.saveNewDiary(user, { review: review, game });
+    await this.diaryService.saveNewDiary(user, { review, game });
 
     return {
       status: "successful",

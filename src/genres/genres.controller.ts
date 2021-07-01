@@ -27,16 +27,16 @@ import { GenreTypeEnum } from "./enum/genre-type.enum";
 import { ListGenresResponseDto } from "./dto/list-genres-response.dto";
 import { RolesEnum } from "../users/enums/roles.enum";
 import { FilterByQuery } from "../common/queries/filter-by.query";
-import { FilterByFieldTypeEnum } from "../common/enums/filter-by-field-type.enum";
-import { SuccessResponseDto } from "../common/dto/success-response.dto";
-import { ValidationException } from "../common/exceptions/validation.exception";
+import { ValidationException } from '../common/exceptions/validation.exception';
+import { FilterByFieldTypeEnum } from '../common/enums/filter-by-field-type.enum';
+import { SuccessResponseDto } from '../common/dto/success-response.dto';
 
 @ApiTags("Genres")
 @Controller("genres")
 export class GenreController {
   constructor(private readonly genreService: GenresService) {}
 
-  //@UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @SetMetadata("roles", [RolesEnum.ADMIN, RolesEnum.USER])
   @ApiBearerAuth()
   @Get()

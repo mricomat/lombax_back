@@ -29,12 +29,12 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 
-import { AuthService } from "./auth.service";
-import { RegisterRequestDto } from "./dto/register-request.dto";
+import { RegisterRequestDto } from './dto/register-request.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { LoginRequestDto } from './dto/login-request.dto';
+import { AuthService } from './auth.service';
+import { ValidationException } from '../common/exceptions/validation.exception';
 import { SuccessResponseDto } from "../common/dto/success-response.dto";
-import { ValidationException } from "../common/exceptions/validation.exception";
-import { LoginResponseDto } from "./dto/login-response.dto";
-import { LoginRequestDto } from "./dto/login-request.dto";
 
 @ApiTags("Auth")
 @Controller()

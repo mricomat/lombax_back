@@ -1,6 +1,7 @@
-import { ApiResponseProperty } from "@nestjs/swagger";
+import { Column, Entity } from 'typeorm';
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
-import { Column, Entity } from "typeorm";
+import { ApiResponseProperty } from "@nestjs/swagger";
+
 import { BaseEntityAbstract } from "../common/entities/base-entity.abstract";
 
 @Entity("Games")

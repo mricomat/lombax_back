@@ -1,17 +1,17 @@
-import { BaseEntityAbstract } from "../../common/entities/base-entity.abstract";
-import { IsAlphanumeric, IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsString } from "class-validator";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, OneToMany } from "typeorm";
-import { ApiResponseProperty } from "@nestjs/swagger";
-import { Exclude } from "class-transformer";
-
-import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
-import { RolesEnum } from "../enums/roles.enum";
-import { FileEntity } from "../../files/file.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { GenreEntity } from "src/genres/genre.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
-import { ReviewEntity } from "src/reviews/entities/review.entity";
-import { DiaryEntity } from "src/diaries/diary.entity";
 import { FollowEntity } from "src/follows/follow.entity";
+import { DiaryEntity } from "src/diaries/diary.entity";
+import { IsAlphanumeric, IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsString } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { ApiResponseProperty } from "@nestjs/swagger";
+
+import { RolesEnum } from '../enums/roles.enum';
+import { FileEntity } from '../../files/file.entity';
+import { BaseEntityAbstract } from "../../common/entities/base-entity.abstract";
+import { IsAlphaBlank } from '../../common/custom-validators/is-alpha-blank.custom-validator';
 
 @Entity("Users")
 export class UserEntity extends BaseEntityAbstract {

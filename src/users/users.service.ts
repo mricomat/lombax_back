@@ -1,14 +1,14 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { Brackets, Connection, DeleteResult, In, ObjectLiteral, Raw, Repository } from 'typeorm';
+import { ReviewEntity } from 'src/reviews/entities/review.entity';
+import { GameFeelEntity } from 'src/gameFeel/gameFeel.entity';
+import { FollowEntity } from 'src/follows/follow.entity';
+import { DiaryEntity } from "src/diaries/diary.entity";
 import { InjectConnection, InjectRepository } from "@nestjs/typeorm";
-import { Brackets, Connection, DeleteResult, In, ObjectLiteral, Raw, Repository } from "typeorm";
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 
 import { UserEntity } from "./entity/user.entity";
 import { GetUserProfileResponseDto } from "./dto/get-user-profile-response.dto";
 import { ErrorMessages } from "../utils/error-messages";
-import { DiaryEntity } from "src/diaries/diary.entity";
-import { ReviewEntity } from "src/reviews/entities/review.entity";
-import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
-import { FollowEntity } from "src/follows/follow.entity";
 
 @Injectable()
 export class UsersService {
@@ -64,7 +64,7 @@ export class UsersService {
       .createQueryBuilder("gameFeel")
       .select()
       .where("gameFeel.user.id = :userId ", { userId: user.id })
-      //.distinctOn(["gameFeel.game"])
+      // .distinctOn(["gameFeel.game"])
       .getCount();
   }
 

@@ -32,10 +32,10 @@ import {
 
 import { UsersService } from "./users.service";
 import { RolesEnum } from "./enums/roles.enum";
-import { GetUserProfileResponseDto } from "./dto/get-user-profile-response.dto";
-import { ValidationException } from "../common/exceptions/validation.exception";
+import { UserEntity } from './entity/user.entity';
+import { GetUserProfileResponseDto } from './dto/get-user-profile-response.dto';
 import { RequestUserQuery } from "../common/queries/request-user.query";
-import { UserEntity } from "./entity/user.entity";
+import { ValidationException } from "../common/exceptions/validation.exception";
 
 @ApiTags("Users")
 @Controller("users")

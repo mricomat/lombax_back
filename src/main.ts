@@ -1,10 +1,10 @@
-import { NestFactory } from "@nestjs/core";
-import { locale } from "moment";
 import { ConfigService } from "nestjs-config";
-import helmet from "helmet";
-import compression from "compression";
-import bodyParser from "body-parser";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { locale } from "moment";
+import helmet from 'helmet';
+import compression from 'compression';
+import bodyParser from 'body-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from "./app.module";
 

@@ -16,9 +16,9 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { trimStringHelper } from "../../utils/transformers-helpers/trim-string-helper";
 import { toLowerCaseStringHelper } from "../../utils/transformers-helpers/to-lower-case-string-helper";
 import { ErrorMessages } from "../../utils/error-messages";
-import { IsValidPassword } from "../../common/custom-validators/is-valid-password.custom-validator";
-import { IsAlphaBlank } from "../../common/custom-validators/is-alpha-blank.custom-validator";
-import { DocumentDto } from "../../common/dto/document.dto";
+import { DocumentDto } from '../../common/dto/document.dto';
+import { IsValidPassword } from '../../common/custom-validators/is-valid-password.custom-validator';
+import { IsAlphaBlank } from '../../common/custom-validators/is-alpha-blank.custom-validator';
 
 export class RegisterRequestDto {
   @ApiProperty()

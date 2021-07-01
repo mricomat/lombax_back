@@ -1,5 +1,5 @@
-import { ApiResponseProperty } from "@nestjs/swagger";
-import { GenreEntity } from "src/genres/genre.entity";
+import { GenreEntity } from 'src/genres/genre.entity';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 import { RolesEnum } from "../../users/enums/roles.enum";
 

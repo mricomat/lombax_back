@@ -2,10 +2,10 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { IsNotEmpty, IsString } from "class-validator";
 import { ApiResponseProperty } from "@nestjs/swagger";
 
-import { LikeEntity } from "./like.entity";
-import { UserEntity } from "../../users/entity/user.entity";
-import { BaseEntityAbstract } from "../../common/entities/base-entity.abstract";
-import { ReviewEntity } from "./review.entity";
+import { ReviewEntity } from './review.entity';
+import { LikeEntity } from './like.entity';
+import { UserEntity } from '../../users/entity/user.entity';
+import { BaseEntityAbstract } from '../../common/entities/base-entity.abstract';
 
 @Entity("Comments")
 export class CommentEntity extends BaseEntityAbstract {
