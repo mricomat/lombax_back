@@ -18,6 +18,7 @@ import { ReviewsModule } from "./reviews/reviews.module";
 import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
 import { DiariesModule } from "./diaries/diaries.module";
 import { FollowsModule } from "./follows/follows.module";
+import { FeedModule } from "./feed/feed.module";
 
 const configFiles = resolve(__dirname, "config", "**", "!(*.d).{ts,js}");
 
@@ -55,6 +56,7 @@ const appInterceptor = <T>(cons: T) => ({
     ReviewsModule,
     DiariesModule,
     FollowsModule,
+    FeedModule,
     AuthModule,
   ],
   controllers: [AppController],

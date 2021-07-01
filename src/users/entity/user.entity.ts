@@ -11,6 +11,7 @@ import { GenreEntity } from "src/genres/genre.entity";
 import { GameFeelEntity } from "src/gameFeel/gameFeel.entity";
 import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { DiaryEntity } from "src/diaries/diary.entity";
+import { FollowEntity } from "src/follows/follow.entity";
 
 @Entity("Users")
 export class UserEntity extends BaseEntityAbstract {
@@ -91,6 +92,12 @@ export class UserEntity extends BaseEntityAbstract {
 
   @OneToMany(() => DiaryEntity, (diary) => diary.user)
   diary?: DiaryEntity[];
+
+  @OneToMany(() => FollowEntity, (follow) => follow.requester)
+  following?: FollowEntity[];
+
+  @OneToMany(() => FollowEntity, (follow) => follow.addressee)
+  followers?: FollowEntity[];
 
   @ApiResponseProperty()
   @IsOptional()

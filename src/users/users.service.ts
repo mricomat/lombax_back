@@ -64,7 +64,7 @@ export class UsersService {
       .createQueryBuilder("gameFeel")
       .select()
       .where("gameFeel.user.id = :userId ", { userId: user.id })
-     //.distinctOn(["gameFeel.game"])
+      //.distinctOn(["gameFeel.game"])
       .getCount();
   }
 
